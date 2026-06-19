@@ -1,4 +1,4 @@
-package com.apartment.management.enums;
+package com.apartment.management.shared.enums;
 
 public enum FurnishingStatus {
     OPERATIONAL,

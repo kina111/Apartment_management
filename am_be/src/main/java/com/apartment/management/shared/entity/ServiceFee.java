@@ -1,31 +1,36 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
-import com.apartment.management.enums.ImageType;
+import com.apartment.management.shared.enums.ChargeType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
+
 @Entity
-@Table(name = "contract_image")
+@Table(name = "service_fee")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ContractImage {
+public class ServiceFee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
-    private Long imageId;
+    @Column(name = "service_fee_id")
+    private Long serviceFeeId;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "fee", nullable = false)
+    private BigDecimal fee;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "image_type", nullable = false)
-    private ImageType imageType;
+    @Column(name = "charge_type", nullable = false)
+    private ChargeType chargeType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", nullable = false)

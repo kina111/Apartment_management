@@ -1,6 +1,6 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
-import com.apartment.management.enums.FurnishingStatus;
+import com.apartment.management.shared.enums.FurnishingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

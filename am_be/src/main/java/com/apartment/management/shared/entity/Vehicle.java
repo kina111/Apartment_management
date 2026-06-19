@@ -1,4 +1,4 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

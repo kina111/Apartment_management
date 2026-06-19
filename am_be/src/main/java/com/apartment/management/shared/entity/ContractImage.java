@@ -1,18 +1,19 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
+import com.apartment.management.shared.enums.ImageType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "room_type_image")
+@Table(name = "contract_image")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoomTypeImage {
+public class ContractImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +23,12 @@ public class RoomTypeImage {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "image_type", nullable = false)
+    private ImageType imageType;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_type_id", nullable = false)
+    @JoinColumn(name = "contract_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private RoomType roomType;
+    private Contract contract;
 }

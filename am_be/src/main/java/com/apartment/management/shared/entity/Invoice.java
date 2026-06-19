@@ -1,7 +1,7 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
-import com.apartment.management.enums.PaymentMethod;
-import com.apartment.management.enums.PaymentStatus;
+import com.apartment.management.shared.enums.PaymentMethod;
+import com.apartment.management.shared.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

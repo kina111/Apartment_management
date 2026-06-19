@@ -1,6 +1,6 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
-import com.apartment.management.enums.ChargeType;
+import com.apartment.management.shared.enums.ChargeType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;

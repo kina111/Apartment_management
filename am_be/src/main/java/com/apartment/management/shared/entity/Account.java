@@ -1,7 +1,7 @@
-package com.apartment.management.entity;
+package com.apartment.management.shared.entity;
 
-import com.apartment.management.enums.AccountStatus;
-import com.apartment.management.enums.Role;
+import com.apartment.management.shared.enums.AccountStatus;
+import com.apartment.management.shared.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
