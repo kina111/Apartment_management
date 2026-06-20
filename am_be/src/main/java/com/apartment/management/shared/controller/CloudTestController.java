@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/test/cloud")
+@RequestMapping("/test/cloud")
 @RequiredArgsConstructor
 @Tag(name = "Cloud Test", description = "Test endpoints for Cloudinary upload and delete")
 public class CloudTestController {
