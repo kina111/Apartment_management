@@ -1,0 +1,176 @@
+.sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex: 0 0 var(--app-sidebar-width);
+    flex-direction: column;
+    width: var(--app-sidebar-width);
+    min-height: 100vh;
+    padding: 20px 16px;
+    border-right: 1px solid var(--app-border);
+    background: var(--app-sidebar-bg);
+    color: var(--app-text);
+    font-family: var(--app-font-family);
+    transition: width var(--app-transition), flex-basis var(--app-transition), padding var(--app-transition);
+}
+
+.sidebar.is-collapsed {
+    flex-basis: var(--app-sidebar-collapsed-width);
+    width: var(--app-sidebar-collapsed-width);
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+    margin-bottom: 24px;
+}
+
+.sidebar-title {
+    margin: 0;
+    overflow: hidden;
+    color: var(--app-text);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.sidebar-toggle {
+    display: inline-grid;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    color: var(--app-text-muted);
+    box-shadow: var(--app-shadow-sm);
+    transition: background var(--app-transition), border-color var(--app-transition), color var(--app-transition);
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: var(--app-primary-dark);
+}
+
+.sidebar-nav {
+    display: grid;
+    gap: 8px;
+}
+
+.sidebar-nav-link {
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: var(--app-radius-md);
+    color: var(--app-text-muted);
+    font-weight: 700;
+    line-height: 1.35;
+    transition: background var(--app-transition), color var(--app-transition), box-shadow var(--app-transition);
+}
+
+.sidebar-nav-link:hover,
+.sidebar-nav-link:focus-visible {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--app-primary-dark);
+}
+
+.sidebar-nav-link.active {
+    background: var(--app-surface);
+    color: var(--app-primary-dark);
+    box-shadow: var(--app-shadow-sm);
+}
+
+.sidebar-link-icon {
+    flex: 0 0 20px;
+}
+
+.sidebar-label,
+.sidebar-user-info,
+.sidebar-title {
+    transition: opacity var(--app-transition), visibility var(--app-transition);
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding: 12px;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-lg);
+    background: rgba(255, 255, 255, 0.64);
+}
+
+.sidebar-avatar {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    border: 2px solid var(--app-surface);
+    border-radius: 999px;
+    object-fit: cover;
+    box-shadow: var(--app-shadow-sm);
+}
+
+.sidebar-user-info {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--app-text);
+    white-space: nowrap;
+}
+
+.sidebar.is-collapsed .sidebar-header {
+    justify-content: center;
+}
+
+.sidebar.is-collapsed .sidebar-title,
+.sidebar.is-collapsed .sidebar-label,
+.sidebar.is-collapsed .sidebar-user-info {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.sidebar.is-collapsed .sidebar-nav-link {
+    justify-content: center;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.sidebar.is-collapsed .sidebar-user {
+    justify-content: center;
+    padding: 10px 0;
+    border-color: transparent;
+    background: transparent;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        flex-basis: var(--app-sidebar-collapsed-width);
+        width: var(--app-sidebar-collapsed-width);
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .sidebar-title,
+    .sidebar-label,
+    .sidebar-user-info {
+        width: 0;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .sidebar-header,
+    .sidebar-nav-link,
+    .sidebar-user {
+        justify-content: center;
+    }
+}
