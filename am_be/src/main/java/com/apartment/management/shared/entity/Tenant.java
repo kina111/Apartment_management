@@ -39,9 +39,6 @@ public class Tenant {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "is_contract_holder", nullable = false)
-    private Boolean isContractHolder;
-
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<EmergencyContact> emergencyContacts = new HashSet<>();
@@ -50,7 +47,7 @@ public class Tenant {
     @Builder.Default
     private Set<Vehicle> vehicles = new HashSet<>();
 
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<Contract> contracts = new HashSet<>();
-}
+    private Set<ContractTenant> contractTenants = new HashSet<>();
+

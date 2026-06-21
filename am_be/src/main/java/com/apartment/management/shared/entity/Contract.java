@@ -43,9 +43,9 @@ public class Contract {
     @JoinColumn(name = "room_code", nullable = false)
     private Room room;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tenant_id", nullable = false)
-    private Tenant tenant;
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<ContractTenant> contractTenants = new HashSet<>(); 
 
     // Self-referencing relationship for renewals (HĐ gia hạn nối tiếp HĐ cũ)
     @ManyToOne(fetch = FetchType.LAZY)
