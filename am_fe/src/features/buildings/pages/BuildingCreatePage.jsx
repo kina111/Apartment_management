@@ -122,7 +122,6 @@ function BuildingCreatePage() {
                 <span className="building-icon-badge"><Building size={22} /></span>
                 <div>
                   <h2 className="building-section-title">Thông tin tòa nhà</h2>
-                  <p className="mb-0 muted-text">Các trường có dấu <span className="required-mark">*</span> là bắt buộc.</p>
                 </div>
               </div>
             </Card.Header>
