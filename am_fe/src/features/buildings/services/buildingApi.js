@@ -27,3 +27,9 @@ export async function createBuilding(payload, images = []) {
 
   return response.data;
 }
+
+export async function getAllBuildingsByManagerId(managerId) {
+  const response = await axiosClient.get('/buildings', { params: { managerId } });
+
+  return response.data;
+}

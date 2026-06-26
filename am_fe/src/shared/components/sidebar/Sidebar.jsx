@@ -6,6 +6,7 @@ import './Sidebar.css';
 const menuItems = [
     {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2},
     {to: '/buildings/new', label: 'Khởi tạo tòa nhà', icon: Building},
+    {to: '/rooms', label: 'Danh sách phòng', icon: List},
     {to: '/vehicles', label: 'Phương tiện', icon: CarFront},
 ];
 

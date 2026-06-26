@@ -1,0 +1,213 @@
+/* ── Rooms Page ── */
+.rooms-page {
+  padding-top: 8px;
+}
+
+/* ── Info Alert ── */
+.rooms-info-alert {
+  border: 1px solid #bfdbfe;
+  border-radius: var(--app-radius-md);
+  background: #eff6ff;
+  color: var(--app-text);
+  font-size: 14px;
+}
+
+.rooms-info-alert .alert-link {
+  color: var(--app-primary-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* ── Filter Bar ── */
+.rooms-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.rooms-filter-group {
+  display: flex;
+  gap: 6px;
+}
+
+.rooms-filter-btn {
+  padding: 6px 18px;
+  border: 1.5px solid var(--app-border);
+  border-radius: 20px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--app-transition);
+}
+
+.rooms-filter-btn:hover {
+  border-color: var(--app-primary);
+  color: var(--app-primary);
+}
+
+.rooms-filter-btn.active {
+  border-color: var(--app-primary);
+  background: var(--app-primary);
+  color: #ffffff;
+}
+
+.rooms-search {
+  margin-left: auto;
+  max-width: 220px;
+  font-size: 14px;
+}
+
+/* ── Floor Section ── */
+.rooms-floor-section {
+  margin-bottom: 32px;
+}
+
+.rooms-floor-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  color: var(--app-text);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.006em;
+}
+
+.rooms-floor-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--app-border);
+}
+
+/* ── Room Card Grid ── */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 14px;
+}
+
+/* ── Room Card ── */
+.room-card {
+  position: relative;
+  padding: 16px;
+  border: 1.5px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+  cursor: pointer;
+  transition: transform var(--app-transition), box-shadow var(--app-transition), border-color var(--app-transition);
+}
+
+.room-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--app-shadow-md);
+}
+
+/* ── Card border colors by status ── */
+.room-card--vacant {
+  border-color: var(--app-success);
+}
+
+.room-card--rented {
+  border-color: var(--app-border);
+}
+
+.room-card--maintenance {
+  border-color: #fca5a5;
+}
+
+/* ── Room header row ── */
+.room-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.room-card-number {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--app-text);
+  line-height: 1.3;
+}
+
+/* ── Status Badge ── */
+.room-status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.room-status-badge--vacant {
+  background: var(--app-success);
+  color: #ffffff;
+}
+
+.room-status-badge--rented {
+  background: var(--app-surface-muted);
+  color: var(--app-text-muted);
+  border: 1px solid var(--app-border);
+}
+
+.room-status-badge--maintenance {
+  background: var(--app-danger);
+  color: #ffffff;
+}
+
+/* ── Tenant name ── */
+.room-card-tenant {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Empty state ── */
+.rooms-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--app-text-muted);
+}
+
+.rooms-empty-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  background: var(--app-surface-muted);
+  color: var(--app-text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 576px) {
+  .rooms-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rooms-search {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .rooms-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+}
