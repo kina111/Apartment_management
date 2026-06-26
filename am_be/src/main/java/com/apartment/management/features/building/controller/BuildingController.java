@@ -22,10 +22,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 @RestController
 @RequestMapping("/buildings")
 @RequiredArgsConstructor
 @Tag(name = "Buildings", description = "Building management APIs")
+@CrossOrigin(origins="http://localhost:5173")
 public class BuildingController {
 
     private final BuildingService buildingService;
@@ -41,5 +47,10 @@ public class BuildingController {
             @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(request, images));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<BuildingResponse>> getBuildingsByManagerId(@RequestParam("managerId") Long managerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingByManagerId(managerId));
     }
 }

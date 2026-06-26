@@ -113,4 +113,12 @@ public class BuildingServiceImpl implements BuildingService {
             }
         }
     }
+
+    @Override
+    public List<BuildingResponse> getBuildingByManagerId(Long managerId) {
+        return buildingRepository.findByManagerId(managerId)
+                .stream()
+                .map(buildingMapper::toResponse)
+                .toList();
+    }
 }
