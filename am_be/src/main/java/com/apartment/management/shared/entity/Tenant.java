@@ -50,4 +50,5 @@ public class Tenant {
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<ContractTenant> contractTenants = new HashSet<>();
+}
 

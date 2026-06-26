@@ -37,9 +37,5 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<Furnishing> furnishings = new HashSet<>();
-
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private Set<Contract> contracts = new HashSet<>();
 }
