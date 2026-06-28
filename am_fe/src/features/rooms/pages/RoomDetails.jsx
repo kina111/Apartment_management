@@ -13,10 +13,18 @@ import {
 import { ArrowLeft, PeopleFill } from "react-bootstrap-icons";
 import TenantCard from "../../tenants_vehicles/components/TenantCard";
 import VehicleTable from "../../tenants_vehicles/components/VehicleTable";
+import AddTenantModal from "../../tenants_vehicles/components/AddTenantModal";
+import UpdateTenantModal from "../../tenants_vehicles/components/UpdateTenantModal";
 import {
   getContractsByRoomId,
   getAllTenantsByContractId,
+  addTenantToContract,
+  tenantLeave,
+  updateTenant,
+  addVehicleToTenant,
+  deleteVehicleFromTenant
 } from "../services/roomApi";
+import AddVehicleModal from "../../tenants_vehicles/components/AddVehicleModal";
 
 function RoomDetails() {
   const navigate = useNavigate();
@@ -26,6 +34,22 @@ function RoomDetails() {
   const [contract, setContract] = useState(null);
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // state add modal
+  const [showModal, setShowModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  // state update modal
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [submittingUpdate, setSubmittingUpdate] = useState(false);
+  const [submitErrorUpdate, setSubmitErrorUpdate] = useState(null);
+  const [selectedTenant, setSelectedTenant] = useState(null);
+
+  // state add vehicle
+  const [showVehicleModal, setShowVehicleModal] = useState(false);
+  const [submittingVehicle, setSubmittingVehicle] = useState(false);
+  const [submitErrorVehicle, setSubmitErrorVehicle] = useState(null);
 
   useEffect(() => {
     if (!room?.roomCode) return;
@@ -74,6 +98,102 @@ function RoomDetails() {
     };
   }, [room?.roomCode]);
 
+  // handle show modal based on room status
+  const handleAddTenant = () => {
+    if (room?.status === "AVAILABLE") {
+      navigate("/tenants/add", { state: { roomCode: room.roomCode } });
+    } else {
+      setSubmitError(null);
+      setShowModal(true);
+    }
+  };
+
+  // handle show update modal
+  const handleUpdateTenant = (tenant) => {
+    setSubmitErrorUpdate(null);
+    setShowUpdateModal(true);
+    setSelectedTenant(tenant);
+  };
+  // handle submit form
+  const onSubmit = async (formData) => {
+    if (!contract?.contractId) return;
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      await addTenantToContract(contract.contractId, formData);
+      const updated = await getAllTenantsByContractId(contract.contractId);
+      setTenants(updated);
+      setShowModal(false);
+    } catch (error) {
+      setSubmitError("Thêm thành viên thất bại. Vui lòng thử lại");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const onSubmitUpdate = async (formData) => {
+    if (!contract?.contractId) return;
+    setSubmittingUpdate(true);
+    setSubmitErrorUpdate(null);
+
+    try {
+      await updateTenant(selectedTenant.tenantId, formData);
+      const updated = await getAllTenantsByContractId(contract.contractId);
+      setTenants(updated);
+      setShowUpdateModal(false);
+    } catch (error) {
+      setSubmitErrorUpdate("Cập nhật thành viên thất bại. Vui lòng thử lại");
+    } finally {
+      setSubmittingUpdate(false);
+    }
+  };
+
+  const handleTenantLeave = async (tenantId) => {
+    try {
+      await tenantLeave(contract.contractId, tenantId);
+      const updated = await getAllTenantsByContractId(contract.contractId);
+      setTenants(updated);
+    } catch (error) {
+      alert("Xóa thành viên thất bại. Vui lòng thử lại");
+    }
+  };
+
+  const handleAddVehicle = () => {
+    setSubmitErrorVehicle(null);
+    setShowVehicleModal(true);
+  };
+
+  const onSubmitVehicle = async (formData) => {
+    if (!contract?.contractId) return;
+    setSubmittingVehicle(true);
+    setSubmitErrorVehicle(null);
+
+    try {
+      await addVehicleToTenant(formData.tenantId, {
+        numberPlate: formData.numberPlate,
+        vehicleType: formData.vehicleType,
+      });
+      const updated = await getAllTenantsByContractId(contract.contractId);
+      setTenants(updated);
+      setShowVehicleModal(false);
+    } catch (error) {
+      setSubmitErrorVehicle("Thêm phương tiện thất bại. Vui lòng thử lại");
+    } finally {
+      setSubmittingVehicle(false);
+    }
+  };
+
+  const handleDeleteVehicle = async (tenantId, vehicleId) => {
+    try{
+      await deleteVehicleFromTenant(tenantId, vehicleId);
+      const updated = await getAllTenantsByContractId(contract.contractId);
+      setTenants(updated);
+    }catch(error){
+      setSubmitErrorVehicle("Xóa phương tiện thất bại. Vui lòng thử lại");
+    }
+  }
+
   return (
     <>
       <Breadcrumb>
@@ -109,6 +229,7 @@ function RoomDetails() {
                   <Button
                     variant="link"
                     className="text-decoration-none text-primary fw-bold p-0"
+                    onClick={handleAddTenant}
                   >
                     [ + THÊM THÀNH VIÊN MỚI ]
                   </Button>
@@ -117,7 +238,11 @@ function RoomDetails() {
                 <Row className="g-3 mb-4">
                   {tenants.map((tenant) => (
                     <Col key={tenant.tenantId} xs={12} md={6}>
-                      <TenantCard tenant={tenant} />
+                      <TenantCard
+                        tenant={tenant}
+                        handleTenantLeave={handleTenantLeave}
+                        handleUpdateTenant={handleUpdateTenant}
+                      />
                     </Col>
                   ))}
                 </Row>
@@ -132,11 +257,12 @@ function RoomDetails() {
                   <Button
                     variant="link"
                     className="text-decoration-none text-primary fw-bold p-0"
+                    onClick={handleAddVehicle}
                   >
                     [ + ĐĂNG KÝ PHƯƠNG TIỆN ]
                   </Button>
                 </div>
-                <VehicleTable tenants={tenants} />
+                <VehicleTable tenants={tenants} handleDeleteVehicle={handleDeleteVehicle}/>
               </div>
             </>
           )}
@@ -152,6 +278,32 @@ function RoomDetails() {
           Tab content for Contact
         </Tab>
       </Tabs>
+      {/* ── Modal thêm thành viên ── */}
+      <AddTenantModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        onSubmit={onSubmit}
+        submitError={submitError}
+        submitting={submitting}
+      />
+
+      <UpdateTenantModal
+        show={showUpdateModal}
+        onHide={() => setShowUpdateModal(false)}
+        onSubmit={onSubmitUpdate}
+        submitError={submitErrorUpdate}
+        submitting={submittingUpdate}
+        initialData={selectedTenant}
+      />
+
+      <AddVehicleModal
+        tenants={tenants}
+        onSubmit={onSubmitVehicle}
+        onHide={() => setShowVehicleModal(false)}
+        show={showVehicleModal}
+        submitting={submittingVehicle}
+        submitError={submitErrorVehicle}
+      />
     </>
   );
 }

@@ -5,7 +5,8 @@ import MainLayout from "./shared/components/MainLayout.jsx";
 import { useEffect, useState } from "react";
 import { getAllBuildingsByManagerId } from "./features/buildings/services/buildingApi.js";
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
-
+import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
+import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
 function App() {
   const [buildings, setBuildings] = useState([]);
 
@@ -25,6 +26,14 @@ function App() {
           <Route
             path="/rooms"
             element={<RoomListPage buildings={buildings} />}
+          />
+          <Route
+            path="/tenants"
+            element={<TenantsManagePage buildings={buildings} />}
+          />
+          <Route
+            path="/vehicles"
+            element={<VehiclesDashboardPage buildings={buildings} />}
           />
           <Route path="/rooms/:roomCode" element={<RoomDetails />} />
           <Route path="*" element={<Navigate to="/buildings/new" replace />} />
