@@ -11,5 +11,8 @@ public interface ContractTenantRepository extends JpaRepository<ContractTenant, 
 
     @Query("SELECT ct FROM ContractTenant ct JOIN FETCH ct.tenant JOIN FETCH ct.contract WHERE ct.contract.contractId = :contractId")
     Optional<ContractTenant> findByContractId(Long contractId);
+
+    @Query("SELECT ct FROM ContractTenant ct JOIN FETCH ct.tenant JOIN FETCH ct.contract WHERE ct.contract.contractId = :contractId AND ct.tenant.tenantId = :tenantId")
+    Optional<ContractTenant> findByContractIdAndTenantId(Long contractId, Long tenantId);
 }
 

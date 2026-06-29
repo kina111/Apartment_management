@@ -1,7 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import { PersonFill, Eye, Trash } from "react-bootstrap-icons";
 
-function TenantCard({ tenant }) {
+function TenantCard({ tenant, handleTenantLeave, handleUpdateTenant }) {
   return (
     <Card className="border-secondary bg-dark text-white rounded-0">
       <Card.Body>
@@ -16,12 +16,23 @@ function TenantCard({ tenant }) {
           </span>
         </Card.Text>
         <div className="d-flex justify-content-between">
-          <Button variant="link" className="text-decoration-none text-primary p-0">
+          <Button variant="link" className="text-decoration-none text-primary p-0"
+          onClick={() => handleUpdateTenant(tenant)}>
             [ <Eye className="me-1" /> Hồ sơ ]
           </Button>
-          <Button variant="link" className="text-decoration-none text-danger p-0">
-            [ <Trash className="me-1" /> Xóa ]
-          </Button>
+          {!tenant.isContractHolder && (
+            <Button
+              variant="link"
+              className="text-decoration-none text-danger p-0"
+              onClick={() => {
+                if (window.confirm(`Xác nhận cho ${tenant.name} rời phòng?`)) {
+                  handleTenantLeave(tenant.tenantId);
+                }
+              }}
+            >
+              [ <Trash className="me-1" /> Rời phòng ]
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>

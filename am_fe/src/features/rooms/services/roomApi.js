@@ -30,3 +30,23 @@ export async function getContractsByRoomId(roomCode, status) {
   });
   return response.data;
 }
+
+export async function addTenantToContract(contractId, data) {
+  return axiosClient.post(`/tenants/contract/${contractId}/add-tenant`, data);
+}
+
+export async function tenantLeave(contractId, tenantId){
+  return axiosClient.put(`/tenants/contract/${contractId}/tenant/${tenantId}/leave`);
+}
+
+export async function updateTenant(tenantId, data){
+  return axiosClient.put(`/tenants/${tenantId}`, data);
+}
+
+export async function addVehicleToTenant(tenantId, data){
+  return axiosClient.post(`/tenants/${tenantId}/vehicles`, data);
+}
+
+export async function deleteVehicleFromTenant(tenantId, vehicleId){
+  return axiosClient.delete(`/tenants/${tenantId}/vehicles/${vehicleId}`);
+}
