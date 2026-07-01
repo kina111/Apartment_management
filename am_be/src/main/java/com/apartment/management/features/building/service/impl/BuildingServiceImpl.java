@@ -12,6 +12,7 @@ import com.apartment.management.shared.entity.BuildingImage;
 import com.apartment.management.shared.enums.FolderName;
 import com.apartment.management.shared.service.CloudService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BuildingServiceImpl implements BuildingService {
 
     private final BuildingRepository buildingRepository;

@@ -1,253 +1,220 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Card, Col, Form, Image, Row, Spinner } from 'react-bootstrap';
-import { Building, CheckCircle, CloudUpload } from 'react-bootstrap-icons';
-import { createBuilding } from '../services/buildingApi';
-import '../buildings.css';
+import {useState} from "react";
+import {createBuilding} from "../services/buildingApi.js";
+import "../buildings.css";
 
-const initialForm = {
-  name: '',
-  address: '',
-  numberOfFloor: '',
-  description: '',
-  landlordId: '',
+const initialBuilding = {
+    name: "",
+    address: "",
+    numberOfFloor: "",
+    description: "",
 };
 
-function validateForm(form) {
-  const errors = {};
-  const floorCount = Number(form.numberOfFloor);
+function validateBuilding(building) {
+    const errors = {};
 
-  if (!form.name.trim()) {
-    errors.name = 'Tên tòa nhà là bắt buộc.';
-  }
+    if (!building.name.trim()) {
+        errors.name = "Tên toà nhà là bắt buộc";
+    }
 
-  if (!form.address.trim()) {
-    errors.address = 'Địa chỉ là bắt buộc.';
-  }
+    if (!building.address.trim()) {
+        errors.address = "Địa chỉ là bắt buộc";
+    }
 
-  if (!Number.isInteger(floorCount) || floorCount <= 0) {
-    errors.numberOfFloor = 'Số tầng phải là số nguyên lớn hơn 0.';
-  }
+    const floor = Number(building.numberOfFloor);
 
-  return errors;
+    if (!building.numberOfFloor) {
+        errors.numberOfFloor = "Số tầng là bắt buộc";
+    } else if (!Number.isInteger(floor) || floor <= 0) {
+        errors.numberOfFloor = "Số tầng phải là số nguyên lớn hơn 0";
+    }
+
+    return errors;
 }
 
+
 function BuildingCreatePage() {
-  const [form, setForm] = useState(initialForm);
-  const [images, setImages] = useState([]);
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const [createdBuilding, setCreatedBuilding] = useState(null);
+    const [building, setBuilding] = useState(initialBuilding);
+    const [errors, setErrors] = useState({});
+    const [submitError, setSubmitError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [createdBuilding, setCreatedBuilding] = useState(null);
+    const [images, setImages] = useState([]);
 
-  const previews = useMemo(() => {
-    return images.map((file) => ({
-      name: file.name,
-      url: URL.createObjectURL(file),
-    }));
-  }, [images]);
+    const handleChange = (e) => {
+        const {name, value} = e.target;
 
-  useEffect(() => {
-    return () => {
-      previews.forEach((preview) => URL.revokeObjectURL(preview.url));
+
+        setBuilding((currentBuilding) => ({...currentBuilding, [name]: value}));
+
+        setErrors((currentError) => ({...currentError, [name]: ""}));
+        setSubmitError("");
+    }
+
+    const handleImagesChange = (e) => {
+        const selectedImages = Array.from(e.target.files || []);
+        setImages(selectedImages);
     };
-  }, [previews]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setForm((currentForm) => ({ ...currentForm, [name]: value }));
-    setErrors((currentErrors) => ({ ...currentErrors, [name]: undefined }));
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  const handleImagesChange = (event) => {
-    const selectedImages = Array.from(event.target.files || []);
-    setImages(selectedImages);
-  };
+        const validate = validateBuilding(building);
+        setErrors(validate);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+        if (Object.keys(validate).length > 0) {
+            return;
+        }
 
-    const validationErrors = validateForm(form);
-    setErrors(validationErrors);
-    setSubmitError('');
-    setCreatedBuilding(null);
+        const payload = {
+            name: building.name,
+            address: building.address,
+            numberOfFloor: Number(building.numberOfFloor),
+            description: building.description,
+        }
 
-    if (Object.keys(validationErrors).length > 0) {
-      return;
+        setIsSubmitting(true);
+        setSubmitError("");
+        setCreatedBuilding(null);
+
+        try {
+            const result = await createBuilding(payload, images);
+            setCreatedBuilding(result);
+            setBuilding(initialBuilding);
+            setImages([]);
+        } catch (error) {
+            const serverMessage =
+                error.response?.data?.message ||
+                error.response?.data?.detail ||
+                error.response?.data?.error ||
+                "Không thể tạo tòa nhà";
+
+            setSubmitError(serverMessage);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
-    setIsSubmitting(true);
-    try {
-      const response = await createBuilding(
-        {
-          ...form,
-          numberOfFloor: Number(form.numberOfFloor),
-          landlordId: form.landlordId ? Number(form.landlordId) : undefined,
-        },
-        images,
-      );
-      setCreatedBuilding(response);
-      setForm(initialForm);
-      setImages([]);
-    } catch (error) {
-      setSubmitError(error.response?.data?.message || error.response?.data?.detail || 'Không thể tạo tòa nhà. Vui lòng thử lại.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="building-create-page">
-      <header className="page-header">
-        <div>
-          <h1 className="page-title">Khởi tạo thông tin cơ sở</h1>
-        </div>
-      </header>
-
-      {createdBuilding && (
-        <Alert variant="success" className="building-success-card">
-          <div className="d-flex align-items-center gap-2 fw-bold mb-2">
-            <CheckCircle /> Tạo tòa nhà thành công
-          </div>
-          <div>Mã tòa nhà: <strong>{createdBuilding.buildingId}</strong></div>
-          <div>Tên: <strong>{createdBuilding.name}</strong></div>
-          <div>Số ảnh: <strong>{createdBuilding.imageUrls?.length || 0}</strong></div>
-        </Alert>
-      )}
-
-      <Row className="g-4">
-        <Col xs={12}>
-          <Card className="section-card building-form-card">
-            <Card.Header className="section-card-header bg-white">
-              <div className="d-flex align-items-center gap-3">
-                <span className="building-icon-badge"><Building size={22} /></span>
+    return (
+        <div className="building-create-page">
+            <header className="page-header">
                 <div>
-                  <h2 className="building-section-title">Thông tin tòa nhà</h2>
+                    <h1 className="page-title">Tạo tòa nhà</h1>
                 </div>
-              </div>
-            </Card.Header>
+            </header>
 
-            <Card.Body className="section-card-body">
-              {submitError && <Alert variant="danger">{submitError}</Alert>}
-
-              <Form onSubmit={handleSubmit} noValidate>
-                <Row className="g-3">
-                  <Col md={7}>
-                    <Form.Group controlId="buildingName">
-                      <Form.Label className="fw-semibold">Tên tòa nhà <span className="required-mark">*</span></Form.Label>
-                      <Form.Control
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        isInvalid={Boolean(errors.name)}
-                        placeholder="Ví dụ: Chung cư A"
-                      />
-                      <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={5}>
-                    <Form.Group controlId="numberOfFloor">
-                      <Form.Label className="fw-semibold">Số tầng <span className="required-mark">*</span></Form.Label>
-                      <Form.Control
-                        min="1"
-                        name="numberOfFloor"
-                        type="number"
-                        value={form.numberOfFloor}
-                        onChange={handleChange}
-                        isInvalid={Boolean(errors.numberOfFloor)}
-                        placeholder="Ví dụ: 5"
-                      />
-                      <Form.Control.Feedback type="invalid">{errors.numberOfFloor}</Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={8}>
-                    <Form.Group controlId="buildingAddress">
-                      <Form.Label className="fw-semibold">Địa chỉ <span className="required-mark">*</span></Form.Label>
-                      <Form.Control
-                        name="address"
-                        value={form.address}
-                        onChange={handleChange}
-                        isInvalid={Boolean(errors.address)}
-                        placeholder="Ví dụ: 123 Nguyễn Trãi, Hà Nội"
-                      />
-                      <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-
-                  <Col md={4}>
-                    <Form.Group controlId="landlordId">
-                      <Form.Label className="fw-semibold">Landlord ID</Form.Label>
-                      <Form.Control
-                        min="1"
-                        name="landlordId"
-                        type="number"
-                        value={form.landlordId}
-                        onChange={handleChange}
-                        placeholder="Ví dụ: 1"
-                      />
-                    </Form.Group>
-                  </Col>
-
-                  <Col xs={12}>
-                    <Form.Group controlId="buildingDescription">
-                      <Form.Label className="fw-semibold">Mô tả</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        name="description"
-                        rows={4}
-                        value={form.description}
-                        onChange={handleChange}
-                        placeholder="Ghi chú thêm về cơ sở, vị trí, tiện ích xung quanh..."
-                      />
-                    </Form.Group>
-                  </Col>
-
-                  <Col xs={12}>
-                    <Form.Label className="fw-semibold">Ảnh tòa nhà</Form.Label>
-                    <label className="upload-zone building-upload-zone" htmlFor="buildingImages">
-                      <CloudUpload size={34} />
-                      <span className="fw-semibold">Chọn ảnh hoặc kéo thả vào đây</span>
-                      <small>Hỗ trợ chọn nhiều ảnh. Có thể bỏ trống.</small>
-                      <Form.Control
-                        id="buildingImages"
-                        className="visually-hidden"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleImagesChange}
-                      />
-                    </label>
-                  </Col>
-                </Row>
-
-                {previews.length > 0 && (
-                  <div className="building-preview-grid mt-3">
-                    {previews.map((preview) => (
-                      <figure key={preview.url} className="building-preview-item">
-                        <Image src={preview.url} alt={preview.name} />
-                        <figcaption>{preview.name}</figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                )}
-
-                <div className="building-form-actions">
-                  <Button type="button" variant="light" onClick={() => { setForm(initialForm); setImages([]); setErrors({}); }}>
-                    Xóa form
-                  </Button>
-                  <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? <Spinner size="sm" className="me-2" /> : null}
-                    Tạo tòa nhà
-                  </Button>
+            <section className="section-card building-form-card">
+                <div className="section-card-header building-form-header">
+                    <div>
+                        <h2 className="building-section-title">Thông tin tòa nhà</h2>
+                    </div>
                 </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </div>
-  );
+
+                <div className="section-card-body">
+                    {submitError && (
+                        <p className="building-alert building-alert--danger">{submitError}</p>
+                    )}
+
+                    {createdBuilding && (
+                        <div className="building-alert building-alert--success">
+                            <p className="building-alert-title">Tạo tòa nhà thành công</p>
+                            <p>ID: {createdBuilding.buildingId}</p>
+                            <p>Tên: {createdBuilding.name}</p>
+                        </div>
+                    )}
+
+                    <form className="building-form" onSubmit={handleSubmit}>
+                        <div className="building-form-grid">
+                            <div className="building-field">
+                                <label className="building-label">Tên tòa nhà <span
+                                    className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${errors.name ? "building-control--invalid" : ""}`}
+                                    name="name"
+                                    value={building.name}
+                                    onChange={handleChange}
+                                    placeholder="Nhập tên tòa nhà"/>
+                                {errors.name && (
+                                    <p className="building-error">{errors.name}</p>
+                                )}
+                            </div>
+
+                            <div className="building-field">
+                                <label className="building-label">Địa chỉ <span
+                                    className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${errors.address ? "building-control--invalid" : ""}`}
+                                    name="address"
+                                    value={building.address}
+                                    onChange={handleChange}
+                                    placeholder="Nhập địa chỉ"/>
+                                {errors.address && (
+                                    <p className="building-error">{errors.address}</p>
+                                )}
+                            </div>
+
+                            <div className="building-field">
+                                <label className="building-label">Số tầng <span
+                                    className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${errors.numberOfFloor ? "building-control--invalid" : ""}`}
+                                    name="numberOfFloor"
+                                    value={building.numberOfFloor}
+                                    onChange={handleChange}
+                                    type="number" placeholder="Nhập số tầng"/>
+                                {errors.numberOfFloor && (
+                                    <p className="building-error">{errors.numberOfFloor}</p>
+                                )}
+                            </div>
+
+                            <div className="building-field building-field--full">
+                                <label className="building-label">Mô tả</label>
+                                <textarea
+                                    className="building-control building-textarea"
+                                    name="description"
+                                    value={building.description}
+                                    onChange={handleChange}
+                                    placeholder="Nhập mô tả"
+                                    rows={4}/>
+                            </div>
+
+                            <div className="building-field building-field--full">
+                                <label className="building-label">Ảnh tòa nhà</label>
+                                <label className="upload-zone building-upload-zone">
+                                    <span className="building-upload-title">Chọn ảnh tòa nhà</span>
+                                    <span
+                                        className="building-upload-hint">Hỗ trợ chọn nhiều ảnh. Có thể bỏ trống.</span>
+                                    <input
+                                        className="building-file-input"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImagesChange}
+                                    />
+                                </label>
+                            </div>
+
+                            {images.length > 0 && (
+                                <div className="building-selected-images building-field--full">
+                                    <p className="building-selected-title">Ảnh đã chọn</p>
+
+                                    {images.map((image) => (
+                                        <p className="building-image-chip"
+                                           key={`${image.name}-${image.lastModified}`}>{image.name}</p>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="building-form-actions">
+                            <button className="building-submit-button" type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Đang gửi..." : "Gửi"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    );
 }
 
 export default BuildingCreatePage;

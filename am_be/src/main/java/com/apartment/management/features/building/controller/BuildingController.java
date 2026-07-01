@@ -13,25 +13,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequestMapping("/buildings")
 @RequiredArgsConstructor
 @Tag(name = "Buildings", description = "Building management APIs")
-@CrossOrigin(origins="http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BuildingController {
 
     private final BuildingService buildingService;
@@ -44,8 +36,8 @@ public class BuildingController {
                     description = "Optional building images",
                     content = @Content(array = @ArraySchema(schema = @Schema(type = "string", format = "binary")))
             )
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
-    ) {
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(request, images));
     }
 
