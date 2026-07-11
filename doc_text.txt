@@ -1,0 +1,130 @@
+
+
+1. Problem Statement
+Hiện tại, các chủ nhà trọ và hộ kinh doanh dịch vụ lưu trú đang gặp rất nhiều khó khăn trong khâu vận hành do thiếu một công cụ quản lý tập trung. Thực trạng này dẫn đến các vấn đề cốt lõi sau:
+Rời rạc về mặt công nghệ: Người quản lý phải sử dụng đồng thời và chuyển đổi liên tục (context-switch) giữa nhiều công cụ thủ công như Google Sheets (quản lý thông tin), Zalo/SMS (nhắc nợ), ứng dụng Ngân hàng (kiểm tra thanh toán) và các file cứng (hợp đồng giấy).
+Dễ sai sót và tốn thời gian: Việc tính toán thủ công các chi phí phức tạp (điện, nước, dịch vụ theo đầu người, chi phí sửa chữa phát sinh, tiền phạt) rất dễ nhầm lẫn và tốn nhiều công sức hàng tháng.
+Thiếu tính tự động hóa: Quá trình nhắc hạn hợp đồng, gửi hóa đơn, tạo mã QR thanh toán động và cập nhật trạng thái công nợ hoàn toàn phụ thuộc vào con người, dẫn đến tình trạng trễ hạn hoặc thất thoát doanh thu.
+2. Actor 
+Để hệ thống phân quyền chuẩn xác, tôi đề xuất tinh chỉnh lại các Actor từ brief của bạn thành cấu trúc phân tầng rõ ràng như sau:
+System Admin: Người vận hành toàn bộ hệ thống ứng dụng (cấp và quản lý tài khoản cho các Chủ hộ kinh doanh).
+Landlord (Chủ kinh doanh / Top Account): Người sở hữu pháp nhân (Hộ kinh doanh/Công ty, Mã số thuế). Có toàn quyền quản lý tài chính, cấu hình hệ thống và phân quyền cho nhân viên quản lý.
+Manager (Quản lý trọ): Tài khoản phụ do Landlord tạo ra. Được phân quyền quản lý một hoặc nhiều cơ sở trọ cụ thể (quản lý phòng, cơ sở vật chất, hóa đơn) nhưng giới hạn quyền xem doanh thu tổng hoặc cấu hình pháp nhân.
+
+3. Use Case Diagram Structural Analysis (Phân tích Use Case)
+Dưới đây là danh sách các Use Case chính được phân nhóm theo Actor để bạn dễ dàng vẽ biểu đồ UML:
+Actor
+Use Cases Chính
+System Admin
+• Tạo/Khóa tài khoản Landlord (Chủ trọ)
+• Quản trị hệ thống tổng
+Landlord (Chủ trọ)
+• Tất cả Use Cases của Manager
+• Quản lý thông tin Hộ kinh doanh/MST
+• Tạo và phân quyền tài khoản Manager cho các cơ sở trọ
+• Xem báo cáo Doanh thu & Tài chính tổng quan
+Manager (Quản lý)
+• Quản lý Cơ sở trọ (Thêm/Sửa/Xóa trọ, Phòng)
+• Quản lý Cơ sở vật chất (CSVC)
+• Quản lý Người thuê & Khách ở cùng
+• Quản lý Hợp đồng (Lập mới, Gia hạn, Chuyển nhượng)
+• Quản lý Hóa đơn (Chốt điện nước, Cộng chi phí phát sinh)
+Tenant (Người thuê)
+• Nhận thông báo (Hợp đồng, Hóa đơn + QR code) qua Email
+• Xem thông tin phòng & Lịch sử thanh toán (nếu hệ thống có Portal riêng)
+
+
+4. Feature Matrix (Danh sách Tính năng Chi tiết)
+Tôi đã phân loại và làm rõ các điều kiện biên (Edge cases) từ brief của bạn (ví dụ: chuyển nhượng hợp đồng, phân chia chi phí sửa chữa đồ đạc).
+4.1. Quản lý Tổ chức & Phân quyền (Account Management)
+Đăng ký/Cấp phát Landlord: System Admin thực hiện thêm/bớt tài khoản Landlord khi có hợp đồng sử dụng phần mềm.
+Hồ sơ Hộ kinh doanh: Landlord cập nhật tên hộ kinh doanh/công ty, mã số thuế, cấu hình ngân hàng nhận tiền (để sinh QR tự động).
+Phân nhiệm Manager: Landlord tạo tài khoản Manager và gán quyền quản lý cụ     thể (Ví dụ: Manager A chỉ được xem và quản lý Trọ X, không được xem Trọ Y).
+4.2. Quản lý Hạ tầng (Property & Room Management)
+Quản lý Cơ sở trọ: Xem danh sách trọ, thay đổi tên trọ, địa chỉ, cấu hình các loại phí cố định của tòa nhà.
+Quản lý Phòng:
+Xem danh sách phòng trực quan dưới dạng sơ đồ/lưới (Grid view).
+Bộ lọc trạng thái phòng: Trống (Available), Đang thuê (Occupied), Đang sửa chữa (Maintenance).
+Thêm/Bớt số lượng phòng trong một cơ sở trọ.
+4.3. Quản lý Cơ sở vật chất (Asset Management)
+Danh mục tài sản: Khởi tạo danh sách CSVC sẵn có của từng phòng (Ví dụ: Điều hòa, Tủ lạnh, Giường). 
+Cập nhật trạng thái: Ghi nhận trạng thái thiết bị (Dùng tốt, Hỏng, Thiếu).
+Xử lý sự cố sửa đồ: Tạo phiếu sửa chữa gồm: Nội dung, giá tiền, và Tùy chọn đối tượng chi trả (Người thuê trả hoặc Chủ trọ trả).
+Logic xử lý: Nếu chọn Người thuê trả, hệ thống tự động lưu trữ và cộng khoản này vào hóa đơn tháng gần nhất của phòng đó.
+4.4. Quản lý Cư dân & Xe (Tenant & Vehicle Management)
+Quản lý Người đứng hợp đồng: Ràng buộc điều kiện 1 Phòng - 1 Người đứng hợp đồng (Tenant). Thêm/bớt thông tin định danh (CCCD, Số điện thoại).
+Quản lý Thành viên ở cùng: Thêm/bớt số lượng người ở cùng (Occupants) để hệ thống làm căn cứ tính tiền dịch vụ theo đầu người.
+Quản lý Xe: Thêm/bớt biển số xe, loại xe gán trực tiếp với từng định danh người thuê trong phòng để kiểm soát an ninh.
+4.5. Quản lý Hợp đồng (Contract Management)
+Khởi tạo hợp đồng: Thiết lập thời hạn, tiền cọc, ngày chốt tiền hàng tháng. Ràng buộc: 1 Phòng - 1 Hợp đồng active - 1 Người đứng tên.
+Lưu trữ số: Hỗ trợ upload ảnh chụp hợp đồng hoặc scan bản kỹ thuật số (PDF).
+Cảnh báo tự động: Hệ thống tự động quét và gửi mail thông báo sắp hết hạn hợp đồng trước $X$ ngày (cấu hình được) cho Tenant.
+Chuyển nhượng hợp đồng: Hỗ trợ chấm dứt hợp đồng cũ trước hạn, giữ nguyên các thông tin phòng và tự động chuyển giao quyền lợi/nghĩa vụ tài chính sang cho Tenant mới (kéo theo luồng cập nhật danh sách người ở cùng phòng).-
+4.6. Quản lý Hóa đơn & Tài chính (Billing & Analytics)
+Cơ chế tính toán tự động ($Billing\ Engine$)
+Đến ngày cấu hình định sẵn, hệ thống tự động lập hóa đơn theo công thức tổng quát:
+$$\text{Tổng hóa đơn} = \text{Tiền phòng} + \text{Tiền điện/nước} + \text{Tiền dịch vụ cố định} + \text{Phí phát sinh} + \text{Tiền nợ cũ} - \text{Giảm trừ}$$
+Trong đó chi tiết các hạng mục được hệ thống xử lý tự động như sau:
+Tiền điện, nước: Tính theo công thức $\text{(Chỉ số mới} - \text{Chỉ số cũ)} \times \text{Đơn giá}$.
+Tiền dịch vụ theo đầu người: lấy theo Phòng hoặc đầu ng (do Landlord cấu hình)
+Tiền sửa đồ & Tiền phạt: Tự động truy xuất các phiếu sửa chữa (phần người thuê trả) và phiếu phạt trong tháng để cộng dồn.
+Luồng gửi và xử lý Thanh toán
+Gửi hóa đơn tự động: Xuất hóa đơn kèm theo Mã QR thanh toán động (VietQR chuẩn Napas, chứa sẵn số tiền và nội dung chuyển khoản định danh phòng). Gửi tự động qua Email cho Tenant. HOẶC gửi link qua email -> redirect sang trang của hệ thống hiện hoá đơn và QR code
+Gạch nợ tự động (Cần tích hợp Bank bên thứ 3): Tự động cập nhật trạng thái hóa đơn sang Đã thanh toán khi nhận được webhook báo có tiền từ Ngân hàng.
+Quét nợ xấu: Tự động chuyển trạng thái hóa đơn sang Quá hạn/Nợ và gửi mail nhắc nhở nếu quá ngày $X$ mà hệ thống chưa ghi nhận thanh toán thành công.
+Báo cáo (Dành riêng cho Landlord)
+Xem biểu đồ trực quan về doanh thu theo từng cơ sở trọ, tỷ lệ lấp đầy phòng, và danh sách các phòng đang nợ tiền theo thời gian thực.
+1.Chốt số liệu đầu vào:Ngày 25-30 hàng tháng.
+Manager nhập chỉ số điện, nước mới của các phòng; hệ thống tự động kiểm tra tính hợp lệ (Số mới phải lớn hơn hoặc bằng số cũ).
+2.Tổng hợp và Duyệt hóa đơn:Hệ thống chạy tự động.
+Engine tự động gom tiền phòng, tiền điện nước, phí dịch vụ và các chi phí sửa chữa được cấu hình "Người thuê trả" để tạo dự thảo hóa đơn.
+3.Phát hành hóa đơn và VietQR:Qua Email Tenant.
+Hệ thống tự động sinh mã VietQR động chứa chính xác số tiền và cú pháp chuyển khoản, gửi Email thông báo trực tiếp đến người đứng tên hợp đồng.
+4.Theo dõi và Gạch nợ:Hạn thanh toán.
+Nếu nhận được tiền đúng cú pháp, hệ thống tự chuyển trạng thái thành "Đã thanh toán". Nếu quá hạn $X$ ngày, hệ thống tự động chuyển sang trạng thái "Nợ" và kích hoạt luồng gửi mail nhắc nợ. Có gạch nợ manual nếu Tenant trả tiền mặt -> manager gạch nợ manual
+
+
+
+
+5. BẢNG TỔNG HỢP USE CASES 
+
+
+Quản lý Hóa đơn & Tài chính (Billing & Analytics)  Thuận 
+
+UC-10
+Xem Dashboard Tài chính & Vận hành 
+Landlord, Manager
+Landlord truy cập vào trang tổng quan để theo dõi các chỉ số sức khỏe của doanh nghiệp bao gồm: Tổng doanh thu, dòng tiền thực tế, tỷ lệ lấp đầy phòng theo thời gian thực. Hệ thống hỗ trợ xem ở quy mô Toàn bộ hệ thống (All cơ sở) hoặc lọc chi tiết theo Từng cơ sở trọ cụ thể.  Manager vào trang này sẽ bị giới hạn chỉ xem được trọ mà mình được phân quyền quản lý trong bảng trung gian Building_Managers.
+
+
+UC-11
+Cấu hình chu kỳ hóa đơn tự động (Phát hành & Hết hạn) 
+Landlord
+- Cấu hình ngày cố định trong tháng (Ví dụ: ngày 1, ngày 5) để hệ thống tự động quét chỉ số, gom tiền và gửi Email hóa đơn đồng loạt cho toàn bộ các phòng trong tòa nhà đó
+- Cấu hình  Ngày hết hạn đóng tiền: Hạn cuối cùng để Tenant thanh toán mà không bị tính là nợ muộn  
+
+
+UC-12
+Xem và lọc danh sách Hóa đơn phòng 
+LandlordManager 
+- Tra cứu toàn bộ hóa đơn của các phòng trong một tòa nhà, hỗ trợ bộ lọc nâng cao theo: Trạng thái (PENDING, PAID, OVERDUE) và Tháng/Năm. 
+
+
+
+UC-13
+Xem chi tiết hóa đơn phòng 
+LandlordManager 
+Khi ấn vào một dòng bất kỳ trên bảng danh sách hóa đơn, hệ thống hiển thị một bảng Popup modal chi tiết tính toán theo đúng Business Rules. 
+
+
+UC-14
+Tính toán và chốt phí tháng hàng loạt 
+Landlord Manager 
+Giao diện hiển thị dưới dạng một bảng tính (Grid preview) cho phép xem trước toàn bộ hóa đơn dự kiến của một tòa nhà trước khi xuất. Hệ thống tự động phân loại: nếu hạng mục có Charge_Type = 'PER_INDEX' (ví dụ như Điện, Nước đồng hồ), hệ thống sẽ mở khóa cho phép user gõ chỉ số mới để tự động tính toán số lượng và thành tiền thời gian thực. 
+
+
+
+
+
+
+

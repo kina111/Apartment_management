@@ -1,0 +1,38 @@
+/* Custom premium styling for Billing & Analytics Module */
+
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.15) !important;
+}
+
+/* Custom badges with soft background colors */
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Input tables custom highlight on focus */
+.table input.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Modal animation and structure style */
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}

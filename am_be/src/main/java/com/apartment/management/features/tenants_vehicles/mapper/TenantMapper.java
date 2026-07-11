@@ -19,6 +19,7 @@ import com.apartment.management.shared.entity.Vehicle;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface TenantMapper {
 
+    @Mapping(target = "isContractHolder", ignore = true)
     TenantResponse toTenantResponse(Tenant tenant);
 
     EmergencyContactResponse toEmergencyContactResponse(EmergencyContact emergencyContact);

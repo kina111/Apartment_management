@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/buildings")
 @RequiredArgsConstructor
 @Tag(name = "Buildings", description = "Building management APIs")
-@CrossOrigin(origins="http://localhost:5173")
+@CrossOrigin(origins={"http://localhost:5173", "http://localhost:5174"})
 public class BuildingController {
 
     private final BuildingService buildingService;

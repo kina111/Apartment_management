@@ -1,14 +1,15 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Building, CarFront, List, Speedometer2, X} from 'react-bootstrap-icons';
+import {Building, CarFront, List, Speedometer2, Wallet2, X} from 'react-bootstrap-icons';
 import './Sidebar.css';
 
 const menuItems = [
-    {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2},
+    {to: '/billing', label: 'Tổng quan', icon: Speedometer2},
     {to: '/buildings/new', label: 'Khởi tạo tòa nhà', icon: Building},
     {to: '/rooms', label: 'Danh sách phòng', icon: List},
     {to: '/tenants', label: 'Cư dân', icon: List},
     {to: '/vehicles', label: 'Phương tiện', icon: CarFront},
+    {to: '/billing/invoices', label: 'Hóa đơn & Tài chính', icon: Wallet2},
 ];
 
 function SidebarItem({to, label, icon: Icon}) {

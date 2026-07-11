@@ -39,6 +39,12 @@ public class Contract {
     @Column(name = "status", nullable = false)
     private ContractStatus status;
 
+    @Column(name = "initial_electricity_index")
+    private Integer initialElectricityIndex;
+
+    @Column(name = "initial_water_index")
+    private Integer initialWaterIndex;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_code", nullable = false)
     private Room room;

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import com.apartment.management.shared.entity.Contract;
 import com.apartment.management.shared.enums.ContractStatus;
 
+import org.springframework.data.repository.query.Param;
+import java.time.LocalDate;
+
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Long> {
 
@@ -46,4 +49,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
             "invoices.details"
     })
     Optional<Contract> findByRoomCodeAndStatus(String roomCode, ContractStatus status);
+
+    @Query("SELECT c FROM Contract c WHERE c.status = com.apartment.management.shared.enums.ContractStatus.ACTIVE AND c.endDate <= :currentDate")
+    List<Contract> findExpiredContracts(@Param("currentDate") LocalDate currentDate);
 }

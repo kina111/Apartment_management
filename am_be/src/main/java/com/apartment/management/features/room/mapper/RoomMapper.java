@@ -11,7 +11,9 @@ import com.apartment.management.shared.entity.Room;
 import com.apartment.management.shared.entity.RoomType;
 import com.apartment.management.shared.entity.RoomTypeImage;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+import com.apartment.management.shared.mapper.MapStructConfig;
+
+@Mapper(config = MapStructConfig.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface RoomMapper {
 
     RoomTypeImageResponse toResponse(RoomTypeImage roomTypeImage);

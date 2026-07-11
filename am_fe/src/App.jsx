@@ -7,6 +7,14 @@ import { getAllBuildingsByManagerId } from "./features/buildings/services/buildi
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
 import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
 import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
+import DashboardPage from "./features/billing/pages/DashboardPage.jsx";
+import InvoiceListPage from "./features/billing/pages/InvoiceListPage.jsx";
+import BulkCalculatePage from "./features/billing/pages/BulkCalculatePage.jsx";
+import PaymentSimulationPage from "./features/billing/pages/PaymentSimulationPage.jsx";
+import PaymentSuccessPage from "./features/billing/pages/PaymentSuccessPage.jsx";
+import PaymentCancelPage from "./features/billing/pages/PaymentCancelPage.jsx";
+import "./features/billing/billing.css";
+
 function App() {
   const [buildings, setBuildings] = useState([]);
 
@@ -35,9 +43,15 @@ function App() {
             path="/vehicles"
             element={<VehiclesDashboardPage buildings={buildings} />}
           />
+          <Route path="/billing" element={<DashboardPage buildings={buildings} />} />
+          <Route path="/billing/invoices" element={<InvoiceListPage buildings={buildings} />} />
+          <Route path="/billing/calculate" element={<BulkCalculatePage buildings={buildings} />} />
           <Route path="/rooms/:roomCode" element={<RoomDetails />} />
-          <Route path="*" element={<Navigate to="/buildings/new" replace />} />
+          <Route path="*" element={<Navigate to="/billing" replace />} />
         </Route>
+        <Route path="/payment-simulation" element={<PaymentSimulationPage />} />
+        <Route path="/payment-success" element={<PaymentSuccessPage />} />
+        <Route path="/payment-cancel" element={<PaymentCancelPage />} />
       </Routes>
     </BrowserRouter>
   );

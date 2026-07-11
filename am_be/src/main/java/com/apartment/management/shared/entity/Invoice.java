@@ -1,5 +1,6 @@
 package com.apartment.management.shared.entity;
 
+import com.apartment.management.shared.enums.MailStatus;
 import com.apartment.management.shared.enums.PaymentMethod;
 import com.apartment.management.shared.enums.PaymentStatus;
 import jakarta.persistence.*;
@@ -39,6 +40,17 @@ public class Invoice {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mail_status")
+    @Builder.Default
+    private MailStatus mailStatus = MailStatus.UNSENT;
+
+    @Column(name = "issue_date")
+    private java.time.LocalDate issueDate;
+
+    @Column(name = "due_date")
+    private java.time.LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", nullable = false)
