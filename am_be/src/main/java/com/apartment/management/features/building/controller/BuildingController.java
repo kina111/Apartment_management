@@ -1,15 +1,20 @@
 package com.apartment.management.features.building.controller;
 
+import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.service.BuildingService;
+import com.apartment.management.shared.dtos.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Buildings", description = "Building management APIs")
 @CrossOrigin(origins = "http://localhost:5173")
+@Slf4j
 public class BuildingController {
 
     private final BuildingService buildingService;
@@ -37,7 +43,7 @@ public class BuildingController {
                     content = @Content(array = @ArraySchema(schema = @Schema(type = "string", format = "binary")))
             )
             @RequestPart(value = "images", required = false) List<MultipartFile> images) {
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(request, images));
     }
 
@@ -45,4 +51,17 @@ public class BuildingController {
     public ResponseEntity<List<BuildingResponse>> getBuildingsByManagerId(@RequestParam("managerId") Long managerId) {
         return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingByManagerId(managerId));
     }
+
+    @GetMapping("/my")
+    public ResponseEntity<PageResponse<BuildingResponse>> getMyBuildings(
+            @Valid @ModelAttribute BuildingFilterRequest filter,
+            Pageable pageable) {
+        return ResponseEntity.ok(
+                buildingService.getBuildingsByLandlordId(
+                        filter,
+                        pageable
+                )
+        );
+    }
+
 }

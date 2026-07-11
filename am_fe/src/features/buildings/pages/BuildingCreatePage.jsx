@@ -1,4 +1,6 @@
 import {useState} from "react";
+import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import {createBuilding} from "../services/buildingApi.js";
 import "../buildings.css";
 
@@ -117,8 +119,6 @@ function BuildingCreatePage() {
                     {createdBuilding && (
                         <div className="building-alert building-alert--success">
                             <p className="building-alert-title">Tạo tòa nhà thành công</p>
-                            <p>ID: {createdBuilding.buildingId}</p>
-                            <p>Tên: {createdBuilding.name}</p>
                         </div>
                     )}
 
@@ -206,9 +206,12 @@ function BuildingCreatePage() {
                         </div>
 
                         <div className="building-form-actions">
-                            <button className="building-submit-button" type="submit" disabled={isSubmitting}>
+                            <Button as={Link} variant="outline-secondary" to="/buildings">
+                                Trở về
+                            </Button>
+                            <Button type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? "Đang gửi..." : "Gửi"}
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>

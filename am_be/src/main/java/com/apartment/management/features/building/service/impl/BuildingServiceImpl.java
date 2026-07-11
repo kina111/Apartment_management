@@ -1,18 +1,25 @@
 package com.apartment.management.features.building.service.impl;
 
+import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
 import com.apartment.management.features.building.repository.AccountRepository;
 import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.features.building.service.BuildingService;
+import com.apartment.management.features.building.specification.BuildingSpecification;
+import com.apartment.management.shared.dtos.PageResponse;
 import com.apartment.management.shared.entity.Account;
 import com.apartment.management.shared.entity.Building;
 import com.apartment.management.shared.entity.BuildingImage;
 import com.apartment.management.shared.enums.FolderName;
+import com.apartment.management.shared.exception.BusinessException;
 import com.apartment.management.shared.service.CloudService;
+import com.apartment.management.shared.service.CurrentUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +38,11 @@ public class BuildingServiceImpl implements BuildingService {
     private final AccountRepository accountRepository;
     private final BuildingMapper buildingMapper;
     private final CloudService cloudService;
+    private final CurrentUserService currentUserService;
 
     @Override
     @Transactional
     public BuildingResponse createBuilding(CreateBuildingRequest request, List<MultipartFile> images) {
-        validateRequest(request);
 
         List<String> uploadedImageUrls = new ArrayList<>();
         try {
@@ -58,20 +65,6 @@ public class BuildingServiceImpl implements BuildingService {
         }
     }
 
-    private void validateRequest(CreateBuildingRequest request) {
-        if (request == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building request is required");
-        }
-        if (request.getName() == null || request.getName().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building name is required");
-        }
-        if (request.getAddress() == null || request.getAddress().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building address is required");
-        }
-        if (request.getNumberOfFloor() == null || request.getNumberOfFloor() <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Number of floor must be greater than 0");
-        }
-    }
 
     private Account findLandlord(Long landlordId) {
         if (landlordId == null) {
@@ -123,4 +116,33 @@ public class BuildingServiceImpl implements BuildingService {
                 .map(buildingMapper::toResponse)
                 .toList();
     }
+
+    public PageResponse<BuildingResponse> getBuildingsByLandlordId(
+            BuildingFilterRequest filter,
+            Pageable pageable
+    ) {
+        Long landlordId = currentUserService.getCurrentUserId();
+
+        Account landlord = accountRepository.findById(landlordId).orElseThrow(()
+                -> new IllegalArgumentException("Landlord account not found"));
+
+        //valid filter
+        if (filter != null
+                && filter.getMinFloor() != null
+                && filter.getMaxFloor() != null
+                && filter.getMinFloor() > filter.getMaxFloor()) {
+            throw new BusinessException(
+                    "minFloor must be less than or equal to maxFloor"
+            );
+        }
+
+        Page<BuildingResponse> buildingResponsePage = buildingRepository.findAll(
+                BuildingSpecification.getBuildingWithFilter(
+                        landlordId, filter
+                ), pageable
+        ).map(buildingMapper::toResponse);
+
+        return PageResponse.from(buildingResponsePage);
+    }
+
 }

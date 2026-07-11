@@ -33,3 +33,20 @@ export async function createBuilding(building, images = []) {
 
     return response.data;
 }
+
+export async function getMyBuildings(filters = {}) {
+    const response = await axiosClient.get("/buildings/my", {
+        params: {
+            keyword: filters.keyword || undefined,
+            minFloor: filters.minFloor || undefined,
+            maxFloor: filters.maxFloor || undefined,
+            hasImages: filters.hasImages === "" ? undefined : filters.hasImages,
+            page: filters.page ?? 0,
+            size: filters.size ?? 10,
+            sort: filters.sort || "buildingId,desc",
+        },
+    });
+
+    return response.data;
+}
+

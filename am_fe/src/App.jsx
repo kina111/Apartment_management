@@ -5,12 +5,14 @@ import MainLayout from "./shared/components/MainLayout.jsx";
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
 import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
 import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
+import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route element={<MainLayout/>}>
+                    <Route path="/buildings" element={<BuildingListPage/>}/>
                     <Route path="/buildings/new" element={<BuildingCreatePage/>}/>
                     <Route
                         path="/rooms"
