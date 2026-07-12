@@ -1,14 +1,16 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Building, CarFront, List, Speedometer2, X} from 'react-bootstrap-icons';
+import {Building, CarFront, List, Speedometer2, X, BoxArrowRight, People} from 'react-bootstrap-icons';
+import {useAuth} from '../../context/AuthContext';
 import './Sidebar.css';
 
 const menuItems = [
-    {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2},
-    {to: '/buildings/new', label: 'Khởi tạo tòa nhà', icon: Building},
-    {to: '/rooms', label: 'Danh sách phòng', icon: List},
-    {to: '/tenants', label: 'Cư dân', icon: List},
-    {to: '/vehicles', label: 'Phương tiện', icon: CarFront},
+    {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/buildings/new', label: 'Khởi tạo tòa nhà', icon: Building, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/rooms', label: 'Danh sách phòng', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/tenants', label: 'Cư dân', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/vehicles', label: 'Phương tiện', icon: CarFront, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/managers', label: 'Quản lý Nhân sự', icon: People, roles: ['LANDLORD']}
 ];
 
 function SidebarItem({to, label, icon: Icon}) {
@@ -29,6 +31,8 @@ function SidebarItem({to, label, icon: Icon}) {
 function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
+    const { user, logout } = useAuth();
+
     return (
         <aside className={`sidebar ${isCollapsed ? 'is-collapsed' : ''}`}>
             <div className="sidebar-header">
@@ -45,8 +49,10 @@ function Sidebar() {
             </div>
 
             <nav className="sidebar-nav">
-                {menuItems.map((item) => (
-                    <SidebarItem key={item.to} {...item} />
+                {menuItems
+                    .filter(item => !item.roles || (user && item.roles.includes(user.role)))
+                    .map((item) => (
+                        <SidebarItem key={item.to} {...item} />
                 ))}
             </nav>
 
@@ -54,10 +60,13 @@ function Sidebar() {
                 <img
                     className="sidebar-avatar"
                     src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80"
-                    alt="Manager User"
+                    alt="User Avatar"
                 />
                 <div className="sidebar-user-info">
-                    <strong>Manager</strong>
+                    <strong>{user?.accountName || 'Guest'}</strong>
+                    <button onClick={logout} className="btn-logout" title="Đăng xuất">
+                        <BoxArrowRight size={18} />
+                    </button>
                 </div>
             </div>
         </aside>

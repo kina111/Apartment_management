@@ -3,7 +3,7 @@ package com.apartment.management.features.building.service.impl;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
-import com.apartment.management.features.building.repository.AccountRepository;
+import com.apartment.management.features.auth.repository.AccountRepository;
 import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.shared.entity.Account;
@@ -117,6 +117,14 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<BuildingResponse> getBuildingByManagerId(Long managerId) {
         return buildingRepository.findByManagerId(managerId)
+                .stream()
+                .map(buildingMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<BuildingResponse> getBuildingsByLandlordId(Long landlordId) {
+        return buildingRepository.findAllByLandlord_AccountId(landlordId)
                 .stream()
                 .map(buildingMapper::toResponse)
                 .toList();

@@ -50,7 +50,17 @@ public class BuildingController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<BuildingResponse>> getBuildingsByManagerId(@RequestParam("managerId") Long managerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingByManagerId(managerId));
+    public ResponseEntity<List<BuildingResponse>> getBuildingsByManagerId(@RequestParam(value = "managerId", required = false) Long managerId) {
+        if (managerId != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingByManagerId(managerId));
+        }
+        // Fallback or handle differently, for now just empty list if managerId is not provided
+        return ResponseEntity.status(HttpStatus.OK).body(List.of());
+    }
+
+    @GetMapping("/my-buildings")
+    @Operation(summary = "Get buildings owned by current landlord")
+    public ResponseEntity<List<BuildingResponse>> getMyBuildings(@org.springframework.security.core.annotation.AuthenticationPrincipal com.apartment.management.features.auth.security.UserDetailsImpl userDetails) {
+        return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingsByLandlordId(userDetails.getAccountId()));
     }
 }

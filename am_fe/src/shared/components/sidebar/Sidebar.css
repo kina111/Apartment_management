@@ -139,6 +139,22 @@
     visibility: hidden;
 }
 
+.btn-logout {
+    background: none;
+    border: none;
+    color: var(--app-text-muted, #6c757d);
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 8px;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn-logout:hover {
+    color: #dc3545; /* Red color on hover */
+}
+
 .sidebar.is-collapsed .sidebar-nav-link {
     justify-content: center;
     padding-right: 0;

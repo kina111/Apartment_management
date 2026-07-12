@@ -9,4 +9,5 @@ import java.util.List;
 public interface BuildingService {
     BuildingResponse createBuilding(CreateBuildingRequest request, List<MultipartFile> images);
     List<BuildingResponse> getBuildingByManagerId(Long managerId);
+    List<BuildingResponse> getBuildingsByLandlordId(Long landlordId);
 }
