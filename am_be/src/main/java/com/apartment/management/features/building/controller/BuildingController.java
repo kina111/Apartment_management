@@ -56,12 +56,6 @@ public class BuildingController {
         return ResponseEntity.status(HttpStatus.OK).body(List.of());
     }
 
-    @GetMapping("/my-buildings")
-    @Operation(summary = "Get buildings owned by current landlord")
-    public ResponseEntity<List<BuildingResponse>> getMyBuildings(@org.springframework.security.core.annotation.AuthenticationPrincipal com.apartment.management.features.auth.security.UserDetailsImpl userDetails) {
-        return ResponseEntity.status(HttpStatus.OK).body(buildingService.getBuildingsByLandlordId(userDetails.getAccountId()));
-    }
-
     @GetMapping("/my")
     public ResponseEntity<PageResponse<BuildingResponse>> getMyBuildings(
             @Valid @ModelAttribute BuildingFilterRequest filter,
