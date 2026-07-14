@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface BuildingRepository extends JpaRepository<Building, Long>, JpaSpecificationExecutor<Building> {
     @Query("SELECT b FROM Building b JOIN b.managers m WHERE m.accountId = :managerId")
     List<Building> findByManagerId(Long managerId);
+
+    List<Building> findAllByLandlord_AccountId(Long landlordId);
 }
