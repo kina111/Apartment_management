@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Building, CarFront, List, Speedometer2, X} from 'react-bootstrap-icons';
+import {BoxArrowRight, Building, CarFront, List, People, Speedometer2, X} from 'react-bootstrap-icons';
+import {useAuth} from '../../context/AuthContext.jsx';
 import './Sidebar.css';
 
 const menuItems = [
@@ -29,6 +30,7 @@ function SidebarItem({to, label, icon: Icon}) {
 
 function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const {user, logout} = useAuth();
 
     return (
         <aside className={`sidebar ${isCollapsed ? 'is-collapsed' : ''}`}>

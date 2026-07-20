@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import BuildingCreatePage from "./features/buildings/pages/BuildingCreatePage.jsx";
+import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 import RoomListPage from "./features/rooms/pages/RoomListPage.jsx";
 import MainLayout from "./shared/components/MainLayout.jsx";
 import { useEffect, useState } from "react";
@@ -58,6 +59,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route path="/buildings" element={<BuildingListPage />} />
           <Route path="/buildings/new" element={<BuildingCreatePage />} />
           <Route
             path="/rooms"

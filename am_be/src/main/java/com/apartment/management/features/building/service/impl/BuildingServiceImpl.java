@@ -3,6 +3,7 @@ package com.apartment.management.features.building.service.impl;
 import com.apartment.management.features.auth.repository.AccountRepository;
 import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
+import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
 import com.apartment.management.features.building.repository.BuildingRepository;
@@ -52,6 +53,12 @@ public class BuildingServiceImpl implements BuildingService {
                     .address(request.getAddress().trim())
                     .numberOfFloor(request.getNumberOfFloor())
                     .description(normalizeDescription(request.getDescription()))
+                    .area(request.getArea())
+                    .numberOfBasement(request.getNumberOfBasement())
+                    .totalRooms(request.getTotalRooms())
+                    .yearBuilt(request.getYearBuilt())
+                    .phoneNumber(normalizeText(request.getPhoneNumber()))
+                    .email(normalizeText(request.getEmail()))
                     .landlord(landlord)
                     .build();
 
@@ -65,12 +72,10 @@ public class BuildingServiceImpl implements BuildingService {
         }
     }
 
-
     private Account findLandlord(Long landlordId) {
-        if (landlordId == null) {
-            return null;
-        }
-        return accountRepository.findById(landlordId)
+        Long targetLandlordId = landlordId != null ? landlordId : currentUserService.getCurrentUserId();
+
+        return accountRepository.findById(targetLandlordId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Landlord account not found"));
     }
 
@@ -79,6 +84,13 @@ public class BuildingServiceImpl implements BuildingService {
             return null;
         }
         return description.trim();
+    }
+
+    private String normalizeText(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 
     private void uploadImages(List<MultipartFile> images, Building building, List<String> uploadedImageUrls) {
@@ -117,6 +129,20 @@ public class BuildingServiceImpl implements BuildingService {
                 .toList();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public BuildingDetailResponse getBuildingDetail(Long buildingId) {
+        Long landlordId = currentUserService.getCurrentUserId();
+
+        Building building = buildingRepository
+                .findByBuildingIdAndLandlord_AccountId(buildingId, landlordId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+
+        return buildingMapper.toDetailResponse(building);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public PageResponse<BuildingResponse> getBuildingsByLandlordId(
             BuildingFilterRequest filter,
             Pageable pageable

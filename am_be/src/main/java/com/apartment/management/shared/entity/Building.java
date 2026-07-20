@@ -32,6 +32,24 @@ public class Building {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "area")
+    private Double area;
+
+    @Column(name = "number_of_basement")
+    private Integer numberOfBasement;
+
+    @Column(name = "total_rooms")
+    private Integer totalRooms;
+
+    @Column(name = "year_built")
+    private Integer yearBuilt;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
+
     // Landlord owner relationship (luồng own)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "landlord_id")

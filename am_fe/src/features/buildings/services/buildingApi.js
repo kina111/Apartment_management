@@ -11,6 +11,30 @@ function buildBuildingFormData(building, images = []) {
         formData.append("description", building.description.trim());
     }
 
+    if (building.area !== undefined) {
+        formData.append("area", String(building.area));
+    }
+
+    if (building.numberOfBasement !== undefined) {
+        formData.append("numberOfBasement", String(building.numberOfBasement));
+    }
+
+    if (building.totalRooms !== undefined) {
+        formData.append("totalRooms", String(building.totalRooms));
+    }
+
+    if (building.yearBuilt !== undefined) {
+        formData.append("yearBuilt", String(building.yearBuilt));
+    }
+
+    if (building.phoneNumber?.trim()) {
+        formData.append("phoneNumber", building.phoneNumber.trim());
+    }
+
+    if (building.email?.trim()) {
+        formData.append("email", building.email.trim());
+    }
+
     if (building.landlordId) {
         formData.append("landlordId", String(building.landlordId));
     }
@@ -45,6 +69,14 @@ export async function getMyBuildings(filters = {}) {
             size: filters.size ?? 10,
             sort: filters.sort || "buildingId,desc",
         },
+    });
+
+    return response.data;
+}
+
+export async function getAllBuildingsByManagerId(managerId) {
+    const response = await axiosClient.get("/buildings", {
+        params: { managerId },
     });
 
     return response.data;

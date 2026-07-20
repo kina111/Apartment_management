@@ -2,6 +2,7 @@ package com.apartment.management.features.building.controller;
 
 import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
+import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.shared.dtos.PageResponse;
@@ -37,7 +38,7 @@ public class BuildingController {
     @Operation(summary = "Create building", description = "Create building information with optional images")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BuildingResponse> createBuilding(
-            @ModelAttribute CreateBuildingRequest request,
+            @Valid @ModelAttribute CreateBuildingRequest request,
             @Parameter(
                     description = "Optional building images",
                     content = @Content(array = @ArraySchema(schema = @Schema(type = "string", format = "binary")))
@@ -54,6 +55,12 @@ public class BuildingController {
         }
         // Fallback or handle differently, for now just empty list if managerId is not provided
         return ResponseEntity.status(HttpStatus.OK).body(List.of());
+    }
+
+    @Operation(summary = "Get building detail", description = "Get a building owned by the authenticated landlord")
+    @GetMapping("/{buildingId}")
+    public ResponseEntity<BuildingDetailResponse> getBuildingDetail(@PathVariable Long buildingId) {
+        return ResponseEntity.ok(buildingService.getBuildingDetail(buildingId));
     }
 
     @GetMapping("/my")

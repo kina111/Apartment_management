@@ -260,7 +260,7 @@
 }
 
 .building-table {
-  min-width: 680px;
+  min-width: 900px;
   margin: 0;
 }
 
@@ -286,6 +286,14 @@
 
 .building-name-cell {
   font-weight: 800;
+}
+
+.building-contact-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--app-text-muted);
+  font-size: 13px;
 }
 
 .building-empty-state {

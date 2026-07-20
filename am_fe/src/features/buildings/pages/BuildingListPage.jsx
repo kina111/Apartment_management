@@ -132,20 +132,31 @@ function BuildingListPage() {
                         <thead>
                             <tr>
                                 <th>Tên tòa nhà</th>
-                                <th>Địa chỉ</th>
-                                <th className="text-center">Số tầng</th>
-                                <th className="text-end">Thao tác</th>
-                            </tr>
+                                 <th>Địa chỉ</th>
+                                 <th className="text-center">Số tầng</th>
+                                <th className="text-center">Tổng phòng</th>
+                                <th>Liên hệ</th>
+                                 <th className="text-end">Thao tác</th>
+                             </tr>
                         </thead>
                         <tbody>
                             {result.items.map((building) => (
                                 <tr key={building.buildingId}>
                                     <td className="building-name-cell">{building.name}</td>
                                     <td>{building.address}</td>
+                                     <td className="text-center">
+                                         <Badge bg="primary">{building.numberOfFloor} tầng</Badge>
+                                     </td>
                                     <td className="text-center">
-                                        <Badge bg="primary">{building.numberOfFloor} tầng</Badge>
+                                        {building.totalRooms ?? "-"}
                                     </td>
-                                    <td className="text-end">
+                                    <td>
+                                        <div className="building-contact-cell">
+                                            <span>{building.phoneNumber || "-"}</span>
+                                            {building.email && <span>{building.email}</span>}
+                                        </div>
+                                    </td>
+                                     <td className="text-end">
                                         <ButtonGroup size="sm" aria-label={`Thao tác với ${building.name}`}>
                                             <Button
                                                 variant="outline-primary"

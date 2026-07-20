@@ -1,5 +1,6 @@
 package com.apartment.management.features.building.mapper;
 
+import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.shared.entity.Building;
 import com.apartment.management.shared.entity.BuildingImage;
@@ -18,6 +19,9 @@ public interface BuildingMapper {
     @Mapping(target = "landlordName", source = "landlord.accountName")
     @Mapping(target = "imageUrls", source = "images")
     BuildingResponse toResponse(Building building);
+
+    @Mapping(target = "imageUrls", source = "images")
+    BuildingDetailResponse toDetailResponse(Building building);
 
     default List<String> mapImageUrls(Set<BuildingImage> images) {
         if (images == null || images.isEmpty()) {
