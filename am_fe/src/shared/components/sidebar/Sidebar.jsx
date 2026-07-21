@@ -1,12 +1,14 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Building, CarFront, List, Speedometer2, X} from 'react-bootstrap-icons';
+import {Building, CarFront, List, Speedometer2, X, People, BoxArrowRight} from 'react-bootstrap-icons';
+import {useAuth} from '../../context/AuthContext';
 import './Sidebar.css';
 
 const menuItems = [
     {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/buildings', label: 'Danh sách tòa nhà', icon: Building, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/rooms', label: 'Danh sách phòng', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/contracts', label: 'Quản lý hợp đồng', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/tenants', label: 'Cư dân', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/vehicles', label: 'Phương tiện', icon: CarFront, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/managers', label: 'Quản lý Nhân sự', icon: People, roles: ['LANDLORD']}
@@ -29,6 +31,7 @@ function SidebarItem({to, label, icon: Icon}) {
 
 function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const {user, logout} = useAuth();
 
     return (
         <aside className={`sidebar ${isCollapsed ? 'is-collapsed' : ''}`}>
