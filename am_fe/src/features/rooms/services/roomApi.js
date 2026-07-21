@@ -8,6 +8,30 @@ export async function getRoomsByBuilding(buildingId) {
   return response.data;
 }
 
+export async function quickCreateRoom(buildingId, data) {
+  const response = await axiosClient.post(`/buildings/${buildingId}/rooms/quick-create`, data);
+  return response.data;
+}
+
+export async function getRoomTypes() {
+  const response = await axiosClient.get('/room-types');
+  return response.data;
+}
+
+export async function createRoomType(data) {
+  const response = await axiosClient.post('/room-types', data);
+  return response.data;
+}
+
+export async function updateRoomType(roomTypeId, data) {
+  const response = await axiosClient.put(`/room-types/${roomTypeId}`, data);
+  return response.data;
+}
+
+export async function deleteRoomType(roomTypeId) {
+  await axiosClient.delete(`/room-types/${roomTypeId}`);
+}
+
 /**
  * Lấy chi tiết một phòng.
  */

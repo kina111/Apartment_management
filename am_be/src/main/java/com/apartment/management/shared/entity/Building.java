@@ -2,6 +2,7 @@ package com.apartment.management.shared.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,17 +21,38 @@ public class Building {
     @Column(name = "building_id")
     private Long buildingId;
 
-    @Column(name = "name", nullable = false)
+    @Nationalized
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
     @Column(name = "number_of_floor", nullable = false)
     private Integer numberOfFloor;
 
-    @Column(name = "address", nullable = false)
+    @Nationalized
+    @Column(name = "address", nullable = false, length = 500)
     private String address;
 
-    @Column(name = "description", columnDefinition = "nvarchar(max)")
+    @Nationalized
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
+
+    @Column(name = "area")
+    private Double area;
+
+    @Column(name = "number_of_basement")
+    private Integer numberOfBasement;
+
+    @Column(name = "total_rooms")
+    private Integer totalRooms;
+
+    @Column(name = "year_built")
+    private Integer yearBuilt;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
 
     // Landlord owner relationship (luồng own)
     @ManyToOne(fetch = FetchType.LAZY)

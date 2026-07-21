@@ -1,28 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Spinner, Table } from "react-bootstrap";
+import { useEffect, useMemo, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
 import VehicleTable from "../components/VehicleTable";
 import tenantService from "../services/tenantApi";
-import { useMemo } from "react";
 
 function VehiclesDashboardPage({ buildings }) {
   const [selectedBuildingId, setSelectedBuildingId] = useState(null);
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(false);
-    const [ searchValue, setSearchValue ] = useState("")
-  useEffect(() => {
-    if (buildings?.length > 0) {
-      setSelectedBuildingId(buildings[0].buildingId);
-    }
-  }, [buildings]);
+  const [searchValue, setSearchValue] = useState("");
+  const activeBuildingId = selectedBuildingId ?? buildings?.[0]?.buildingId;
 
   useEffect(() => {
     const fetchTenants = async () => {
-      if (!selectedBuildingId) return;
+      if (!activeBuildingId) return;
 
       setLoading(true);
       try {
         const data =
-          await tenantService.getTenantsByBuildingId(selectedBuildingId);
+          await tenantService.getTenantsByBuildingId(activeBuildingId);
         setTenants(data || []);
       } catch (error) {
         console.error("Error fetching tenants:", error);
@@ -33,7 +28,7 @@ function VehiclesDashboardPage({ buildings }) {
     };
 
     fetchTenants();
-  }, [selectedBuildingId]);
+  }, [activeBuildingId]);
 
   const filteredTenants = useMemo(() => {
     const lower = searchValue.toLowerCase();
@@ -48,7 +43,7 @@ function VehiclesDashboardPage({ buildings }) {
         <div className="rooms-building-selector mb-3">
           <select
             className="rooms-building-select"
-            value={selectedBuildingId || ""}
+            value={activeBuildingId || ""}
             onChange={(e) => setSelectedBuildingId(Number(e.target.value))}
           >
             <option value="">-- Chọn tòa nhà --</option>

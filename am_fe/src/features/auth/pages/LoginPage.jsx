@@ -15,7 +15,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   // Redirect back to the page the user tried to visit before being redirected to login
-  const from = location.state?.from?.pathname || "/buildings/new";
+  const from = location.state?.from?.pathname || "/buildings";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
