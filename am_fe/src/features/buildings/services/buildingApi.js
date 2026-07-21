@@ -1,35 +1,52 @@
-import axiosClient from '../../../shared/services/axiosClient';
+import axiosClient from "../../../shared/services/axiosClient.js";
 
-export async function createBuilding(payload, images = []) {
-  const formData = new FormData();
+function buildBuildingFormData(building, images = []) {
+    const formData = new FormData();
 
-  formData.append('name', payload.name.trim());
-  formData.append('address', payload.address.trim());
-  formData.append('numberOfFloor', String(payload.numberOfFloor));
+    formData.append("name", building.name.trim());
+    formData.append("address", building.address.trim());
+    formData.append("numberOfFloor", String(building.numberOfFloor));
 
-  if (payload.description?.trim()) {
-    formData.append('description', payload.description.trim());
-  }
+    if (building.description?.trim()) {
+        formData.append("description", building.description.trim());
+    }
 
-  if (payload.landlordId) {
-    formData.append('landlordId', String(payload.landlordId));
-  }
+    if (building.landlordId) {
+        formData.append("landlordId", String(building.landlordId));
+    }
 
-  images.forEach((image) => {
-    formData.append('images', image);
-  });
+    images.forEach((image) => {
+        formData.append("images", image);
+    });
 
-  const response = await axiosClient.post('/buildings', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-
-  return response.data;
+    return formData;
 }
 
-export async function getAllBuildingsByManagerId(managerId) {
-  const response = await axiosClient.get('/buildings', { params: { managerId } });
+export async function createBuilding(building, images = []) {
+    const formData = buildBuildingFormData(building, images);
 
-  return response.data;
+    const response = await axiosClient.post("/buildings", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+
+    return response.data;
 }
+
+export async function getMyBuildings(filters = {}) {
+    const response = await axiosClient.get("/buildings/my", {
+        params: {
+            keyword: filters.keyword || undefined,
+            minFloor: filters.minFloor || undefined,
+            maxFloor: filters.maxFloor || undefined,
+            hasImages: filters.hasImages === "" ? undefined : filters.hasImages,
+            page: filters.page ?? 0,
+            size: filters.size ?? 10,
+            sort: filters.sort || "buildingId,desc",
+        },
+    });
+
+    return response.data;
+}
+
