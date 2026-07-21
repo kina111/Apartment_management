@@ -2,6 +2,7 @@ package com.apartment.management.shared.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,16 +21,19 @@ public class Building {
     @Column(name = "building_id")
     private Long buildingId;
 
-    @Column(name = "name", nullable = false)
+    @Nationalized
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
     @Column(name = "number_of_floor", nullable = false)
     private Integer numberOfFloor;
 
-    @Column(name = "address", nullable = false)
+    @Nationalized
+    @Column(name = "address", nullable = false, length = 500)
     private String address;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Nationalized
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     @Column(name = "area")

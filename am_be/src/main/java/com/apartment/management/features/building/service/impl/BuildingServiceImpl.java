@@ -3,14 +3,18 @@ package com.apartment.management.features.building.service.impl;
 import com.apartment.management.features.auth.repository.AccountRepository;
 import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
+import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
+import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
+import com.apartment.management.features.building.repository.BankAccountRepository;
 import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.features.building.specification.BuildingSpecification;
 import com.apartment.management.shared.dtos.PageResponse;
 import com.apartment.management.shared.entity.Account;
+import com.apartment.management.shared.entity.BankAccount;
 import com.apartment.management.shared.entity.Building;
 import com.apartment.management.shared.entity.BuildingImage;
 import com.apartment.management.shared.enums.FolderName;
@@ -37,30 +41,22 @@ public class BuildingServiceImpl implements BuildingService {
 
     private final BuildingRepository buildingRepository;
     private final AccountRepository accountRepository;
+    private final BankAccountRepository bankAccountRepository;
     private final BuildingMapper buildingMapper;
     private final CloudService cloudService;
     private final CurrentUserService currentUserService;
 
     @Override
     @Transactional
-    public BuildingResponse createBuilding(CreateBuildingRequest request, List<MultipartFile> images) {
+    public BuildingResponse createOrUpdateBuilding(Long buildingId, CreateBuildingRequest request, List<MultipartFile> images) {
 
         List<String> uploadedImageUrls = new ArrayList<>();
         try {
-            Account landlord = findLandlord(request.getLandlordId());
-            Building building = Building.builder()
-                    .name(request.getName().trim())
-                    .address(request.getAddress().trim())
-                    .numberOfFloor(request.getNumberOfFloor())
-                    .description(normalizeDescription(request.getDescription()))
-                    .area(request.getArea())
-                    .numberOfBasement(request.getNumberOfBasement())
-                    .totalRooms(request.getTotalRooms())
-                    .yearBuilt(request.getYearBuilt())
-                    .phoneNumber(normalizeText(request.getPhoneNumber()))
-                    .email(normalizeText(request.getEmail()))
-                    .landlord(landlord)
-                    .build();
+            Building building = buildingId == null
+                    ? newBuilding(request)
+                    : findOwnedBuilding(buildingId);
+
+            applyBuildingFields(building, request);
 
             uploadImages(images, building, uploadedImageUrls);
 
@@ -77,6 +73,32 @@ public class BuildingServiceImpl implements BuildingService {
 
         return accountRepository.findById(targetLandlordId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Landlord account not found"));
+    }
+
+    private Building newBuilding(CreateBuildingRequest request) {
+        return Building.builder()
+                .landlord(findLandlord(request.getLandlordId()))
+                .build();
+    }
+
+    private Building findOwnedBuilding(Long buildingId) {
+        Long landlordId = currentUserService.getCurrentUserId();
+
+        return buildingRepository.findByBuildingIdAndLandlord_AccountId(buildingId, landlordId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+    }
+
+    private void applyBuildingFields(Building building, CreateBuildingRequest request) {
+        building.setName(request.getName().trim());
+        building.setAddress(request.getAddress().trim());
+        building.setNumberOfFloor(request.getNumberOfFloor());
+        building.setDescription(normalizeDescription(request.getDescription()));
+        building.setArea(request.getArea());
+        building.setNumberOfBasement(request.getNumberOfBasement());
+        building.setTotalRooms(request.getTotalRooms());
+        building.setYearBuilt(request.getYearBuilt());
+        building.setPhoneNumber(normalizeText(request.getPhoneNumber()));
+        building.setEmail(normalizeText(request.getEmail()));
     }
 
     private String normalizeDescription(String description) {
@@ -113,10 +135,17 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     private void cleanupUploadedImages(List<String> uploadedImageUrls) {
+        if (uploadedImageUrls.isEmpty()) {
+            return;
+        }
+
+        log.warn("Cleaning up uploaded building images after save failure. uploadedImageCount={}", uploadedImageUrls.size());
+
         for (String imageUrl : uploadedImageUrls) {
             try {
                 cloudService.deleteFile(imageUrl);
-            } catch (RuntimeException ignored) {
+            } catch (RuntimeException exception) {
+                log.warn("Failed to cleanup uploaded building image. imageUrl={}", imageUrl, exception);
             }
         }
     }
@@ -132,13 +161,38 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     @Transactional(readOnly = true)
     public BuildingDetailResponse getBuildingDetail(Long buildingId) {
-        Long landlordId = currentUserService.getCurrentUserId();
-
-        Building building = buildingRepository
-                .findByBuildingIdAndLandlord_AccountId(buildingId, landlordId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+        Building building = findOwnedBuilding(buildingId);
 
         return buildingMapper.toDetailResponse(building);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BuildingBankAccountResponse getBuildingBankAccount(Long buildingId) {
+        Building building = findOwnedBuilding(buildingId);
+
+        return buildingMapper.toBankAccountResponse(building.getBankAccount());
+    }
+
+    @Override
+    @Transactional
+    public BuildingBankAccountResponse updateBuildingBankAccount(Long buildingId, UpdateBuildingBankAccountRequest request) {
+        Building building = findOwnedBuilding(buildingId);
+        BankAccount bankAccount = building.getBankAccount();
+
+        if (bankAccount == null) {
+            bankAccount = new BankAccount();
+        }
+
+        bankAccount.setBankName(normalizeText(request.bankName()));
+        bankAccount.setAccountNumber(normalizeText(request.accountNumber()));
+        bankAccount.setUserName(normalizeText(request.userName()));
+
+        BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
+        building.setBankAccount(savedBankAccount);
+        buildingRepository.save(building);
+
+        return buildingMapper.toBankAccountResponse(savedBankAccount);
     }
 
     @Override

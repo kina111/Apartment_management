@@ -143,6 +143,22 @@
   background: var(--app-surface-muted);
 }
 
+.building-current-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.building-current-images img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface-muted);
+}
+
 .building-selected-title {
   width: 100%;
   margin: 0;
@@ -172,6 +188,10 @@
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid var(--app-border);
+}
+
+.building-edit-bank-card {
+  margin-top: 22px;
 }
 
 .building-submit-button {
@@ -222,6 +242,205 @@
   padding-top: 8px;
 }
 
+.building-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.building-detail-header,
+.building-detail-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.building-detail-actions {
+  justify-content: flex-end;
+}
+
+.building-detail-section-gap {
+  margin-top: 22px;
+}
+
+.building-detail-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 6px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-sm);
+}
+
+.building-detail-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: var(--app-radius-sm);
+  background: transparent;
+  color: var(--app-text-muted);
+  font-weight: 800;
+  transition: background var(--app-transition), color var(--app-transition), box-shadow var(--app-transition);
+}
+
+.building-detail-tab:hover {
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.building-detail-tab--active {
+  background: var(--app-primary);
+  color: #ffffff;
+  box-shadow: var(--app-shadow-sm);
+}
+
+.building-detail-tab--active:hover {
+  background: var(--app-primary-dark);
+  color: #ffffff;
+}
+
+.building-detail-readonly-field {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface-muted);
+}
+
+.building-detail-readonly-field span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--app-text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.building-detail-readonly-field strong,
+.building-detail-readonly-field p {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.building-detail-readonly-field strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.building-room-type-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.building-modal-form-grid {
+  gap: 14px;
+}
+
+.modal-footer .building-form-actions {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.building-room-type-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface-muted);
+}
+
+.building-room-type-card h3,
+.building-floor-header h3 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.building-room-type-card p,
+.building-room-type-card span,
+.building-floor-empty {
+  margin: 4px 0 0;
+  color: var(--app-text-muted);
+  font-size: 13px;
+}
+
+.building-room-type-actions,
+.building-quick-room-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.building-floor-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.building-floor-row {
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+}
+
+.building-floor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.building-floor-room-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.building-floor-room-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+  font-size: 13px;
+}
+
+.building-floor-room-chip span {
+  color: var(--app-text-muted);
+}
+
+.building-quick-room-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--app-border);
+}
+
 .building-list-header {
   display: flex;
   align-items: center;
@@ -241,7 +460,7 @@
 
 .building-filter-panel {
   display: grid;
-  grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(130px, 1fr)) auto auto;
+  grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(130px, 1fr)) auto auto;
   gap: 10px;
   margin-bottom: 24px;
   padding: 16px;
@@ -286,6 +505,15 @@
 
 .building-name-cell {
   font-weight: 800;
+}
+
+.building-name-cell a {
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.building-name-cell a:hover {
+  color: var(--app-primary);
 }
 
 .building-contact-cell {
@@ -334,6 +562,48 @@
   }
 
   .building-filter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .building-bank-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .building-detail-header,
+  .building-detail-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .building-detail-tabs {
+    flex-direction: column;
+  }
+
+  .building-detail-tab {
+    width: 100%;
+  }
+
+  .building-detail-actions,
+  .building-detail-actions .btn {
+    width: 100%;
+  }
+
+  .building-room-type-card,
+  .building-floor-header,
+  .building-quick-room-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .building-room-type-actions,
+  .building-room-type-actions .btn,
+  .building-quick-room-actions,
+  .building-quick-room-actions .btn {
+    width: 100%;
+  }
+
+  .building-quick-room-form {
     grid-template-columns: 1fr;
   }
 

@@ -2,6 +2,8 @@ package com.apartment.management.features.building.controller;
 
 import com.apartment.management.features.building.dto.request.BuildingFilterRequest;
 import com.apartment.management.features.building.dto.request.CreateBuildingRequest;
+import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
+import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.service.BuildingService;
@@ -37,7 +39,7 @@ public class BuildingController {
 
     @Operation(summary = "Create building", description = "Create building information with optional images")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BuildingResponse> createBuilding(
+    public ResponseEntity<BuildingResponse> createOrUpdateBuilding(
             @Valid @ModelAttribute CreateBuildingRequest request,
             @Parameter(
                     description = "Optional building images",
@@ -45,7 +47,21 @@ public class BuildingController {
             )
             @RequestPart(value = "images", required = false) List<MultipartFile> images) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(request, images));
+        return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createOrUpdateBuilding(null, request, images));
+    }
+
+    @Operation(summary = "Update building", description = "Update building information with optional new images")
+    @PutMapping(value = "/{buildingId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BuildingResponse> updateBuilding(
+            @PathVariable Long buildingId,
+            @Valid @ModelAttribute CreateBuildingRequest request,
+            @Parameter(
+                    description = "Optional new building images",
+                    content = @Content(array = @ArraySchema(schema = @Schema(type = "string", format = "binary")))
+            )
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+
+        return ResponseEntity.ok(buildingService.createOrUpdateBuilding(buildingId, request, images));
     }
 
     @GetMapping()
@@ -61,6 +77,21 @@ public class BuildingController {
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingDetailResponse> getBuildingDetail(@PathVariable Long buildingId) {
         return ResponseEntity.ok(buildingService.getBuildingDetail(buildingId));
+    }
+
+    @Operation(summary = "Get building bank account", description = "Get bank account configured for a building owned by the authenticated landlord")
+    @GetMapping("/{buildingId}/bank-account")
+    public ResponseEntity<BuildingBankAccountResponse> getBuildingBankAccount(@PathVariable Long buildingId) {
+        return ResponseEntity.ok(buildingService.getBuildingBankAccount(buildingId));
+    }
+
+    @Operation(summary = "Update building bank account", description = "Create or update bank account configured for a building owned by the authenticated landlord")
+    @PutMapping("/{buildingId}/bank-account")
+    public ResponseEntity<BuildingBankAccountResponse> updateBuildingBankAccount(
+            @PathVariable Long buildingId,
+            @Valid @RequestBody UpdateBuildingBankAccountRequest request) {
+
+        return ResponseEntity.ok(buildingService.updateBuildingBankAccount(buildingId, request));
     }
 
     @GetMapping("/my")

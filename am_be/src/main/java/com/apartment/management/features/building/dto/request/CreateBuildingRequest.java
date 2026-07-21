@@ -2,6 +2,7 @@ package com.apartment.management.features.building.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class CreateBuildingRequest {
     private String address;
 
     @Min(value = 1,message = "Number of floor must be greater than 0")
+    @Max(value = 50, message = "Number of floor must not exceed 50")
     private Integer numberOfFloor;
 
     private String description;
