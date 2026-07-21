@@ -2,12 +2,18 @@ package com.apartment.management.shared.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Nationalized;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "building")
+@SQLDelete(sql = "UPDATE building SET deleted = 1, deleted_at = GETDATE() WHERE building_id = ?")
+@SQLRestriction("deleted = 0")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,16 +26,19 @@ public class Building {
     @Column(name = "building_id")
     private Long buildingId;
 
-    @Column(name = "name", nullable = false)
+    @Nationalized
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
     @Column(name = "number_of_floor", nullable = false)
     private Integer numberOfFloor;
 
-    @Column(name = "address", nullable = false)
+    @Nationalized
+    @Column(name = "address", nullable = false, length = 500)
     private String address;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Nationalized
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     @Column(name = "area")
@@ -49,6 +58,13 @@ public class Building {
 
     @Column(name = "email")
     private String email;
+
+    @Builder.Default
+    @Column(name = "deleted", nullable = false, columnDefinition = "BIT DEFAULT 0")
+    private Boolean deleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     // Landlord owner relationship (luồng own)
     @ManyToOne(fetch = FetchType.LAZY)

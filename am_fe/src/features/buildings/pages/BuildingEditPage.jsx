@@ -1,7 +1,7 @@
-import {useState} from "react";
-import {Button} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {createBuilding} from "../services/buildingApi.js";
+import {useEffect, useState} from "react";
+import {Badge, Button} from "react-bootstrap";
+import {Link, useParams} from "react-router-dom";
+import {createOrUpdateBuilding, getBuildingDetail, updateBuildingBankAccount} from "../services/buildingApi.js";
 import "../buildings.css";
 
 const initialBuilding = {
@@ -15,6 +15,12 @@ const initialBuilding = {
     phoneNumber: "",
     email: "",
     description: "",
+};
+
+const initialBankAccount = {
+    bankName: "",
+    accountNumber: "",
+    userName: "",
 };
 
 const currentYear = new Date().getFullYear();
@@ -34,8 +40,8 @@ function validateBuilding(building) {
 
     if (!building.numberOfFloor) {
         errors.numberOfFloor = "Số tầng là bắt buộc";
-    } else if (!Number.isInteger(floor) || floor <= 0) {
-        errors.numberOfFloor = "Số tầng phải là số nguyên lớn hơn 0";
+    } else if (!Number.isInteger(floor) || floor <= 0 || floor > 50) {
+        errors.numberOfFloor = "Số tầng phải là số nguyên từ 1 đến 50";
     }
 
     if (building.area) {
@@ -78,13 +84,103 @@ function optionalNumber(value) {
 }
 
 
-function BuildingCreatePage() {
+function toFormValue(value) {
+    return value ?? "";
+}
+
+function mapBuildingToForm(building) {
+    return {
+        name: toFormValue(building.name),
+        address: toFormValue(building.address),
+        numberOfFloor: toFormValue(building.numberOfFloor),
+        area: toFormValue(building.area),
+        numberOfBasement: toFormValue(building.numberOfBasement),
+        totalRooms: toFormValue(building.totalRooms),
+        yearBuilt: toFormValue(building.yearBuilt),
+        phoneNumber: toFormValue(building.phoneNumber),
+        email: toFormValue(building.email),
+        description: toFormValue(building.description),
+    };
+}
+
+function mapBankAccountToForm(bankAccount) {
+    return {
+        bankName: toFormValue(bankAccount?.bankName),
+        accountNumber: toFormValue(bankAccount?.accountNumber),
+        userName: toFormValue(bankAccount?.userName),
+    };
+}
+
+function validateBankAccount(bankAccount) {
+    const errors = {};
+
+    if (!bankAccount.bankName.trim()) {
+        errors.bankName = "Tên ngân hàng là bắt buộc";
+    }
+
+    if (!bankAccount.accountNumber.trim()) {
+        errors.accountNumber = "Số tài khoản là bắt buộc";
+    } else if (!/^\d{6,30}$/.test(bankAccount.accountNumber.trim())) {
+        errors.accountNumber = "Số tài khoản phải gồm 6-30 chữ số";
+    }
+
+    if (!bankAccount.userName.trim()) {
+        errors.userName = "Tên chủ tài khoản là bắt buộc";
+    }
+
+    return errors;
+}
+
+function getErrorMessage(error, fallback) {
+    return error.response?.data?.message || error.response?.data?.detail || error.response?.data?.error || fallback;
+}
+
+function BuildingEditPage() {
+    const {buildingId} = useParams();
     const [building, setBuilding] = useState(initialBuilding);
+    const [buildingDetail, setBuildingDetail] = useState(null);
+    const [bankAccount, setBankAccount] = useState(initialBankAccount);
+    const [bankErrors, setBankErrors] = useState({});
+    const [bankSubmitError, setBankSubmitError] = useState("");
+    const [bankSubmitSuccess, setBankSubmitSuccess] = useState("");
+    const [isSavingBank, setIsSavingBank] = useState(false);
     const [errors, setErrors] = useState({});
     const [submitError, setSubmitError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [createdBuilding, setCreatedBuilding] = useState(null);
+    const [updatedBuilding, setUpdatedBuilding] = useState(null);
     const [images, setImages] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState("");
+
+    useEffect(() => {
+        let isCurrent = true;
+
+        async function loadBuilding() {
+            setIsLoading(true);
+            setLoadError("");
+
+            try {
+                const data = await getBuildingDetail(buildingId);
+                if (isCurrent) {
+                    setBuildingDetail(data);
+                    setBuilding(mapBuildingToForm(data));
+                    setBankAccount(mapBankAccountToForm(data.bankAccount));
+                }
+            } catch (error) {
+                if (isCurrent) {
+                    setLoadError(getErrorMessage(error, "Không thể tải thông tin tòa nhà"));
+                }
+            } finally {
+                if (isCurrent) setIsLoading(false);
+            }
+        }
+
+        loadBuilding();
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [buildingId]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -99,6 +195,15 @@ function BuildingCreatePage() {
     const handleImagesChange = (e) => {
         const selectedImages = Array.from(e.target.files || []);
         setImages(selectedImages);
+    };
+
+    const handleBankChange = (e) => {
+        const {name, value} = e.target;
+
+        setBankAccount((current) => ({...current, [name]: value}));
+        setBankErrors((current) => ({...current, [name]: ""}));
+        setBankSubmitError("");
+        setBankSubmitSuccess("");
     };
 
     const handleSubmit = async (e) => {
@@ -126,19 +231,15 @@ function BuildingCreatePage() {
 
         setIsSubmitting(true);
         setSubmitError("");
-        setCreatedBuilding(null);
+        setUpdatedBuilding(null);
 
         try {
-            const result = await createBuilding(payload, images);
-            setCreatedBuilding(result);
-            setBuilding(initialBuilding);
+            const result = await createOrUpdateBuilding({...payload, buildingId}, images);
+            setUpdatedBuilding(result);
             setImages([]);
+            setBuildingDetail((current) => ({...current, ...result}));
         } catch (error) {
-            const serverMessage =
-                error.response?.data?.message ||
-                error.response?.data?.detail ||
-                error.response?.data?.error ||
-                "Không thể tạo tòa nhà";
+            const serverMessage = getErrorMessage(error, "Không thể cập nhật tòa nhà");
 
             setSubmitError(serverMessage);
         } finally {
@@ -146,12 +247,56 @@ function BuildingCreatePage() {
         }
     }
 
+    const handleBankSubmit = async (e) => {
+        e.preventDefault();
+
+        const validationErrors = validateBankAccount(bankAccount);
+        setBankErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
+        setIsSavingBank(true);
+        setBankSubmitError("");
+        setBankSubmitSuccess("");
+
+        try {
+            const updatedBankAccount = await updateBuildingBankAccount(buildingId, bankAccount);
+            setBuildingDetail((current) => ({...current, bankAccount: updatedBankAccount}));
+            setBankAccount(mapBankAccountToForm(updatedBankAccount));
+            setBankSubmitSuccess("Đã lưu tài khoản nhận tiền");
+        } catch (error) {
+            setBankSubmitError(getErrorMessage(error, "Không thể lưu tài khoản nhận tiền"));
+        } finally {
+            setIsSavingBank(false);
+        }
+    };
+
+    if (isLoading) {
+        return <div className="building-empty-state">Đang tải thông tin tòa nhà...</div>;
+    }
+
+    if (loadError) {
+        return (
+            <div className="building-create-page">
+                <p className="building-alert building-alert--danger">{loadError}</p>
+                <Button as={Link} variant="outline-secondary" to="/buildings">
+                    Trở về
+                </Button>
+            </div>
+        );
+    }
+
     return (
         <div className="building-create-page">
             <header className="page-header">
                 <div>
-                    <h1 className="page-title">Tạo tòa nhà</h1>
+                    <h1 className="page-title">Cập nhật tòa nhà</h1>
                 </div>
+                <Button as={Link} variant="outline-secondary" to={`/buildings/${buildingId}`}>
+                    Xem chi tiết
+                </Button>
             </header>
 
             <section className="section-card building-form-card">
@@ -166,9 +311,9 @@ function BuildingCreatePage() {
                         <p className="building-alert building-alert--danger">{submitError}</p>
                     )}
 
-                    {createdBuilding && (
+                    {updatedBuilding && (
                         <div className="building-alert building-alert--success">
-                            <p className="building-alert-title">Tạo tòa nhà thành công</p>
+                            <p className="building-alert-title">Cập nhật tòa nhà thành công</p>
                         </div>
                     )}
 
@@ -210,7 +355,7 @@ function BuildingCreatePage() {
                                     name="numberOfFloor"
                                     value={building.numberOfFloor}
                                     onChange={handleChange}
-                                    type="number" placeholder="Nhập số tầng"/>
+                                    type="number" min="1" max="50" placeholder="Nhập số tầng"/>
                                 {errors.numberOfFloor && (
                                     <p className="building-error">{errors.numberOfFloor}</p>
                                 )}
@@ -315,10 +460,17 @@ function BuildingCreatePage() {
 
                             <div className="building-field building-field--full">
                                 <label className="building-label">Ảnh tòa nhà</label>
+                                {buildingDetail?.imageUrls?.length > 0 && (
+                                    <div className="building-current-images">
+                                        {buildingDetail.imageUrls.map((imageUrl) => (
+                                            <img src={imageUrl} alt="Ảnh tòa nhà hiện có" key={imageUrl}/>
+                                        ))}
+                                    </div>
+                                )}
                                 <label className="upload-zone building-upload-zone">
                                     <span className="building-upload-title">Chọn ảnh tòa nhà</span>
                                     <span
-                                        className="building-upload-hint">Hỗ trợ chọn nhiều ảnh. Có thể bỏ trống.</span>
+                                        className="building-upload-hint">Chọn ảnh mới nếu muốn bổ sung ảnh cho tòa nhà.</span>
                                     <input
                                         className="building-file-input"
                                         type="file"
@@ -346,7 +498,67 @@ function BuildingCreatePage() {
                                 Trở về
                             </Button>
                             <Button type="submit" disabled={isSubmitting}>
-                                {isSubmitting ? "Đang gửi..." : "Gửi"}
+                                {isSubmitting ? "Đang lưu..." : "Lưu thay đổi"}
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section className="section-card building-form-card building-edit-bank-card">
+                <div className="section-card-header building-form-header building-bank-header">
+                    <div>
+                        <h2 className="building-section-title">Tài khoản nhận tiền</h2>
+                    </div>
+                    <Badge bg={buildingDetail?.bankAccount ? "success" : "secondary"}>
+                        {buildingDetail?.bankAccount ? "Đã cấu hình" : "Chưa cấu hình"}
+                    </Badge>
+                </div>
+
+                <div className="section-card-body">
+                    {bankSubmitError && <p className="building-alert building-alert--danger">{bankSubmitError}</p>}
+                    {bankSubmitSuccess && <p className="building-alert building-alert--success">{bankSubmitSuccess}</p>}
+
+                    <form className="building-form" onSubmit={handleBankSubmit}>
+                        <div className="building-form-grid">
+                            <div className="building-field">
+                                <label className="building-label">Tên ngân hàng <span className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${bankErrors.bankName ? "building-control--invalid" : ""}`}
+                                    name="bankName"
+                                    value={bankAccount.bankName}
+                                    onChange={handleBankChange}
+                                    placeholder="Ví dụ: MB Bank"/>
+                                {bankErrors.bankName && <p className="building-error">{bankErrors.bankName}</p>}
+                            </div>
+
+                            <div className="building-field">
+                                <label className="building-label">Số tài khoản <span className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${bankErrors.accountNumber ? "building-control--invalid" : ""}`}
+                                    name="accountNumber"
+                                    value={bankAccount.accountNumber}
+                                    onChange={handleBankChange}
+                                    placeholder="Nhập số tài khoản"
+                                    inputMode="numeric"/>
+                                {bankErrors.accountNumber && <p className="building-error">{bankErrors.accountNumber}</p>}
+                            </div>
+
+                            <div className="building-field building-field--full">
+                                <label className="building-label">Tên chủ tài khoản <span className="required-mark">*</span></label>
+                                <input
+                                    className={`building-control ${bankErrors.userName ? "building-control--invalid" : ""}`}
+                                    name="userName"
+                                    value={bankAccount.userName}
+                                    onChange={handleBankChange}
+                                    placeholder="Nhập tên chủ tài khoản"/>
+                                {bankErrors.userName && <p className="building-error">{bankErrors.userName}</p>}
+                            </div>
+                        </div>
+
+                        <div className="building-form-actions">
+                            <Button type="submit" disabled={isSavingBank}>
+                                {isSavingBank ? "Đang lưu..." : "Lưu tài khoản"}
                             </Button>
                         </div>
                     </form>
@@ -356,4 +568,4 @@ function BuildingCreatePage() {
     );
 }
 
-export default BuildingCreatePage;
+export default BuildingEditPage;

@@ -46,13 +46,36 @@ function buildBuildingFormData(building, images = []) {
     return formData;
 }
 
-export async function createBuilding(building, images = []) {
+export async function createOrUpdateBuilding(building, images = []) {
     const formData = buildBuildingFormData(building, images);
+    const buildingId = building.buildingId;
+    const url = buildingId ? `/buildings/${buildingId}` : "/buildings";
+    const method = buildingId ? "put" : "post";
 
-    const response = await axiosClient.post("/buildings", formData, {
+    const response = await axiosClient[method](url, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
+    });
+
+    return response.data;
+}
+
+export async function getBuildingDetail(buildingId) {
+    const response = await axiosClient.get(`/buildings/${buildingId}`);
+
+    return response.data;
+}
+
+export async function deleteBuilding(buildingId) {
+    await axiosClient.delete(`/buildings/${buildingId}`);
+}
+
+export async function updateBuildingBankAccount(buildingId, bankAccount) {
+    const response = await axiosClient.put(`/buildings/${buildingId}/bank-account`, {
+        bankName: bankAccount.bankName.trim(),
+        accountNumber: bankAccount.accountNumber.trim(),
+        userName: bankAccount.userName.trim(),
     });
 
     return response.data;
@@ -64,7 +87,6 @@ export async function getMyBuildings(filters = {}) {
             keyword: filters.keyword || undefined,
             minFloor: filters.minFloor || undefined,
             maxFloor: filters.maxFloor || undefined,
-            hasImages: filters.hasImages === "" ? undefined : filters.hasImages,
             page: filters.page ?? 0,
             size: filters.size ?? 10,
             sort: filters.sort || "buildingId,desc",
@@ -81,4 +103,3 @@ export async function getAllBuildingsByManagerId(managerId) {
 
     return response.data;
 }
-

@@ -21,7 +21,6 @@ public class CurrentUserService {
         }
 
         Long userId = userDetails.getAccountId();
-        log.info("Current user id is {}", userId);
         return userId;
     }
 }

@@ -14,6 +14,7 @@ public record BuildingDetailResponse(
         Integer yearBuilt,
         String phoneNumber,
         String email,
-        List<String> imageUrls
+        List<String> imageUrls,
+        BuildingBankAccountResponse bankAccount
 ) {
 }
