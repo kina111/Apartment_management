@@ -219,10 +219,13 @@ public class TenantVehicleService implements ITenantVehicleService {
 
     @Override
     public List<TenantResponse> getAllTenantsDoNotLeaveByBuildingId(Long buildingId) {
-        return tenantRepository.findTenantsWithHolderStatusByBuildingId(buildingId).stream()
-                .map(row -> {
-                    Tenant t = (Tenant) row[0];
-                    Boolean isHolder = (Boolean) row[1];
+        return tenantRepository.findTenantsByBuildingId(buildingId).stream()
+                .map(t -> {
+                    boolean isHolder = t.getContractTenants().stream()
+                            .anyMatch(ct -> ct.getLeaveDate() == null 
+                                         && ct.getContract() != null
+                                         && ct.getContract().getStatus() == com.apartment.management.shared.enums.ContractStatus.ACTIVE 
+                                         && Boolean.TRUE.equals(ct.getIsContractHolder()));
                     TenantResponse base = tenantMapper.toTenantResponse(t);
                     return new TenantResponse(
                             base.tenantId(),
@@ -232,7 +235,7 @@ public class TenantVehicleService implements ITenantVehicleService {
                             base.permanentAddress(),
                             base.citizenId(),
                             base.email(),
-                            isHolder, // lấy trực tiếp từ JOIN, không query thêm
+                            isHolder,
                             base.emergencyContacts(),
                             base.vehicles(),
                             base.contractTenants());

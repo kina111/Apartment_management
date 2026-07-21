@@ -29,7 +29,7 @@ public class Building {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "nvarchar(max)")
     private String description;
 
     // Landlord owner relationship (luồng own)

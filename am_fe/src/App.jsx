@@ -7,6 +7,16 @@ import { getAllBuildingsByManagerId } from "./features/buildings/services/buildi
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
 import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
 import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
+import {
+  ContractListPage,
+  ContractCreatePage,
+  ContractDetailPage,
+  ContractRenewPage,
+  ContractTransferPage,
+  ContractTerminatePage
+} from "./features/contracts";
+
+
 function App() {
   const [buildings, setBuildings] = useState([]);
 
@@ -36,6 +46,18 @@ function App() {
             element={<VehiclesDashboardPage buildings={buildings} />}
           />
           <Route path="/rooms/:roomCode" element={<RoomDetails />} />
+          <Route
+            path="/contracts"
+            element={<ContractListPage buildings={buildings} />}
+          />
+          <Route
+            path="/contracts/new"
+            element={<ContractCreatePage buildings={buildings} />}
+          />
+          <Route path="/contracts/id/:contractId" element={<ContractDetailPage />} />
+          <Route path="/contracts/id/:contractId/renew" element={<ContractRenewPage />} />
+          <Route path="/contracts/id/:contractId/transfer" element={<ContractTransferPage />} />
+          <Route path="/contracts/id/:contractId/terminate" element={<ContractTerminatePage />} />
           <Route path="*" element={<Navigate to="/buildings/new" replace />} />
         </Route>
       </Routes>
