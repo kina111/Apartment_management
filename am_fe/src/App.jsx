@@ -15,6 +15,16 @@ import React, { lazy } from "react";
 const ManagerListPage = lazy(() => import("./features/account-management/pages/ManagerListPage.jsx"));
 const ManagerCreatePage = lazy(() => import("./features/account-management/pages/ManagerCreatePage.jsx"));
 
+import {
+  ContractListPage,
+  ContractCreatePage,
+  ContractDetailPage,
+  ContractRenewPage,
+  ContractTransferPage,
+  ContractTerminatePage
+} from "./features/contracts";
+
+
 function App() {
   const { user } = useAuth();
   const [buildings, setBuildings] = useState([]);
@@ -72,7 +82,19 @@ function App() {
             element={<VehiclesDashboardPage buildings={buildings} />}
           />
           <Route path="/rooms/:roomCode" element={<RoomDetails />} />
-          
+          <Route
+            path="/contracts"
+            element={<ContractListPage buildings={buildings} />}
+          />
+          <Route
+            path="/contracts/new"
+            element={<ContractCreatePage buildings={buildings} />}
+          />
+          <Route path="/contracts/id/:contractId" element={<ContractDetailPage />} />
+          <Route path="/contracts/id/:contractId/renew" element={<ContractRenewPage />} />
+          <Route path="/contracts/id/:contractId/transfer" element={<ContractTransferPage />} />
+          <Route path="/contracts/id/:contractId/terminate" element={<ContractTerminatePage />} />
+
           {/* ── LANDLORD ONLY Routes ── */}
           <Route element={<ProtectedRoute allowedRoles={['LANDLORD']} />}>
             <Route path="/managers" element={

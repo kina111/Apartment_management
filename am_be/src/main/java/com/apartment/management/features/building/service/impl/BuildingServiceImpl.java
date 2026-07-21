@@ -29,6 +29,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apartment.management.shared.enums.Role;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -43,7 +45,6 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     @Transactional
     public BuildingResponse createBuilding(CreateBuildingRequest request, List<MultipartFile> images) {
-
         List<String> uploadedImageUrls = new ArrayList<>();
         try {
             Account landlord = findLandlord(request.getLandlordId());
@@ -110,9 +111,20 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<BuildingResponse> getBuildingByManagerId(Long managerId) {
-        return buildingRepository.findByManagerId(managerId)
-                .stream()
+    public List<BuildingResponse> getBuildingByManagerId(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
+
+        List<Building> buildings;
+        if (account.getRole() == Role.LANDLORD) {
+            buildings = buildingRepository.findAllByLandlord_AccountId(accountId);
+        } else if (account.getRole() == Role.ADMIN) {
+            buildings = buildingRepository.findAll();
+        } else {
+            buildings = buildingRepository.findByManagerId(accountId);
+        }
+
+        return buildings.stream()
                 .map(buildingMapper::toResponse)
                 .toList();
     }
