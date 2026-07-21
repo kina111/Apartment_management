@@ -67,6 +67,10 @@ export async function getBuildingDetail(buildingId) {
     return response.data;
 }
 
+export async function deleteBuilding(buildingId) {
+    await axiosClient.delete(`/buildings/${buildingId}`);
+}
+
 export async function updateBuildingBankAccount(buildingId, bankAccount) {
     const response = await axiosClient.put(`/buildings/${buildingId}/bank-account`, {
         bankName: bankAccount.bankName.trim(),

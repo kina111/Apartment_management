@@ -14,7 +14,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     @EntityGraph(attributePaths = {"roomType", "roomType.images"})
     List<Room> findAllWithDetails();
 
-    @Query("SELECT r FROM Room r WHERE r.building.buildingId = :buildingId")
+    @Query("SELECT r FROM Room r WHERE r.building.buildingId = :buildingId AND r.building.deleted = false")
     @EntityGraph(attributePaths = {"roomType", "roomType.images"})
     List<Room> findByBuildingId(Long buildingId);
 

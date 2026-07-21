@@ -23,6 +23,8 @@ public interface BuildingService {
 
     BuildingBankAccountResponse updateBuildingBankAccount(Long buildingId, UpdateBuildingBankAccountRequest request);
 
+    void deleteBuilding(Long buildingId);
+
     PageResponse<BuildingResponse> getBuildingsByLandlordId(
             BuildingFilterRequest filter,
             Pageable pageable

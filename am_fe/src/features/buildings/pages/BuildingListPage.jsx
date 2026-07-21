@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Badge, Button, ButtonGroup, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
-import {createOrUpdateBuilding, getMyBuildings} from "../services/buildingApi.js";
+import {createOrUpdateBuilding, deleteBuilding, getMyBuildings} from "../services/buildingApi.js";
 import "../buildings.css";
 
 const initialFilters = {
@@ -89,6 +89,7 @@ function BuildingListPage() {
     const [createError, setCreateError] = useState("");
     const [isCreating, setIsCreating] = useState(false);
     const [images, setImages] = useState([]);
+    const [deletingBuildingId, setDeletingBuildingId] = useState(null);
 
     useEffect(() => {
         let isCurrent = true;
@@ -208,6 +209,28 @@ function BuildingListPage() {
         }
     };
 
+    const handleDeleteBuilding = async (buildingToDelete) => {
+        const confirmed = window.confirm(`Bạn có chắc chắn muốn xóa tòa nhà "${buildingToDelete.name}"?`);
+
+        if (!confirmed) return;
+
+        setDeletingBuildingId(buildingToDelete.buildingId);
+        setError("");
+
+        try {
+            await deleteBuilding(buildingToDelete.buildingId);
+            setResult((current) => current ? {
+                ...current,
+                items: (current.items || []).filter((item) => item.buildingId !== buildingToDelete.buildingId),
+                totalElements: Math.max((current.totalElements || 1) - 1, 0),
+            } : current);
+        } catch (requestError) {
+            setError(getErrorMessage(requestError, "Không thể xóa tòa nhà"));
+        } finally {
+            setDeletingBuildingId(null);
+        }
+    };
+
     return (
         <div className="building-list-page">
             <header className="page-header building-list-header">
@@ -303,15 +326,15 @@ function BuildingListPage() {
                                                 <PencilSquare className="me-1"/>
                                                 Sửa
                                             </Button>
-                                            <Button
-                                                variant="outline-danger"
-                                                type="button"
-                                                disabled
-                                                title="Chức năng xóa đang được phát triển"
-                                            >
-                                                <Trash className="me-1"/>
-                                                Xóa
-                                            </Button>
+                                             <Button
+                                                 variant="outline-danger"
+                                                 type="button"
+                                                 disabled={deletingBuildingId === building.buildingId}
+                                                 onClick={() => handleDeleteBuilding(building)}
+                                             >
+                                                 <Trash className="me-1"/>
+                                                 {deletingBuildingId === building.buildingId ? "Đang xóa..." : "Xóa"}
+                                             </Button>
                                         </ButtonGroup>
                                     </td>
                                 </tr>

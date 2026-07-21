@@ -47,4 +47,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
             "invoices.details"
     })
     Optional<Contract> findByRoomCodeAndStatus(String roomCode, ContractStatus status);
+
+    boolean existsByRoom_Building_BuildingIdAndStatus(Long buildingId, ContractStatus status);
 }

@@ -12,11 +12,13 @@ import com.apartment.management.features.building.repository.BankAccountReposito
 import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.features.building.specification.BuildingSpecification;
+import com.apartment.management.features.contract.repository.ContractRepository;
 import com.apartment.management.shared.dtos.PageResponse;
 import com.apartment.management.shared.entity.Account;
 import com.apartment.management.shared.entity.BankAccount;
 import com.apartment.management.shared.entity.Building;
 import com.apartment.management.shared.entity.BuildingImage;
+import com.apartment.management.shared.enums.ContractStatus;
 import com.apartment.management.shared.enums.FolderName;
 import com.apartment.management.shared.exception.BusinessException;
 import com.apartment.management.shared.service.CloudService;
@@ -42,6 +44,7 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingRepository buildingRepository;
     private final AccountRepository accountRepository;
     private final BankAccountRepository bankAccountRepository;
+    private final ContractRepository contractRepository;
     private final BuildingMapper buildingMapper;
     private final CloudService cloudService;
     private final CurrentUserService currentUserService;
@@ -193,6 +196,18 @@ public class BuildingServiceImpl implements BuildingService {
         buildingRepository.save(building);
 
         return buildingMapper.toBankAccountResponse(savedBankAccount);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBuilding(Long buildingId) {
+        Building building = findOwnedBuilding(buildingId);
+
+        if (contractRepository.existsByRoom_Building_BuildingIdAndStatus(buildingId, ContractStatus.ACTIVE)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Không thể xóa tòa nhà vì vẫn còn hợp đồng đang hoạt động");
+        }
+
+        buildingRepository.delete(building);
     }
 
     @Override

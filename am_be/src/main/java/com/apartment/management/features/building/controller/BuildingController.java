@@ -94,6 +94,14 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.updateBuildingBankAccount(buildingId, request));
     }
 
+    @Operation(summary = "Delete building", description = "Soft delete a building owned by the authenticated landlord")
+    @DeleteMapping("/{buildingId}")
+    public ResponseEntity<Void> deleteBuilding(@PathVariable Long buildingId) {
+        buildingService.deleteBuilding(buildingId);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/my")
     public ResponseEntity<PageResponse<BuildingResponse>> getMyBuildings(
             @Valid @ModelAttribute BuildingFilterRequest filter,
