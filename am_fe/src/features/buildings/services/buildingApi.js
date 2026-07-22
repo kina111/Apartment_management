@@ -85,6 +85,8 @@ export async function getMyBuildings(filters = {}) {
     const response = await axiosClient.get("/buildings/my", {
         params: {
             keyword: filters.keyword || undefined,
+            landlordId: filters.landlordId || undefined,
+            managerId: filters.managerId || undefined,
             minFloor: filters.minFloor || undefined,
             maxFloor: filters.maxFloor || undefined,
             page: filters.page ?? 0,
@@ -92,6 +94,12 @@ export async function getMyBuildings(filters = {}) {
             sort: filters.sort || "buildingId,desc",
         },
     });
+
+    return response.data;
+}
+
+export async function getMyBuildingOptions() {
+    const response = await axiosClient.get("/buildings/my-options");
 
     return response.data;
 }

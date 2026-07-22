@@ -4,6 +4,7 @@ import { Button, Table, Container } from "react-bootstrap";
 import { Eye } from "react-bootstrap-icons";
 import UpdateTenantModal from "../components/UpdateTenantModal";
 import { updateTenant } from "../../rooms/services/roomApi";
+import "../../buildings/buildings.css";
 
 function TenantsManagePage({ buildings }) {
   const [selectedBuildingId, setSelectedBuildingId] = useState(null);
@@ -85,64 +86,71 @@ function TenantsManagePage({ buildings }) {
           </select>
         </div>
       )}
-      <Container className="border border-secondary rounded-3 p-4">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h1>Danh sách cư dân</h1>
+      <div className="building-list-page">
+        <header className="page-header building-list-header">
+          <div>
+            <h1 className="page-title">Danh sách cư dân</h1>
+          </div>
+        </header>
+
+        <div className="building-filter-panel">
           <input
             type="text"
             placeholder="Tìm kiếm cư dân ..."
-            className="form-control w-25 "
+            className="building-control building-filter-search"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
-        <Table
-          striped
-          bordered
-          hover
-          variant="dark"
-          className="text-white border-secondary"
-        >
-          <thead>
-            <tr>
-              <th>Stt</th>
-              <th>Họ tên</th>
-              <th>Số điện thoại</th>
-              <th>Vai trò</th>
-              <th>Cập nhật</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filterdTenants?.length === 0 ? (
+
+        <div className="building-table-wrapper">
+          <Table
+            responsive
+            hover
+            align="middle"
+            className="building-table"
+          >
+            <thead>
               <tr>
-                <td colSpan={5} className="text-center">
-                  Không có dữ liệu
-                </td>
+                <th>Stt</th>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Vai trò</th>
+                <th className="text-end">Thao tác</th>
               </tr>
-            ) : (
-              filterdTenants?.map((tenant, index) => (
-                <tr key={tenant.tenantId || index}>
-                  <td>{index + 1}</td>
-                  <td>{tenant.name}</td>
-                  <td>{tenant.phoneNumber}</td>
-                  <td>
-                    {tenant.isContractHolder ? "Chủ hợp đồng" : "Thành viên"}
-                  </td>
-                  <td>
-                    <Button
-                      variant="link"
-                      className="text-decoration-none text-primary p-0"
-                      onClick={() => handleUpdate(tenant)}
-                    >
-                      <Eye className="me-1" /> Cập nhật
-                    </Button>
+            </thead>
+            <tbody>
+              {filterdTenants?.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="building-empty-state border-0">
+                    Không có dữ liệu
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </Table>
-      </Container>
+              ) : (
+                filterdTenants?.map((tenant, index) => (
+                  <tr key={tenant.tenantId || index}>
+                    <td>{index + 1}</td>
+                    <td className="building-name-cell">{tenant.name}</td>
+                    <td>{tenant.phoneNumber}</td>
+                    <td>
+                      {tenant.isContractHolder ? "Chủ hợp đồng" : "Thành viên"}
+                    </td>
+                    <td className="text-end">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleUpdate(tenant)}
+                      >
+                        <Eye className="me-1" /> Cập nhật
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
+        </div>
+      </div>
 
       <UpdateTenantModal
         show={showUpdateModal}

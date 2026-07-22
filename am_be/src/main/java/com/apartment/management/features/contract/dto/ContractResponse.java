@@ -22,6 +22,7 @@ public record ContractResponse(
                 
                 // Flat attributes
                 String roomCode,
+                String roomName,
                 Integer floorNumber,
                 String buildingName,
                 Long tenantId,

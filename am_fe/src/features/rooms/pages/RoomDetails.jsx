@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Breadcrumb,
   Tab,
@@ -16,7 +16,7 @@ import VehicleTable from "../../tenants_vehicles/components/VehicleTable";
 import AddTenantModal from "../../tenants_vehicles/components/AddTenantModal";
 import UpdateTenantModal from "../../tenants_vehicles/components/UpdateTenantModal";
 import {
-  getContractsByRoomId,
+  getActiveContractByRoomCode,
   getAllTenantsByContractId,
   addTenantToContract,
   tenantLeave,
@@ -29,7 +29,9 @@ import AddVehicleModal from "../../tenants_vehicles/components/AddVehicleModal";
 function RoomDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { roomCode } = useParams();
   const { room } = location.state || {};
+  const activeRoomCode = room?.roomCode || roomCode;
 
   const [contract, setContract] = useState(null);
   const [tenants, setTenants] = useState([]);
@@ -52,16 +54,13 @@ function RoomDetails() {
   const [submitErrorVehicle, setSubmitErrorVehicle] = useState(null);
 
   useEffect(() => {
-    if (!room?.roomCode) return;
+    if (!activeRoomCode) return;
 
     let isMounted = true;
     const fetchData = async () => {
       setLoading(true);
       try {
-        const contractResponse = await getContractsByRoomId(
-          room.roomCode,
-          "ACTIVE",
-        );
+        const contractResponse = await getActiveContractByRoomCode(activeRoomCode);
         if (isMounted) {
           setContract(contractResponse);
         }
@@ -96,12 +95,12 @@ function RoomDetails() {
     return () => {
       isMounted = false;
     };
-  }, [room?.roomCode]);
+  }, [activeRoomCode]);
 
   // handle show modal based on room status
   const handleAddTenant = () => {
     if (room?.status === "AVAILABLE") {
-      navigate("/tenants/add", { state: { roomCode: room.roomCode } });
+      setSubmitError("Phòng chưa có hợp đồng. Vui lòng tạo hợp đồng trước khi thêm thành viên.");
     } else {
       setSubmitError(null);
       setShowModal(true);
@@ -268,12 +267,6 @@ function RoomDetails() {
           )}
         </Tab>
 
-        <Tab eventKey="invoices" title="Hóa Đơn">
-          Tab content for Contact
-        </Tab>
-        <Tab eventKey="furnishings" title="CSVC">
-          Tab content for Contact
-        </Tab>
         <Tab eventKey="contracts" title="Hợp Đồng">
           Tab content for Contact
         </Tab>

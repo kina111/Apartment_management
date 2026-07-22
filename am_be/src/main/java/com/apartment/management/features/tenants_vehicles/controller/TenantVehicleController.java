@@ -1,25 +1,16 @@
 package com.apartment.management.features.tenants_vehicles.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.apartment.management.features.tenants_vehicles.dto.TenantRequest;
 import com.apartment.management.features.tenants_vehicles.dto.TenantResponse;
 import com.apartment.management.features.tenants_vehicles.dto.VehicleRequest;
 import com.apartment.management.features.tenants_vehicles.dto.VehicleResponse;
 import com.apartment.management.features.tenants_vehicles.service.ITenantVehicleService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/tenants")
@@ -53,6 +44,7 @@ public class TenantVehicleController {
     }
 
     @PostMapping("/contract/{contractId}/add-tenant")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<TenantResponse> addTenantToContract(
             @PathVariable Long contractId,
             @RequestBody TenantRequest tenantRequest) {
@@ -60,6 +52,7 @@ public class TenantVehicleController {
     }
 
     @PutMapping("/contract/{contractId}/tenant/{tenantId}/leave")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<Boolean> tenantLeave(
             @PathVariable Long contractId,
             @PathVariable Long tenantId) {
@@ -67,6 +60,7 @@ public class TenantVehicleController {
     }
 
     @PutMapping("/{tenantId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<TenantResponse> updateTenant(
             @PathVariable Long tenantId,
             @RequestBody TenantRequest tenantRequest) {
@@ -74,6 +68,7 @@ public class TenantVehicleController {
     }
 
     @PostMapping("/{tenantId}/vehicles")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<TenantResponse> addVehicleToTenant(
             @PathVariable Long tenantId,
             @RequestBody VehicleRequest request) {
@@ -81,6 +76,7 @@ public class TenantVehicleController {
     }
 
     @DeleteMapping("/{tenantId}/vehicles/{vehicleId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<?> deleteVehicleFromTenant(
             @PathVariable Long tenantId,
             @PathVariable Long vehicleId) {

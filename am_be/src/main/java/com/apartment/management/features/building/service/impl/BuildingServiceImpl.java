@@ -252,16 +252,20 @@ public class BuildingServiceImpl implements BuildingService {
             BuildingFilterRequest filter,
             Pageable pageable
     ) {
-        Long landlordId = currentUserService.getCurrentUserId();
+        BuildingFilterRequest effectiveFilter = filter != null ? filter : new BuildingFilterRequest();
 
-        Account landlord = accountRepository.findById(landlordId).orElseThrow(()
-                -> new IllegalArgumentException("Landlord account not found"));
+        if (effectiveFilter.getLandlordId() == null && effectiveFilter.getManagerId() == null) {
+            Long landlordId = currentUserService.getCurrentUserId();
+
+            Account landlord = accountRepository.findById(landlordId).orElseThrow(()
+                    -> new IllegalArgumentException("Landlord account not found"));
+            effectiveFilter.setLandlordId(landlord.getAccountId());
+        }
 
         //valid filter
-        if (filter != null
-                && filter.getMinFloor() != null
-                && filter.getMaxFloor() != null
-                && filter.getMinFloor() > filter.getMaxFloor()) {
+        if (effectiveFilter.getMinFloor() != null
+                && effectiveFilter.getMaxFloor() != null
+                && effectiveFilter.getMinFloor() > effectiveFilter.getMaxFloor()) {
             throw new BusinessException(
                     "minFloor must be less than or equal to maxFloor"
             );
@@ -269,7 +273,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         Page<BuildingResponse> buildingResponsePage = buildingRepository.findAll(
                 BuildingSpecification.getBuildingWithFilter(
-                        landlordId, filter
+                        effectiveFilter
                 ), pageable
         ).map(buildingMapper::toResponse);
 

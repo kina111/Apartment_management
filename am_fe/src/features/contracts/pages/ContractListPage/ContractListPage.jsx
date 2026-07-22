@@ -130,7 +130,7 @@ function ContractListPage() {
                         <strong>#{contract.contractId}</strong>
                       </td>
                       <td>
-                        Phòng {contract.roomCode} ({contract.buildingName})
+                        {contract.roomName || `Phòng ${contract.roomCode}`} ({contract.buildingName})
                       </td>
                       <td>{contract.tenantName || 'Chưa xác định'}</td>
                       <td>{contract.tenantPhoneNumber || '-'}</td>

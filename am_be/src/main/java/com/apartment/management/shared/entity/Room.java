@@ -8,7 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "room")
+@Table(
+        name = "room",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_room_building_room_name",
+                columnNames = {"building_id", "room_name"}
+        )
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +25,9 @@ public class Room {
     @Id
     @Column(name = "room_code")
     private String roomCode;
+
+    @Column(name = "room_name", nullable = false)
+    private String roomName;
 
     @Column(name = "floor_number", nullable = false)
     private Integer floorNumber;

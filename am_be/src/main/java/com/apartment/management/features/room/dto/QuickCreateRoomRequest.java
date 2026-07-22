@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record QuickCreateRoomRequest(
-        @NotBlank(message = "Room code must be not blank")
-        @Size(max = 50, message = "Room code must not exceed 50 characters")
-        String roomCode,
+        @NotBlank(message = "Room name must be not blank")
+        @Size(max = 100, message = "Room name must not exceed 100 characters")
+        String roomName,
 
         @NotNull(message = "Floor number must be not null")
         @Min(value = 1, message = "Floor number must be greater than 0")

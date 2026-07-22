@@ -46,12 +46,10 @@ export async function getAllTenantsByContractId(contractId) {
 }
 
 /**
- * Lấy hợp đồng theo roomCode (và tùy chọn status).
+ * Lấy hợp đồng ACTIVE theo roomCode.
  */
-export async function getContractsByRoomId(roomCode, status) {
-  const response = await axiosClient.get(`/contracts/${roomCode}`, {
-    params: status ? { status } : {},
-  });
+export async function getActiveContractByRoomCode(roomCode) {
+  const response = await axiosClient.get(`/contracts/active/${roomCode}`);
   return response.data;
 }
 

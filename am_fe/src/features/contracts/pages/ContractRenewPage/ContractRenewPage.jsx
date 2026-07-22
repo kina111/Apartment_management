@@ -125,7 +125,7 @@ function ContractRenewPage() {
               Gia hạn Hợp đồng
             </h1>
             <small className="text-muted">
-              Gia hạn căn hộ {contract?.roomCode} (HĐ #{contractId})
+              Gia hạn căn hộ {contract?.roomName || `Phòng ${contract?.roomCode}`} (HĐ #{contractId})
             </small>
           </div>
         </div>
@@ -139,7 +139,7 @@ function ContractRenewPage() {
           <div className={commonStyles.premiumCard}>
             <h3 className={commonStyles.formSectionTitle}>Hợp đồng hiện tại</h3>
             <div className={detailStyles.detailLabel}>Phòng căn hộ</div>
-            <div className={detailStyles.detailValue}>{contract?.roomCode}</div>
+            <div className={detailStyles.detailValue}>{contract?.roomName || `Phòng ${contract?.roomCode}`}</div>
 
             <div className={detailStyles.detailLabel}>Khách thuê</div>
             <div className={detailStyles.detailValue}>{contract?.tenantName}</div>

@@ -1,6 +1,7 @@
 package com.apartment.management.features.room.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.apartment.management.features.building.repository.BuildingRepository;
@@ -96,18 +97,19 @@ public class RoomService implements IRoomService {
     public RoomResponse quickCreateRoom(Long buildingId, QuickCreateRoomRequest request) {
         Building building = findOwnedBuilding(buildingId);
         RoomType roomType = findRoomType(request.roomTypeId());
-        String roomCode = request.roomCode().trim();
+        String roomName = request.roomName().trim();
 
         if (request.floorNumber() > building.getNumberOfFloor()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Floor number exceeds building floor count");
         }
 
-        if (roomRepository.existsById(roomCode)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room code already exists");
+        if (roomRepository.existsByBuilding_BuildingIdAndRoomNameIgnoreCase(buildingId, roomName)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room name already exists in this building");
         }
 
         Room room = Room.builder()
-                .roomCode(roomCode)
+                .roomCode(UUID.randomUUID().toString())
+                .roomName(roomName)
                 .floorNumber(request.floorNumber())
                 .status(RoomStatus.AVAILABLE)
                 .building(building)

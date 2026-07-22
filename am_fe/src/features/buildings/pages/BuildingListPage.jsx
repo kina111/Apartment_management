@@ -3,6 +3,8 @@ import {Badge, Button, ButtonGroup, Form, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
 import {createOrUpdateBuilding, deleteBuilding, getMyBuildings} from "../services/buildingApi.js";
+import {useAuth} from "../../../shared/context/AuthContext.jsx";
+import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import "../buildings.css";
 
 const initialFilters = {
@@ -73,11 +75,8 @@ function validateBuilding(building) {
     return errors;
 }
 
-function getErrorMessage(error, fallback) {
-    return error.response?.data?.message || error.response?.data?.detail || error.response?.data?.error || fallback;
-}
-
 function BuildingListPage() {
+    const {user, role} = useAuth();
     const [filters, setFilters] = useState(initialFilters);
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
     const [page, setPage] = useState(0);
@@ -92,6 +91,7 @@ function BuildingListPage() {
     const [isCreating, setIsCreating] = useState(false);
     const [images, setImages] = useState([]);
     const [deletingBuildingId, setDeletingBuildingId] = useState(null);
+    const isManager = role === "MANAGER";
 
     useEffect(() => {
         let isCurrent = true;
@@ -103,6 +103,7 @@ function BuildingListPage() {
             try {
                 const data = await getMyBuildings({
                     ...appliedFilters,
+                    managerId: isManager ? user?.accountId : undefined,
                     page,
                     size,
                 });
@@ -110,11 +111,7 @@ function BuildingListPage() {
                 if (isCurrent) setResult(data);
             } catch (requestError) {
                 if (isCurrent) {
-                    setError(
-                        requestError.response?.data?.message ||
-                        requestError.response?.data?.detail ||
-                        "Không thể tải danh sách tòa nhà"
-                    );
+                    setError(getErrorMessage(requestError, "Không thể tải danh sách tòa nhà"));
                 }
             } finally {
                 if (isCurrent) setIsLoading(false);
@@ -125,7 +122,7 @@ function BuildingListPage() {
         return () => {
             isCurrent = false;
         };
-    }, [appliedFilters, page, size]);
+    }, [appliedFilters, isManager, page, size, user?.accountId]);
 
     const handleChange = (event) => {
         const {name, value} = event.target;

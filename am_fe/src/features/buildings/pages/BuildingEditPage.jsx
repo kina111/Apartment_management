@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Badge, Button} from "react-bootstrap";
 import {Link, useParams} from "react-router-dom";
 import {createOrUpdateBuilding, getBuildingDetail, updateBuildingBankAccount} from "../services/buildingApi.js";
+import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import "../buildings.css";
 
 const initialBuilding = {
@@ -129,10 +130,6 @@ function validateBankAccount(bankAccount) {
     }
 
     return errors;
-}
-
-function getErrorMessage(error, fallback) {
-    return error.response?.data?.message || error.response?.data?.detail || error.response?.data?.error || fallback;
 }
 
 function BuildingEditPage() {

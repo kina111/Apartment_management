@@ -26,6 +26,7 @@ public interface ContractMapper {
     @Mapping(target = "renewalContractIds", source = "renewalContracts", qualifiedByName = "mapRenewalContractToLong")
     @Mapping(target = "contractTenantIds", source = "contractTenants")
     @Mapping(target = "roomCode", source = "room.roomCode")
+    @Mapping(target = "roomName", source = "room.roomName")
     @Mapping(target = "floorNumber", source = "room.floorNumber")
     @Mapping(target = "buildingName", source = "room.building.name")
     @Mapping(target = "tenantId", expression = "java(ContractMapper.getContractHolderId(contract))")

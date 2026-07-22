@@ -153,7 +153,7 @@ function ContractTransferPage() {
               Chuyển nhượng Hợp đồng
             </h1>
             <small className="text-muted">
-              Chuyển nhượng căn hộ {contract?.roomCode} sang khách thuê mới
+              Chuyển nhượng căn hộ {contract?.roomName || `Phòng ${contract?.roomCode}`} sang khách thuê mới
             </small>
           </div>
         </div>
@@ -168,7 +168,7 @@ function ContractTransferPage() {
             <div className={commonStyles.premiumCard}>
               <h3 className={commonStyles.formSectionTitle}>Hợp đồng hiện tại</h3>
               <div className={detailStyles.detailLabel}>Phòng căn hộ</div>
-              <div className={detailStyles.detailValue}>{contract?.roomCode}</div>
+              <div className={detailStyles.detailValue}>{contract?.roomName || `Phòng ${contract?.roomCode}`}</div>
 
               <div className={detailStyles.detailLabel}>Khách thuê hiện tại</div>
               <div className={`${detailStyles.detailValue} text-danger`}>

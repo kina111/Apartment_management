@@ -10,6 +10,7 @@ import {
     quickCreateRoom,
     updateRoomType,
 } from "../../rooms/services/roomApi.js";
+import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import "../buildings.css";
 
 const initialRoomTypeForm = {
@@ -20,7 +21,7 @@ const initialRoomTypeForm = {
 };
 
 const initialQuickRoomForm = {
-    roomCode: "",
+    roomName: "",
     roomTypeId: "",
 };
 
@@ -160,7 +161,7 @@ function validateRoomType(roomType) {
 function validateQuickRoom(room) {
     const errors = {};
 
-    if (!room.roomCode.trim()) errors.roomCode = "Mã phòng là bắt buộc";
+    if (!room.roomName.trim()) errors.roomName = "Tên phòng là bắt buộc";
     if (!room.roomTypeId) errors.roomTypeId = "Loại phòng là bắt buộc";
 
     return errors;
@@ -173,10 +174,6 @@ function mapRoomTypeToForm(roomType) {
         area: toFormValue(roomType.area),
         description: toFormValue(roomType.description),
     };
-}
-
-function getErrorMessage(error, fallback) {
-    return error.response?.data?.message || error.response?.data?.detail || error.response?.data?.error || fallback;
 }
 
 function DetailField({label, value}) {
@@ -490,7 +487,7 @@ function BuildingDetailPage() {
     const openQuickRoomForm = (floorNumber) => {
         setQuickRoomFloor(floorNumber);
         setQuickRoomForm({
-            roomCode: "",
+            roomName: "",
             roomTypeId: roomTypes[0]?.roomTypeId ? String(roomTypes[0].roomTypeId) : "",
         });
         setQuickRoomErrors({});
@@ -519,7 +516,7 @@ function BuildingDetailPage() {
 
         try {
             const createdRoom = await quickCreateRoom(buildingId, {
-                roomCode: quickRoomForm.roomCode,
+                roomName: quickRoomForm.roomName,
                 floorNumber: quickRoomFloor,
                 roomTypeId: Number(quickRoomForm.roomTypeId),
             });
@@ -879,9 +876,9 @@ function BuildingDetailPage() {
                                                 <div className="building-floor-room-list">
                                                     {floorRooms.map((room) => (
                                                         <div className="building-floor-room-chip" key={room.roomCode}>
-                                                            <strong>{room.roomCode}</strong>
+                                                            <strong>{room.roomName || room.roomCode}</strong>
                                                             <span>{room.roomType?.name || "-"}</span>
-                                                            <Badge bg="success">{room.status}</Badge>
+                                                            <Badge bg="success" className="text-white">{room.status}</Badge>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -892,9 +889,9 @@ function BuildingDetailPage() {
                                             {isCurrentFloor && (
                                                 <form className="building-quick-room-form" onSubmit={handleQuickRoomSubmit}>
                                                     <div className="building-field">
-                                                        <label className="building-label">Mã phòng <span className="required-mark">*</span></label>
-                                                        <input className={`building-control ${quickRoomErrors.roomCode ? "building-control--invalid" : ""}`} name="roomCode" value={quickRoomForm.roomCode} onChange={handleQuickRoomChange} placeholder={`Ví dụ: ${floorNumber}01`}/>
-                                                        {quickRoomErrors.roomCode && <p className="building-error">{quickRoomErrors.roomCode}</p>}
+                                                        <label className="building-label">Tên phòng <span className="required-mark">*</span></label>
+                                                        <input className={`building-control ${quickRoomErrors.roomName ? "building-control--invalid" : ""}`} name="roomName" value={quickRoomForm.roomName} onChange={handleQuickRoomChange} placeholder={`Ví dụ: Phòng ${floorNumber}01`}/>
+                                                        {quickRoomErrors.roomName && <p className="building-error">{quickRoomErrors.roomName}</p>}
                                                     </div>
                                                     <div className="building-field">
                                                         <label className="building-label">Loại phòng <span className="required-mark">*</span></label>

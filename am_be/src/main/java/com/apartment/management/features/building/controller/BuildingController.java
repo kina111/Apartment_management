@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,7 @@ public class BuildingController {
     private final BuildingService buildingService;
 
     @Operation(summary = "Create building", description = "Create building information with optional images")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BuildingResponse> createOrUpdateBuilding(
             @Valid @ModelAttribute CreateBuildingRequest request,
@@ -52,6 +54,7 @@ public class BuildingController {
     }
 
     @Operation(summary = "Update building", description = "Update building information with optional new images")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD')")
     @PutMapping(value = "/{buildingId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BuildingResponse> updateBuilding(
             @PathVariable Long buildingId,
@@ -75,6 +78,7 @@ public class BuildingController {
     }
 
     @Operation(summary = "Get building detail", description = "Get a building owned by the authenticated landlord")
+
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingDetailResponse> getBuildingDetail(@PathVariable Long buildingId) {
         return ResponseEntity.ok(buildingService.getBuildingDetail(buildingId));
@@ -87,6 +91,7 @@ public class BuildingController {
     }
 
     @Operation(summary = "Update building bank account", description = "Create or update bank account configured for a building owned by the authenticated landlord")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD')")
     @PutMapping("/{buildingId}/bank-account")
     public ResponseEntity<BuildingBankAccountResponse> updateBuildingBankAccount(
             @PathVariable Long buildingId,
@@ -96,6 +101,7 @@ public class BuildingController {
     }
 
     @Operation(summary = "Delete building", description = "Soft delete a building owned by the authenticated landlord")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD')")
     @DeleteMapping("/{buildingId}")
     public ResponseEntity<Void> deleteBuilding(@PathVariable Long buildingId) {
         buildingService.deleteBuilding(buildingId);

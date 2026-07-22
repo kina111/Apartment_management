@@ -49,7 +49,7 @@ function ContractDetailPage() {
               Hợp đồng #{contract.contractId}
             </h1>
             <small className="text-muted">
-              Phòng {contract.roomCode} - {contract.buildingName}
+              {contract.roomName || `Phòng ${contract.roomCode}`} - {contract.buildingName}
             </small>
           </div>
         </div>
@@ -92,7 +92,7 @@ function ContractDetailPage() {
               <Col md={6}>
                 <div className={styles.detailLabel}>Phòng căn hộ</div>
                 <div className={styles.detailValue}>
-                  {contract.roomCode} (Tầng {contract.floorNumber})
+                  {contract.roomName || `Phòng ${contract.roomCode}`} (Tầng {contract.floorNumber})
                 </div>
               </Col>
               <Col md={6}>

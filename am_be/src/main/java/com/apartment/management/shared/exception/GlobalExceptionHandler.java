@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -18,6 +19,19 @@ public class GlobalExceptionHandler {
                         "status", HttpStatus.BAD_REQUEST.value(),
                         "error", "Bad Request",
                         "message", exception.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleResponseStatusException(ResponseStatusException exception) {
+        String message = exception.getReason() != null ? exception.getReason() : exception.getMessage();
+
+        return ResponseEntity
+                .status(exception.getStatusCode())
+                .body(Map.of(
+                        "status", exception.getStatusCode().value(),
+                        "error", exception.getStatusCode().toString(),
+                        "message", message
                 ));
     }
 }

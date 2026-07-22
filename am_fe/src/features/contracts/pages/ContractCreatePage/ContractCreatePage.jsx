@@ -288,7 +288,7 @@ function ContractCreatePage({ buildings }) {
                     </option>
                     {rooms.map((r) => (
                       <option key={r.roomCode} value={r.roomCode}>
-                        Phòng {r.roomCode}
+                        {r.roomName || `Phòng ${r.roomCode}`}
                       </option>
                     ))}
                   </Form.Select>

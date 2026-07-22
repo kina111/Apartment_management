@@ -36,7 +36,7 @@ function RoomCard({ room, onClick }) {
       }}
     >
       <div className="room-card-header">
-        <h3 className="room-card-number">Phòng {room.roomCode}</h3>
+        <h3 className="room-card-number">{room.roomName || `Phòng ${room.roomCode}`}</h3>
         <span className={status.className}>{status.label}</span>
       </div>
       <p className="room-card-tenant">

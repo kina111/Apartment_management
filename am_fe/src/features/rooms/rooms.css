@@ -194,6 +194,47 @@
   color: var(--app-text-muted);
 }
 
+/* ── Room Details: Tenants & Vehicles ── */
+.tenant-card {
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: #ffffff;
+  color: var(--app-text);
+  box-shadow: var(--app-shadow-sm);
+}
+
+.tenant-card-badge {
+  color: var(--app-text-muted);
+}
+
+.tenant-card-badge-value {
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.vehicle-table {
+  --bs-table-bg: #ffffff;
+  --bs-table-color: var(--app-text);
+  --bs-table-border-color: var(--app-border);
+  --bs-table-hover-bg: #f8fafc;
+  --bs-table-hover-color: var(--app-text);
+  margin-bottom: 0;
+  color: var(--app-text);
+  background: #ffffff;
+}
+
+.vehicle-table thead th {
+  background: #f8fafc;
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.vehicle-table tbody td {
+  background: #ffffff;
+  color: var(--app-text);
+  vertical-align: middle;
+}
+
 /* ── Responsive ── */
 @media (max-width: 576px) {
   .rooms-filter-bar {

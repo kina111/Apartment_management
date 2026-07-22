@@ -86,7 +86,7 @@ function ContractTerminatePage() {
               Thanh lý Hợp đồng
             </h1>
             <small className="text-muted">
-              Chấm dứt thuê căn hộ {contract?.roomCode} (HĐ #{contractId})
+              Chấm dứt thuê căn hộ {contract?.roomName || `Phòng ${contract?.roomCode}`} (HĐ #{contractId})
             </small>
           </div>
         </div>
@@ -100,7 +100,7 @@ function ContractTerminatePage() {
           <div className={commonStyles.premiumCard}>
             <h3 className={commonStyles.formSectionTitle}>Hợp đồng thanh lý</h3>
             <div className={detailStyles.detailLabel}>Phòng căn hộ</div>
-            <div className={detailStyles.detailValue}>{contract?.roomCode}</div>
+            <div className={detailStyles.detailValue}>{contract?.roomName || `Phòng ${contract?.roomCode}`}</div>
 
             <div className={detailStyles.detailLabel}>Tên khách thuê</div>
             <div className={detailStyles.detailValue}>{contract?.tenantName}</div>

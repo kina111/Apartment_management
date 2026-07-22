@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { InfoCircle } from "react-bootstrap-icons";
 import RoomFilterBar from "../components/RoomFilterBar";
 import FloorSection from "../components/FloorSection";
@@ -46,7 +46,8 @@ function RoomListPage({ buildings }) {
     return rooms.filter((room) => {
       const matchFilter =
         activeFilter === "ALL" || room.status === activeFilter;
-      const matchSearch = room.roomCode
+      const searchableRoomName = room.roomName || room.roomCode;
+      const matchSearch = searchableRoomName
         .toLowerCase()
         .includes(searchValue.toLowerCase());
       return matchFilter && matchSearch;
@@ -89,19 +90,6 @@ function RoomListPage({ buildings }) {
           </select>
         </div>
       )}
-
-      {/* ── Info alert ── */}
-      <Alert
-        variant="info"
-        className="rooms-info-alert d-flex align-items-center gap-2 mb-3"
-      >
-        <InfoCircle size={18} className="text-primary flex-shrink-0" />
-        <span>
-          Quyền truy cập: <Alert.Link href="#">Quản lý</Alert.Link>. Bạn hiện
-          đang ở chế độ <strong>CHỈ XEM</strong>. Một số thay đổi sẽ không thể
-          thực hiện.
-        </span>
-      </Alert>
 
       {/* ── Filter bar ── */}
       <RoomFilterBar

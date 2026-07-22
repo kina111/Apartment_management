@@ -1,20 +1,19 @@
 package com.apartment.management.features.contract.controller;
 
-import java.util.List;
-
+import com.apartment.management.features.contract.dto.*;
+import com.apartment.management.features.contract.service.IContractService;
+import com.apartment.management.features.tenants_vehicles.dto.TenantResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apartment.management.features.contract.dto.*;
-import com.apartment.management.features.contract.service.IContractService;
-import com.apartment.management.features.tenants_vehicles.dto.TenantResponse;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/contracts")
@@ -58,6 +57,7 @@ public class ContractController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<ContractResponse> createContract(
             @ModelAttribute CreateContractRequest request,
             @RequestPart(value = "images", required = false) List<MultipartFile> images
@@ -66,6 +66,7 @@ public class ContractController {
     }
 
     @PostMapping(value = "/{contractId}/renew", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<ContractResponse> renewContract(
             @PathVariable("contractId") Long contractId,
             @ModelAttribute RenewContractRequest request,
@@ -75,6 +76,7 @@ public class ContractController {
     }
 
     @PostMapping(value = "/{contractId}/transfer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<ContractResponse> transferContract(
             @PathVariable("contractId") Long contractId,
             @ModelAttribute TransferContractRequest request,
@@ -84,6 +86,7 @@ public class ContractController {
     }
 
     @PostMapping(value = "/{contractId}/terminate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'LANDLORD', 'MANAGER')")
     public ResponseEntity<ContractResponse> terminateContract(
             @PathVariable("contractId") Long contractId,
             @ModelAttribute TerminateContractRequest request,

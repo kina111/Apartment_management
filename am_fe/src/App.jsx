@@ -5,7 +5,7 @@ import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 import RoomListPage from "./features/rooms/pages/RoomListPage.jsx";
 import MainLayout from "./shared/components/MainLayout.jsx";
 import { useEffect, useState } from "react";
-import { getAllBuildingsByManagerId } from "./features/buildings/services/buildingApi.js";
+import { getAllBuildingsByManagerId, getMyBuildingOptions } from "./features/buildings/services/buildingApi.js";
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
 import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
 import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
@@ -36,13 +36,26 @@ function App() {
   const [buildings, setBuildings] = useState([]);
 
   useEffect(() => {
-    if (!user?.accountId) return;
+    if (!user?.accountId) {
+      setBuildings([]);
+      return;
+    }
+
     const loadBuildingByAccountId = async () => {
-      const buildings = await getAllBuildingsByManagerId(user.accountId);
-      setBuildings(buildings);
+      try {
+        const buildings = user.role === "LANDLORD"
+          ? await getMyBuildingOptions()
+          : await getAllBuildingsByManagerId(user.accountId);
+
+        setBuildings(buildings);
+      } catch (error) {
+        console.error("Lỗi tải danh sách tòa nhà:", error);
+        setBuildings([]);
+      }
     };
+
     loadBuildingByAccountId();
-  }, [user?.accountId]);
+  }, [user?.accountId, user?.role]);
 
   return (
     <>
