@@ -6,6 +6,7 @@ import com.apartment.management.features.building.dto.request.CreateBuildingRequ
 import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
 import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
+import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
 import com.apartment.management.features.building.repository.BankAccountRepository;
@@ -228,6 +229,21 @@ public class BuildingServiceImpl implements BuildingService {
         }
 
         buildingRepository.delete(building);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BuildingOptionResponse> getMyBuildingOptions() {
+        Long landlordId = currentUserService.getCurrentUserId();
+
+        return buildingRepository.findAllByLandlord_AccountId(landlordId)
+                .stream()
+                .map(building -> new BuildingOptionResponse(
+                        building.getBuildingId(),
+                        building.getName(),
+                        building.getAddress()
+                ))
+                .toList();
     }
 
     @Override

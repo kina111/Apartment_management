@@ -5,6 +5,7 @@ import com.apartment.management.features.building.dto.request.CreateBuildingRequ
 import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
 import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
+import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.shared.dtos.PageResponse;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,8 @@ public interface BuildingService {
     BuildingBankAccountResponse updateBuildingBankAccount(Long buildingId, UpdateBuildingBankAccountRequest request);
 
     void deleteBuilding(Long buildingId);
+
+    List<BuildingOptionResponse> getMyBuildingOptions();
 
     PageResponse<BuildingResponse> getBuildingsByLandlordId(
             BuildingFilterRequest filter,

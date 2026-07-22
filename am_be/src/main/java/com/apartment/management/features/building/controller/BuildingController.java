@@ -5,6 +5,7 @@ import com.apartment.management.features.building.dto.request.CreateBuildingRequ
 import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
 import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
+import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.shared.dtos.PageResponse;
@@ -100,6 +101,11 @@ public class BuildingController {
         buildingService.deleteBuilding(buildingId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/my-options")
+    public ResponseEntity<List<BuildingOptionResponse>> getMyBuildingOptions() {
+        return ResponseEntity.ok(buildingService.getMyBuildingOptions());
     }
 
     @GetMapping("/my")
