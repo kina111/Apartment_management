@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {BoxArrowRight, Building, CarFront, List, People, Speedometer2, X, EnvelopePaper} from 'react-bootstrap-icons';
+import {BoxArrowRight, Building, CarFront, FileEarmarkText, List, People, Speedometer2, X, EnvelopePaper} from 'react-bootstrap-icons';
 import {useAuth} from '../../context/AuthContext.jsx';
 import './Sidebar.css';
 
@@ -8,6 +8,7 @@ const menuItems = [
     {to: '/project-overview', label: 'Tổng quan', icon: Speedometer2, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/buildings', label: 'Danh sách tòa nhà', icon: Building, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/rooms', label: 'Danh sách phòng', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
+    {to: '/contracts', label: 'Quản lý Hợp đồng', icon: FileEarmarkText, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/tenants', label: 'Cư dân', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/vehicles', label: 'Phương tiện', icon: CarFront, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/managers', label: 'Quản lý Nhân sự', icon: People, roles: ['LANDLORD']},

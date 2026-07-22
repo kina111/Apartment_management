@@ -19,7 +19,7 @@ const managerApi = {
 
   // Needed for selecting buildings in the creation form
   getBuildings: () => {
-    return axiosClient.get("/buildings/my?size=100");
+    return axiosClient.get("/buildings/my-options");
   }
 };
 

@@ -6,6 +6,7 @@ import com.apartment.management.features.building.dto.request.CreateBuildingRequ
 import com.apartment.management.features.building.dto.request.UpdateBuildingBankAccountRequest;
 import com.apartment.management.features.building.dto.response.BuildingBankAccountResponse;
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
+import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.mapper.BuildingMapper;
 import com.apartment.management.features.building.repository.BankAccountRepository;
@@ -23,6 +24,7 @@ import com.apartment.management.shared.enums.FolderName;
 import com.apartment.management.shared.exception.BusinessException;
 import com.apartment.management.shared.service.CloudService;
 import com.apartment.management.shared.service.CurrentUserService;
+import com.apartment.management.shared.utils.FileHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,6 +43,8 @@ import java.util.List;
 @Slf4j
 public class BuildingServiceImpl implements BuildingService {
 
+    private static final int MAX_BUILDING_IMAGES = 5;
+
     private final BuildingRepository buildingRepository;
     private final AccountRepository accountRepository;
     private final BankAccountRepository bankAccountRepository;
@@ -54,6 +58,7 @@ public class BuildingServiceImpl implements BuildingService {
     public BuildingResponse createOrUpdateBuilding(Long buildingId, CreateBuildingRequest request, List<MultipartFile> images) {
 
         List<String> uploadedImageUrls = new ArrayList<>();
+
         try {
             Building building = buildingId == null
                     ? newBuilding(request)
@@ -61,6 +66,7 @@ public class BuildingServiceImpl implements BuildingService {
 
             applyBuildingFields(building, request);
 
+            validateBuildingImageLimit(building, images);
             uploadImages(images, building, uploadedImageUrls);
 
             Building savedBuilding = buildingRepository.save(building);
@@ -118,6 +124,20 @@ public class BuildingServiceImpl implements BuildingService {
         return value.trim();
     }
 
+    private void validateBuildingImageLimit(Building building, List<MultipartFile> images) {
+        if (images == null || images.isEmpty()) {
+            return;
+        }
+
+        long newImageCount = images.stream()
+                .filter(image -> image != null && !image.isEmpty())
+                .count();
+
+        if (building.getImages().size() + newImageCount > MAX_BUILDING_IMAGES) {
+            throw new BusinessException("Each building can have at most " + MAX_BUILDING_IMAGES + " images");
+        }
+    }
+
     private void uploadImages(List<MultipartFile> images, Building building, List<String> uploadedImageUrls) {
         if (images == null || images.isEmpty()) {
             return;
@@ -127,6 +147,7 @@ public class BuildingServiceImpl implements BuildingService {
             if (image == null || image.isEmpty()) {
                 continue;
             }
+            FileHelper.validateImage(image);
 
             String imageUrl = cloudService.uploadImage(image, FolderName.BUILDING);
             uploadedImageUrls.add(imageUrl);
@@ -212,6 +233,21 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<BuildingOptionResponse> getMyBuildingOptions() {
+        Long landlordId = currentUserService.getCurrentUserId();
+
+        return buildingRepository.findAllByLandlord_AccountId(landlordId)
+                .stream()
+                .map(building -> new BuildingOptionResponse(
+                        building.getBuildingId(),
+                        building.getName(),
+                        building.getAddress()
+                ))
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public PageResponse<BuildingResponse> getBuildingsByLandlordId(
             BuildingFilterRequest filter,
             Pageable pageable
@@ -239,5 +275,4 @@ public class BuildingServiceImpl implements BuildingService {
 
         return PageResponse.from(buildingResponsePage);
     }
-
 }

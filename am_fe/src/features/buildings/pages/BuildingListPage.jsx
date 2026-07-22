@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Badge, Button, ButtonGroup, Modal, Table} from "react-bootstrap";
+import {Badge, Button, ButtonGroup, Form, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
 import {createOrUpdateBuilding, deleteBuilding, getMyBuildings} from "../services/buildingApi.js";
@@ -9,6 +9,7 @@ const initialFilters = {
     keyword: "",
     minFloor: "",
     maxFloor: "",
+    sort: "buildingId,desc",
 };
 
 const initialBuilding = {
@@ -80,6 +81,7 @@ function BuildingListPage() {
     const [filters, setFilters] = useState(initialFilters);
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
     const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
@@ -102,7 +104,7 @@ function BuildingListPage() {
                 const data = await getMyBuildings({
                     ...appliedFilters,
                     page,
-                    size: 9,
+                    size,
                 });
 
                 if (isCurrent) setResult(data);
@@ -123,7 +125,7 @@ function BuildingListPage() {
         return () => {
             isCurrent = false;
         };
-    }, [appliedFilters, page]);
+    }, [appliedFilters, page, size]);
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -139,6 +141,11 @@ function BuildingListPage() {
     const handleReset = () => {
         setFilters(initialFilters);
         setAppliedFilters(initialFilters);
+        setPage(0);
+    };
+
+    const handleSizeChange = (event) => {
+        setSize(Number(event.target.value));
         setPage(0);
     };
 
@@ -268,6 +275,19 @@ function BuildingListPage() {
                     onChange={handleChange}
                     placeholder="Tầng tối đa"
                 />
+                <Form.Select
+                    className="building-control"
+                    name="sort"
+                    value={filters.sort}
+                    onChange={handleChange}
+                    aria-label="Sắp xếp tòa nhà"
+                >
+                    <option value="buildingId,desc">Mới nhất</option>
+                    <option value="numberOfFloor,desc">Số tầng cao đến thấp</option>
+                    <option value="numberOfFloor,asc">Số tầng thấp đến cao</option>
+                    <option value="totalRooms,desc">Tổng phòng nhiều đến ít</option>
+                    <option value="totalRooms,asc">Tổng phòng ít đến nhiều</option>
+                </Form.Select>
                 <Button type="submit">Lọc</Button>
                 <Button variant="outline-secondary" type="button" onClick={handleReset}>Đặt lại</Button>
             </form>
@@ -346,16 +366,30 @@ function BuildingListPage() {
                 <div className="building-empty-state">Không có tòa nhà phù hợp với bộ lọc.</div>
             )}
 
-            {result && result.totalPages > 1 && (
-                <nav className="building-pagination" aria-label="Phân trang tòa nhà">
-                    <Button variant="outline-primary" type="button" disabled={!result.hasPrevious} onClick={() => setPage((current) => current - 1)}>
-                        Trang trước
-                    </Button>
-                    <span>Trang {result.page + 1} / {result.totalPages}</span>
-                    <Button variant="outline-primary" type="button" disabled={!result.hasNext} onClick={() => setPage((current) => current + 1)}>
-                        Trang sau
-                    </Button>
-                </nav>
+            {result && (
+                <div className="building-pagination-bar">
+                    <div className="building-page-size">
+                        <span>Hiển thị</span>
+                        <Form.Select value={size} onChange={handleSizeChange} aria-label="Số tòa nhà mỗi trang">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </Form.Select>
+                        <span>/ trang</span>
+                    </div>
+
+                    {result.totalPages > 1 && (
+                        <nav className="building-pagination" aria-label="Phân trang tòa nhà">
+                            <Button variant="outline-primary" type="button" disabled={!result.hasPrevious} onClick={() => setPage((current) => current - 1)}>
+                                Trang trước
+                            </Button>
+                            <span>Trang {result.page + 1} / {result.totalPages}</span>
+                            <Button variant="outline-primary" type="button" disabled={!result.hasNext} onClick={() => setPage((current) => current + 1)}>
+                                Trang sau
+                            </Button>
+                        </nav>
+                    )}
+                </div>
             )}
 
             <Modal show={showCreateModal} onHide={closeCreateModal} size="lg" centered>
