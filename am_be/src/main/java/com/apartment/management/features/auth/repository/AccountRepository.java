@@ -12,4 +12,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @org.springframework.data.jpa.repository.Query("SELECT a FROM Account a JOIN a.buildings b WHERE b.landlord.accountId = :landlordId AND a.role = 'MANAGER'")
     java.util.List<Account> findManagersByLandlordId(Long landlordId);
+
+    @org.springframework.data.jpa.repository.Query("SELECT a FROM Account a JOIN a.buildings b WHERE b.buildingId = :buildingId AND a.role = 'MANAGER'")
+    java.util.List<Account> findManagersByBuildingId(Long buildingId);
 }

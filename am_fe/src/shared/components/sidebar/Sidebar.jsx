@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {BoxArrowRight, Building, CarFront, List, People, Speedometer2, X} from 'react-bootstrap-icons';
+import {BoxArrowRight, Building, CarFront, List, People, Speedometer2, X, EnvelopePaper} from 'react-bootstrap-icons';
 import {useAuth} from '../../context/AuthContext.jsx';
 import './Sidebar.css';
 
@@ -10,7 +10,8 @@ const menuItems = [
     {to: '/rooms', label: 'Danh sách phòng', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/tenants', label: 'Cư dân', icon: List, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
     {to: '/vehicles', label: 'Phương tiện', icon: CarFront, roles: ['LANDLORD', 'MANAGER', 'ADMIN']},
-    {to: '/managers', label: 'Quản lý Nhân sự', icon: People, roles: ['LANDLORD']}
+    {to: '/managers', label: 'Quản lý Nhân sự', icon: People, roles: ['LANDLORD']},
+    {to: '/notifications', label: 'Gửi thông báo', icon: EnvelopePaper, roles: ['LANDLORD']}
 ];
 
 function SidebarItem({to, label, icon: Icon}) {

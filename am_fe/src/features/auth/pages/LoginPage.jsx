@@ -28,6 +28,8 @@ function LoginPage() {
       const msg =
         err.response?.data?.message ||
         err.response?.data?.error ||
+        (typeof err.response?.data === 'string' ? err.response?.data : null) ||
+        err.message ||
         "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.";
       setError(msg);
     } finally {
@@ -59,7 +61,7 @@ function LoginPage() {
               </defs>
             </svg>
           </div>
-          <h1 className="login-title">HostEye</h1>
+          <h1 className="login-title">My Apartment</h1>
           <p className="login-subtitle">Hệ thống quản lý căn hộ thông minh</p>
         </div>
 
@@ -153,7 +155,7 @@ function LoginPage() {
         </form>
 
         <p className="login-footer">
-          HostEye &copy; {new Date().getFullYear()} — Apartment Management System
+          My Apartment &copy; {new Date().getFullYear()} — Apartment Management System
         </p>
       </div>
     </div>
