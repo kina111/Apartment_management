@@ -97,6 +97,24 @@ public class BuildingServiceImpl implements BuildingService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
     }
 
+    private Building findAccessibleBuilding(Long buildingId) {
+        Long accountId = currentUserService.getCurrentUserId();
+
+        Building building = buildingRepository.findByBuildingId(buildingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+
+        boolean isLandlord = building.getLandlord() != null
+                && building.getLandlord().getAccountId().equals(accountId);
+        boolean isAssignedManager = building.getManagers().stream()
+                .anyMatch(manager -> manager.getAccountId().equals(accountId));
+
+        if (!isLandlord && !isAssignedManager) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        }
+
+        return building;
+    }
+
     private void applyBuildingFields(Building building, CreateBuildingRequest request) {
         building.setName(request.getName().trim());
         building.setAddress(request.getAddress().trim());
@@ -185,7 +203,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     @Transactional(readOnly = true)
     public BuildingDetailResponse getBuildingDetail(Long buildingId) {
-        Building building = findOwnedBuilding(buildingId);
+        Building building = findAccessibleBuilding(buildingId);
 
         return buildingMapper.toDetailResponse(building);
     }

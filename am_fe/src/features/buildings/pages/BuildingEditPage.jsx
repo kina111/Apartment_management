@@ -3,6 +3,7 @@ import {Badge, Button} from "react-bootstrap";
 import {Link, useParams} from "react-router-dom";
 import {createOrUpdateBuilding, getBuildingDetail, updateBuildingBankAccount} from "../services/buildingApi.js";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
+import {useAuth} from "../../../shared/context/AuthContext.jsx";
 import "../buildings.css";
 
 const initialBuilding = {
@@ -134,6 +135,7 @@ function validateBankAccount(bankAccount) {
 
 function BuildingEditPage() {
     const {buildingId} = useParams();
+    const {role} = useAuth();
     const [building, setBuilding] = useState(initialBuilding);
     const [buildingDetail, setBuildingDetail] = useState(null);
     const [bankAccount, setBankAccount] = useState(initialBankAccount);
@@ -272,6 +274,17 @@ function BuildingEditPage() {
 
     if (isLoading) {
         return <div className="building-empty-state">Đang tải thông tin tòa nhà...</div>;
+    }
+
+    if (role === "MANAGER") {
+        return (
+            <div className="building-create-page">
+                <p className="building-alert building-alert--danger">Bạn chỉ có quyền xem tòa nhà này.</p>
+                <Button as={Link} variant="outline-secondary" to={`/buildings/${buildingId}`}>
+                    Về chi tiết
+                </Button>
+            </div>
+        );
     }
 
     if (loadError) {

@@ -34,4 +34,17 @@ public class GlobalExceptionHandler {
                         "message", message
                 ));
     }
+
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<Map<String, Object>> handleUnsupportedOperationException(UnsupportedOperationException exception) {
+        String message = exception.getMessage() != null ? exception.getMessage() : "Thao tác không được hỗ trợ";
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "status", HttpStatus.BAD_REQUEST.value(),
+                        "error", "Bad Request",
+                        "message", message
+                ));
+    }
 }

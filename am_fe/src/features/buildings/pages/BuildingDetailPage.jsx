@@ -11,6 +11,7 @@ import {
     updateRoomType,
 } from "../../rooms/services/roomApi.js";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
+import {useAuth} from "../../../shared/context/AuthContext.jsx";
 import "../buildings.css";
 
 const initialRoomTypeForm = {
@@ -188,6 +189,8 @@ function DetailField({label, value}) {
 function BuildingDetailPage() {
     const {buildingId} = useParams();
     const [searchParams] = useSearchParams();
+    const {role} = useAuth();
+    const canManageBuilding = role !== "MANAGER";
     const [building, setBuilding] = useState(null);
     const [buildingForm, setBuildingForm] = useState(initialBuildingForm);
     const [buildingErrors, setBuildingErrors] = useState({});
@@ -196,7 +199,7 @@ function BuildingDetailPage() {
     const [bankAccount, setBankAccount] = useState(initialBankAccount);
     const [bankErrors, setBankErrors] = useState({});
     const [isEditingBank, setIsEditingBank] = useState(false);
-    const [isEditingBuilding, setIsEditingBuilding] = useState(searchParams.get("edit") === "1");
+    const [isEditingBuilding, setIsEditingBuilding] = useState(canManageBuilding && searchParams.get("edit") === "1");
     const [activeTab, setActiveTab] = useState("building");
     const [roomTypes, setRoomTypes] = useState([]);
     const [rooms, setRooms] = useState([]);
@@ -286,6 +289,8 @@ function BuildingDetailPage() {
     }, [activeTab, buildingId]);
 
     const handleBankChange = (event) => {
+        if (!canManageBuilding) return;
+
         const {name, value} = event.target;
 
         setBankAccount((current) => ({...current, [name]: value}));
@@ -295,6 +300,8 @@ function BuildingDetailPage() {
     };
 
     const handleBuildingChange = (event) => {
+        if (!canManageBuilding) return;
+
         const {name, value} = event.target;
 
         setBuildingForm((current) => ({...current, [name]: value}));
@@ -304,10 +311,14 @@ function BuildingDetailPage() {
     };
 
     const handleImagesChange = (event) => {
+        if (!canManageBuilding) return;
+
         setImages(Array.from(event.target.files || []));
     };
 
     const handleRoomTypeChange = (event) => {
+        if (!canManageBuilding) return;
+
         const {name, value} = event.target;
 
         setRoomTypeForm((current) => ({...current, [name]: value}));
@@ -317,6 +328,8 @@ function BuildingDetailPage() {
     };
 
     const handleQuickRoomChange = (event) => {
+        if (!canManageBuilding) return;
+
         const {name, value} = event.target;
 
         setQuickRoomForm((current) => ({...current, [name]: value}));
@@ -336,6 +349,8 @@ function BuildingDetailPage() {
 
     const handleBuildingSubmit = async (event) => {
         event.preventDefault();
+
+        if (!canManageBuilding) return;
 
         const validationErrors = validateBuilding(buildingForm);
         setBuildingErrors(validationErrors);
@@ -384,6 +399,8 @@ function BuildingDetailPage() {
     const handleBankSubmit = async (event) => {
         event.preventDefault();
 
+        if (!canManageBuilding) return;
+
         const validationErrors = validateBankAccount(bankAccount);
         setBankErrors(validationErrors);
 
@@ -407,6 +424,8 @@ function BuildingDetailPage() {
     };
 
     const startEditRoomType = (roomType) => {
+        if (!canManageBuilding) return;
+
         setEditingRoomTypeId(roomType.roomTypeId);
         setRoomTypeForm(mapRoomTypeToForm(roomType));
         setRoomTypeErrors({});
@@ -416,6 +435,8 @@ function BuildingDetailPage() {
     };
 
     const openCreateRoomTypeModal = () => {
+        if (!canManageBuilding) return;
+
         setEditingRoomTypeId(null);
         setRoomTypeForm(initialRoomTypeForm);
         setRoomTypeErrors({});
@@ -434,6 +455,8 @@ function BuildingDetailPage() {
 
     const handleRoomTypeSubmit = async (event) => {
         event.preventDefault();
+
+        if (!canManageBuilding) return;
 
         const validationErrors = validateRoomType(roomTypeForm);
         setRoomTypeErrors(validationErrors);
@@ -472,6 +495,8 @@ function BuildingDetailPage() {
     };
 
     const handleDeleteRoomType = async (roomTypeId) => {
+        if (!canManageBuilding) return;
+
         setRoomTypeSubmitError("");
         setRoomTypeSubmitSuccess("");
 
@@ -485,6 +510,8 @@ function BuildingDetailPage() {
     };
 
     const openQuickRoomForm = (floorNumber) => {
+        if (!canManageBuilding) return;
+
         setQuickRoomFloor(floorNumber);
         setQuickRoomForm({
             roomName: "",
@@ -504,6 +531,8 @@ function BuildingDetailPage() {
 
     const handleQuickRoomSubmit = async (event) => {
         event.preventDefault();
+
+        if (!canManageBuilding) return;
 
         const validationErrors = validateQuickRoom(quickRoomForm);
         setQuickRoomErrors(validationErrors);
@@ -595,7 +624,7 @@ function BuildingDetailPage() {
                     <div>
                         <h2 className="building-section-title">Thông tin tòa nhà</h2>
                     </div>
-                    {!isEditingBuilding && (
+                    {canManageBuilding && !isEditingBuilding && (
                         <Button type="button" onClick={() => setIsEditingBuilding(true)}>Chỉnh sửa</Button>
                     )}
                 </div>
@@ -738,11 +767,13 @@ function BuildingDetailPage() {
                             <DetailField label="Ngân hàng" value={building.bankAccount.bankName}/>
                             <DetailField label="Số tài khoản" value={building.bankAccount.accountNumber}/>
                             <DetailField label="Chủ tài khoản" value={building.bankAccount.userName}/>
-                            <div className="building-field building-field--full">
-                                <Button type="button" onClick={() => setIsEditingBank(true)}>Chỉnh sửa tài khoản</Button>
-                            </div>
+                            {canManageBuilding && (
+                                <div className="building-field building-field--full">
+                                    <Button type="button" onClick={() => setIsEditingBank(true)}>Chỉnh sửa tài khoản</Button>
+                                </div>
+                            )}
                         </div>
-                    ) : (
+                    ) : canManageBuilding ? (
                         <form className="building-form" onSubmit={handleBankSubmit}>
                             <div className="building-form-grid">
                                 <div className="building-field">
@@ -774,6 +805,8 @@ function BuildingDetailPage() {
                                 <Button type="submit" disabled={isSavingBank}>{isSavingBank ? "Đang lưu..." : "Lưu tài khoản"}</Button>
                             </div>
                         </form>
+                    ) : (
+                        <div className="building-empty-state">Tòa nhà chưa cấu hình tài khoản nhận tiền.</div>
                     )}
                 </div>
             </section>
@@ -788,7 +821,7 @@ function BuildingDetailPage() {
                             <div>
                                 <h2 className="building-section-title">Loại phòng</h2>
                             </div>
-                            <Button type="button" onClick={openCreateRoomTypeModal}>Thêm loại phòng</Button>
+                            {canManageBuilding && <Button type="button" onClick={openCreateRoomTypeModal}>Thêm loại phòng</Button>}
                         </div>
                         <div className="section-card-body">
                             {roomTypeSubmitError && <p className="building-alert building-alert--danger">{roomTypeSubmitError}</p>}
@@ -802,10 +835,12 @@ function BuildingDetailPage() {
                                             <p>{roomType.capacity} người · {roomType.area} m²</p>
                                             {roomType.description && <span>{roomType.description}</span>}
                                         </div>
-                                        <div className="building-room-type-actions">
-                                            <Button type="button" variant="outline-primary" size="sm" onClick={() => startEditRoomType(roomType)}>Sửa</Button>
-                                            <Button type="button" variant="outline-danger" size="sm" onClick={() => handleDeleteRoomType(roomType.roomTypeId)}>Xóa</Button>
-                                        </div>
+                                        {canManageBuilding && (
+                                            <div className="building-room-type-actions">
+                                                <Button type="button" variant="outline-primary" size="sm" onClick={() => startEditRoomType(roomType)}>Sửa</Button>
+                                                <Button type="button" variant="outline-danger" size="sm" onClick={() => handleDeleteRoomType(roomType.roomTypeId)}>Xóa</Button>
+                                            </div>
+                                        )}
                                     </div>
                                 )) : (
                                     <div className="building-empty-state">Chưa có loại phòng. Hãy thêm loại phòng trước khi tạo phòng nhanh.</div>
@@ -867,10 +902,10 @@ function BuildingDetailPage() {
 
                                     return (
                                         <div className="building-floor-row" key={floorNumber}>
-                                            <div className="building-floor-header">
-                                                <h3>Tầng {floorNumber}</h3>
-                                                <Button type="button" size="sm" onClick={() => openQuickRoomForm(floorNumber)} disabled={roomTypes.length === 0}>+ Thêm phòng nhanh</Button>
-                                            </div>
+                                    <div className="building-floor-header">
+                                        <h3>Tầng {floorNumber}</h3>
+                                        {canManageBuilding && <Button type="button" size="sm" onClick={() => openQuickRoomForm(floorNumber)} disabled={roomTypes.length === 0}>+ Thêm phòng nhanh</Button>}
+                                    </div>
 
                                             {floorRooms.length > 0 ? (
                                                 <div className="building-floor-room-list">
@@ -886,7 +921,7 @@ function BuildingDetailPage() {
                                                 <p className="building-floor-empty">Chưa có phòng ở tầng này.</p>
                                             )}
 
-                                            {isCurrentFloor && (
+                                    {canManageBuilding && isCurrentFloor && (
                                                 <form className="building-quick-room-form" onSubmit={handleQuickRoomSubmit}>
                                                     <div className="building-field">
                                                         <label className="building-label">Tên phòng <span className="required-mark">*</span></label>

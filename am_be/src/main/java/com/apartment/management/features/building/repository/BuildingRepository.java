@@ -18,4 +18,7 @@ public interface BuildingRepository extends JpaRepository<Building, Long>, JpaSp
 
     @EntityGraph(attributePaths = "images")
     Optional<Building> findByBuildingIdAndLandlord_AccountId(Long buildingId, Long landlordId);
+
+    @EntityGraph(attributePaths = {"images", "managers"})
+    Optional<Building> findByBuildingId(Long buildingId);
 }

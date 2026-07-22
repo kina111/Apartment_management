@@ -49,7 +49,10 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoomResponse> getRoomsByBuildingId(Long buildingId) {
+        findAccessibleBuilding(buildingId);
+
         return roomRepository.findByBuildingId(buildingId).stream().map(roomMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -124,6 +127,24 @@ public class RoomService implements IRoomService {
 
         return buildingRepository.findByBuildingIdAndLandlord_AccountId(buildingId, landlordId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+    }
+
+    private Building findAccessibleBuilding(Long buildingId) {
+        Long accountId = currentUserService.getCurrentUserId();
+
+        Building building = buildingRepository.findByBuildingId(buildingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found"));
+
+        boolean isLandlord = building.getLandlord() != null
+                && building.getLandlord().getAccountId().equals(accountId);
+        boolean isAssignedManager = building.getManagers().stream()
+                .anyMatch(manager -> manager.getAccountId().equals(accountId));
+
+        if (!isLandlord && !isAssignedManager) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        }
+
+        return building;
     }
 
     private RoomType findRoomType(Long roomTypeId) {

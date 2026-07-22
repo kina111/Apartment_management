@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Badge, Button, ButtonGroup, Form, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
-import {createOrUpdateBuilding, deleteBuilding, getMyBuildings} from "../services/buildingApi.js";
+import {createOrUpdateBuilding, deleteBuilding, getAllBuildingsByManagerId, getMyBuildings} from "../services/buildingApi.js";
 import {useAuth} from "../../../shared/context/AuthContext.jsx";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import "../buildings.css";
@@ -101,14 +101,23 @@ function BuildingListPage() {
             setError("");
 
             try {
-                const data = await getMyBuildings({
-                    ...appliedFilters,
-                    managerId: isManager ? user?.accountId : undefined,
-                    page,
-                    size,
-                });
+                const data = isManager
+                    ? await getAllBuildingsByManagerId(user?.accountId)
+                    : await getMyBuildings({
+                        ...appliedFilters,
+                        page,
+                        size,
+                    });
 
-                if (isCurrent) setResult(data);
+                if (isCurrent) {
+                    setResult(isManager ? {
+                        items: data,
+                        totalElements: data.length,
+                        totalPages: 1,
+                        page: 0,
+                        size: data.length,
+                    } : data);
+                }
             } catch (requestError) {
                 if (isCurrent) {
                     setError(getErrorMessage(requestError, "Không thể tải danh sách tòa nhà"));
@@ -241,9 +250,11 @@ function BuildingListPage() {
                 <div>
                     <h1 className="page-title">Tòa nhà của tôi</h1>
                 </div>
-                <Button type="button" onClick={openCreateModal}>
-                    Thêm mới tòa nhà
-                </Button>
+                {!isManager && (
+                    <Button type="button" onClick={openCreateModal}>
+                        Thêm mới tòa nhà
+                    </Button>
+                )}
             </header>
 
             <form className="building-filter-panel" onSubmit={handleSubmit}>
@@ -335,23 +346,27 @@ function BuildingListPage() {
                                                 <Eye className="me-1"/>
                                                 Chi tiết
                                             </Button>
-                                            <Button
-                                                as={Link}
-                                                to={`/buildings/${building.buildingId}?edit=1`}
-                                                variant="outline-primary"
-                                            >
-                                                <PencilSquare className="me-1"/>
-                                                Sửa
-                                            </Button>
-                                             <Button
-                                                 variant="outline-danger"
-                                                 type="button"
-                                                 disabled={deletingBuildingId === building.buildingId}
-                                                 onClick={() => handleDeleteBuilding(building)}
-                                             >
-                                                 <Trash className="me-1"/>
-                                                 {deletingBuildingId === building.buildingId ? "Đang xóa..." : "Xóa"}
-                                             </Button>
+                                             {!isManager && (
+                                                 <>
+                                                     <Button
+                                                         as={Link}
+                                                         to={`/buildings/${building.buildingId}?edit=1`}
+                                                         variant="outline-primary"
+                                                     >
+                                                         <PencilSquare className="me-1"/>
+                                                         Sửa
+                                                     </Button>
+                                                     <Button
+                                                         variant="outline-danger"
+                                                         type="button"
+                                                         disabled={deletingBuildingId === building.buildingId}
+                                                         onClick={() => handleDeleteBuilding(building)}
+                                                     >
+                                                         <Trash className="me-1"/>
+                                                         {deletingBuildingId === building.buildingId ? "Đang xóa..." : "Xóa"}
+                                                     </Button>
+                                                 </>
+                                             )}
                                         </ButtonGroup>
                                     </td>
                                 </tr>

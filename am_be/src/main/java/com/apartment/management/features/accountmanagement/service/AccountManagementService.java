@@ -13,9 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountManagementService {
@@ -85,7 +84,7 @@ public class AccountManagementService {
                 .password(passwordEncoder.encode(request.password()))
                 .role(Role.MANAGER)
                 .status(AccountStatus.ACTIVE)
-                .buildings(Set.copyOf(selectedBuildings))
+                .buildings(new HashSet<>(selectedBuildings))
                 .build();
 
         Account saved = accountRepository.save(manager);
@@ -112,14 +111,14 @@ public class AccountManagementService {
         manager.setAccountName(request.accountName());
         manager.setEmail(request.email());
         manager.setStatus(AccountStatus.valueOf(request.status()));
-        manager.setBuildings(Set.copyOf(selectedBuildings));
+        manager.getBuildings().clear();
+        manager.getBuildings().addAll(selectedBuildings);
 
         if (request.password() != null && !request.password().trim().isEmpty()) {
             manager.setPassword(passwordEncoder.encode(request.password()));
         }
 
-        Account saved = accountRepository.save(manager);
-        return mapToResponse(saved);
+        return mapToResponse(manager);
     }
 
     @Transactional
@@ -146,7 +145,6 @@ public class AccountManagementService {
 
         // Clear buildings to remove relationships in Account_Buildings join table
         manager.getBuildings().clear();
-        accountRepository.save(manager);
 
         // Delete the account
         accountRepository.delete(manager);
