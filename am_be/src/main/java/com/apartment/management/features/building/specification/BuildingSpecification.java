@@ -23,7 +23,6 @@ public class BuildingSpecification {
                     landlordId
             ));
 
-
             //filter
             if (filter != null) {
                 //filter by keywork
@@ -56,6 +55,4 @@ public class BuildingSpecification {
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         };
     }
-
-
 }

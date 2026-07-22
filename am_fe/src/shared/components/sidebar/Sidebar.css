@@ -5,7 +5,7 @@
     flex: 0 0 var(--app-sidebar-width);
     flex-direction: column;
     width: var(--app-sidebar-width);
-    min-height: 100vh;
+    height: 100vh;
     padding: 20px 16px;
     border-right: 1px solid var(--app-border);
     background: var(--app-sidebar-bg);
@@ -65,6 +65,10 @@
 .sidebar-nav {
     display: grid;
     gap: 8px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: start;
 }
 
 .sidebar-nav-link {
