@@ -181,6 +181,15 @@ const NotificationPage = () => {
                                 <Save size={14} /> {savingConfig ? 'Đang lưu...' : 'Lưu Cấu Hình'}
                             </button>
                         </div>
+                        
+                        <div className="alert alert-info py-2 px-3 mb-3" style={{ fontSize: '0.85rem' }}>
+                            <strong>Hướng dẫn cấu hình Gmail SMTP:</strong>
+                            <ul className="mb-0 ps-3 mt-1">
+                                <li><strong>SMTP Server/Port:</strong> Hệ thống đã tự động cấu hình (smtp.gmail.com:587 - TLS).</li>
+                                <li><strong>Email cá nhân:</strong> Địa chỉ Gmail của bạn (ví dụ: tenban@gmail.com).</li>
+                                <li><strong>Mật khẩu ứng dụng:</strong> Không dùng mật khẩu đăng nhập Gmail. Bạn phải bật <em>Xác minh 2 bước</em> cho tài khoản Google, sau đó tạo <em>Mật khẩu ứng dụng (App Password)</em> 16 ký tự (nhập viết liền, không khoảng trắng).</li>
+                            </ul>
+                        </div>
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Email cá nhân (Gmail)</label>

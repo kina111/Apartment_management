@@ -48,6 +48,11 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Skip interceptor if the error is from the login endpoint
+    if (originalRequest.url?.includes("/auth/login")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         // Queue the request while another refresh is already in progress
@@ -69,7 +74,10 @@ axiosClient.interceptors.response.use(
       if (!refreshToken) {
         // No refresh token available — force logout
         localStorage.clear();
-        window.location.href = "/login";
+        // Only redirect if not already on login page to prevent infinite reload loops
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
         return Promise.reject(error);
       }
 

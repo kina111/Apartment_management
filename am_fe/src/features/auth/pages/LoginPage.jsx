@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
+import { toast } from "react-toastify";
 import "./LoginPage.css";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,6 +17,13 @@ function LoginPage() {
 
   // Redirect back to the page the user tried to visit before being redirected to login
   const from = location.state?.from?.pathname || "/buildings";
+
+  useEffect(() => {
+    // If the user is already logged in, redirect them away from the login page
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +40,7 @@ function LoginPage() {
         err.message ||
         "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.";
       setError(msg);
+      toast.error(msg);
     } finally {
       setIsLoading(false);
     }

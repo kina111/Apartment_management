@@ -16,6 +16,8 @@ public class UserDetailsImpl implements UserDetails {
     private final String role;
     private final Collection<? extends GrantedAuthority> authorities;
 
+    private final boolean isEnabled;
+
     public UserDetailsImpl(Account account) {
         this.accountId = account.getAccountId();
         this.username = account.getAccountName();
@@ -23,6 +25,7 @@ public class UserDetailsImpl implements UserDetails {
         this.role = account.getRole().name();
         // Spring Security expects roles prefixed with ROLE_
         this.authorities = List.of(new SimpleGrantedAuthority("ROLE_" + account.getRole().name()));
+        this.isEnabled = account.getStatus() == com.apartment.management.shared.enums.AccountStatus.ACTIVE;
     }
 
     public Long getAccountId() {
@@ -65,6 +68,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

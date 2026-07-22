@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "building")
-@SQLDelete(sql = "UPDATE building SET deleted = 1, deleted_at = GETDATE() WHERE building_id = ?")
+@SQLDelete(sql = "UPDATE building SET deleted = 1, deleted_at = CURRENT_TIMESTAMP WHERE building_id = ?")
 @SQLRestriction("deleted = 0")
 @Getter
 @Setter
@@ -38,7 +38,7 @@ public class Building {
     private String address;
 
     @Nationalized
-    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "area")
@@ -60,7 +60,7 @@ public class Building {
     private String email;
 
     @Builder.Default
-    @Column(name = "deleted", nullable = false, columnDefinition = "BIT DEFAULT 0")
+    @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
     private Boolean deleted = false;
 
     @Column(name = "deleted_at")

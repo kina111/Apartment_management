@@ -47,4 +47,23 @@ public class GlobalExceptionHandler {
                         "message", message
                 ));
     }
+
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthenticationException(org.springframework.security.core.AuthenticationException exception) {
+        String message = "Sai tài khoản hoặc mật khẩu";
+        
+        if (exception instanceof org.springframework.security.authentication.DisabledException ||
+            (exception.getCause() instanceof org.springframework.security.authentication.DisabledException) ||
+            (exception.getMessage() != null && exception.getMessage().contains("User is disabled"))) {
+            message = "Tài khoản của bạn đã bị vô hiệu hóa";
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "status", HttpStatus.UNAUTHORIZED.value(),
+                        "error", "Unauthorized",
+                        "message", message
+                ));
+    }
 }
