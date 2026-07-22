@@ -29,7 +29,7 @@ public class RoomType {
     @Column(name = "area", nullable = false)
     private Double area;
 
-    @Column(name = "description", columnDefinition = "nvarchar(max)")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

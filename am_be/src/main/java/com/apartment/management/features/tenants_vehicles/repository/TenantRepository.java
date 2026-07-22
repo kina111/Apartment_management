@@ -52,5 +52,18 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
             """)
     @EntityGraph(attributePaths = {"emergencyContacts", "vehicles", "contractTenants"})
     List<Tenant> findTenantsByBuildingId(Long buildingId);
+
+    @Query("""
+            SELECT DISTINCT t
+            FROM Tenant t
+            JOIN t.contractTenants ct
+            JOIN ct.contract c
+            JOIN c.room r
+            WHERE r.building.landlord.accountId = :landlordId
+              AND ct.leaveDate IS NULL
+              AND c.status = 'ACTIVE'
+            """)
+    @EntityGraph(attributePaths = {"emergencyContacts", "vehicles", "contractTenants"})
+    List<Tenant> findTenantsByLandlordId(Long landlordId);
 }
 

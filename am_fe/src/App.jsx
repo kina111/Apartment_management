@@ -16,6 +16,9 @@ import React, { lazy } from "react";
 
 const ManagerListPage = lazy(() => import("./features/account-management/pages/ManagerListPage.jsx"));
 const ManagerCreatePage = lazy(() => import("./features/account-management/pages/ManagerCreatePage.jsx"));
+import NotificationPage from "./features/notifications/pages/NotificationPage.jsx";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   ContractListPage,
@@ -41,7 +44,9 @@ function App() {
   }, [user?.accountId]);
 
   return (
-    <BrowserRouter>
+    <>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      <BrowserRouter>
       <Routes>
         {/* ── Public Routes ── */}
         <Route path="/login" element={<LoginPage />} />
@@ -111,12 +116,14 @@ function App() {
                 <ManagerCreatePage />
               </React.Suspense>
             } />
+            <Route path="/notifications" element={<NotificationPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/buildings" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 

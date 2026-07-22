@@ -19,6 +19,12 @@ public class EmailConfiguration {
     @Column(name = "email_config_id")
     private Long emailConfigId;
 
+    @Column(name = "sender_email")
+    private String senderEmail;
+
+    @Column(name = "sender_password")
+    private String senderPassword;
+
     @Builder.Default
     @Column(name = "invoice_send_day", nullable = false)
     private Integer invoiceSendDay = 5;
