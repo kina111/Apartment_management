@@ -1,7 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import BuildingCreatePage from "./features/buildings/pages/BuildingCreatePage.jsx";
 import RoomListPage from "./features/rooms/pages/RoomListPage.jsx";
 import MainLayout from "./shared/components/MainLayout.jsx";
+import BuildingDetailPage from "./features/buildings/pages/BuildingDetailPage.jsx";
+import BuildingEditPage from "./features/buildings/pages/BuildingEditPage.jsx";
+import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 import { useEffect, useState } from "react";
 import { getAllBuildingsByManagerId } from "./features/buildings/services/buildingApi.js";
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";

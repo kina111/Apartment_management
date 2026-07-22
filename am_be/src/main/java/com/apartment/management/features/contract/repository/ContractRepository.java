@@ -52,4 +52,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
     Optional<Contract> findByRoomCodeAndStatus(String roomCode, ContractStatus status);
 
     boolean existsByRoom_Building_BuildingIdAndStatus(Long buildingId, ContractStatus status);
+
+    @Query("SELECT c FROM Contract c WHERE c.endDate <= :today AND c.status = com.apartment.management.shared.enums.ContractStatus.ACTIVE")
+    List<Contract> findExpiredContracts(@Param("today") LocalDate today);
 }

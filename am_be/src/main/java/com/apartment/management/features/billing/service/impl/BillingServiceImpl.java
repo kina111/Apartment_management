@@ -5,7 +5,7 @@ import com.apartment.management.features.billing.mapper.InvoiceMapper;
 import com.apartment.management.features.billing.repository.InvoiceRepository;
 import com.apartment.management.features.billing.repository.InvoiceSpecification;
 import com.apartment.management.features.billing.service.IBillingService;
-import com.apartment.management.features.building.repository.AccountRepository;
+import com.apartment.management.features.auth.repository.AccountRepository;
 import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.infrastructure.notification.IEmailService;
 import com.apartment.management.shared.entity.*;

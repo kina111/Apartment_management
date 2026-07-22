@@ -57,31 +57,30 @@ UPDATE building SET name = N'Test Building B', address = N'456 Lê Lợi, TP. H�
 
 
 
--- Accounts seeding
-IF NOT EXISTS (SELECT 1 FROM [account] WHERE email = 'landlord.test@ams.local')
+IF NOT EXISTS (SELECT 1 FROM [account] WHERE email = 'landlord01@hosteye.com')
     INSERT INTO [account] (account_name, password, email, role, status)
-    VALUES ('landlord_test', '123456', 'landlord.test@ams.local', 'LANDLORD', 'ACTIVE');
+    VALUES ('landlord01', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'landlord01@hosteye.com', 'LANDLORD', 'ACTIVE');
 
 IF NOT EXISTS (SELECT 1 FROM [account] WHERE email = 'manager.test@ams.local')
     INSERT INTO [account] (account_name, password, email, role, status)
-    VALUES ('manager_test', '123456', 'manager.test@ams.local', 'MANAGER', 'ACTIVE');
+    VALUES ('manager_test', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'manager.test@ams.local', 'MANAGER', 'ACTIVE');
 
 IF NOT EXISTS (SELECT 1 FROM [account] WHERE email = 'admin.test@ams.local')
     INSERT INTO [account] (account_name, password, email, role, status)
-    VALUES ('admin_test', '123456', 'admin.test@ams.local', 'ADMIN', 'ACTIVE');
+    VALUES ('admin_test', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'admin.test@ams.local', 'ADMIN', 'ACTIVE');
 
 -- Buildings seeding
 IF NOT EXISTS (SELECT 1 FROM building WHERE name = N'Test Building A')
     INSERT INTO building (name, number_of_floor, address, description, landlord_id)
     SELECT N'Test Building A', 5, N'123 Nguyen Trai, Ha Noi', N'Dev seed building for UC-01 testing', account_id
     FROM [account]
-    WHERE email = 'landlord.test@ams.local';
+    WHERE email = 'landlord01@hosteye.com';
 
 IF NOT EXISTS (SELECT 1 FROM building WHERE name = N'Test Building B')
     INSERT INTO building (name, number_of_floor, address, description, landlord_id)
     SELECT N'Test Building B', 3, N'456 Le Loi, Ho Chi Minh City', N'Second dev seed building', account_id
     FROM [account]
-    WHERE email = 'landlord.test@ams.local';
+    WHERE email = 'landlord01@hosteye.com';
 
 -- Building Images
 IF NOT EXISTS (SELECT 1 FROM building_image WHERE url = 'https://res.cloudinary.com/demo/image/upload/sample.jpg')
@@ -262,41 +261,41 @@ IF NOT EXISTS (SELECT 1 FROM tenant WHERE phone_number = '0908765432')
 -- Contract seeding (Active Contract for A102 held by Trần Văn B)
 IF NOT EXISTS (SELECT 1 FROM contract WHERE room_code = 'A102' AND status = 'ACTIVE')
 BEGIN
-    DECLARE @ContractId TABLE (id BIGINT);
+    DECLARE @ContractId TABLE (id BIGINT)
 
     INSERT INTO contract (rent, deposit_amount, start_date, end_date, status, room_code)
     OUTPUT INSERTED.contract_id INTO @ContractId
-    VALUES (5000000, 10000000, '2026-01-01', '2026-12-31', 'ACTIVE', 'A102');
+    VALUES (5000000, 10000000, '2026-01-01', '2026-12-31', 'ACTIVE', 'A102')
 
-    DECLARE @NewContractId BIGINT;
-    SELECT TOP 1 @NewContractId = id FROM @ContractId;
+    DECLARE @NewContractId BIGINT
+    SELECT TOP 1 @NewContractId = id FROM @ContractId
 
     -- Add ContractTenant Link
     INSERT INTO contract_tenants (contract_id, tenant_id, is_contract_holder, join_date)
     SELECT @NewContractId, tenant_id, 1, '2026-01-01'
     FROM tenant
-    WHERE phone_number = '0912345678';
+    WHERE phone_number = '0912345678'
 
     -- Add Service Fees
     INSERT INTO service_fee (name, fee, charge_type, contract_id)
     VALUES
     (N'Điện', 4000, 'PER_INDEX', @NewContractId),
-    (N'Nước', 30000, 'PER_ROOM', @NewContractId);
+    (N'Nước', 30000, 'PER_ROOM', @NewContractId)
 END
 
 -- Link manager.test@ams.local to Test Building A and Test Building B
 IF EXISTS (SELECT 1 FROM [account] WHERE email = 'manager.test@ams.local')
 BEGIN
-    DECLARE @ManagerId BIGINT;
-    SELECT @ManagerId = account_id FROM [account] WHERE email = 'manager.test@ams.local';
+    DECLARE @ManagerId BIGINT
+    SELECT @ManagerId = account_id FROM [account] WHERE email = 'manager.test@ams.local'
 
     IF NOT EXISTS (SELECT 1 FROM account_buildings WHERE account_id = @ManagerId AND building_id IN (SELECT building_id FROM building WHERE name = N'Test Building A'))
         INSERT INTO account_buildings (account_id, building_id)
-        SELECT @ManagerId, building_id FROM building WHERE name = N'Test Building A';
+        SELECT @ManagerId, building_id FROM building WHERE name = N'Test Building A'
 
     IF NOT EXISTS (SELECT 1 FROM account_buildings WHERE account_id = @ManagerId AND building_id IN (SELECT building_id FROM building WHERE name = N'Test Building B'))
         INSERT INTO account_buildings (account_id, building_id)
-        SELECT @ManagerId, building_id FROM building WHERE name = N'Test Building B';
+        SELECT @ManagerId, building_id FROM building WHERE name = N'Test Building B'
 END
 
 /* =========================================================
@@ -312,13 +311,13 @@ END
 INSERT INTO [account] (account_name, password, email, role, status)
 SELECT source.account_name, source.password, source.email, source.role, source.status
 FROM (VALUES
-    ('seed_landlord_north', '123456', 'seed.landlord.north@ams.local', 'LANDLORD', 'ACTIVE'),
-    ('seed_landlord_central', '123456', 'seed.landlord.central@ams.local', 'LANDLORD', 'ACTIVE'),
-    ('seed_landlord_south', '123456', 'seed.landlord.south@ams.local', 'LANDLORD', 'ACTIVE'),
-    ('seed_manager_ha', '123456', 'seed.manager.ha@ams.local', 'MANAGER', 'ACTIVE'),
-    ('seed_manager_nam', '123456', 'seed.manager.nam@ams.local', 'MANAGER', 'ACTIVE'),
-    ('seed_manager_huyen', '123456', 'seed.manager.huyen@ams.local', 'MANAGER', 'ACTIVE'),
-    ('seed_manager_thuan', '123456', 'seed.manager.thuan@ams.local', 'MANAGER', 'ACTIVE')
+    ('seed_landlord_north', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.landlord.north@ams.local', 'LANDLORD', 'ACTIVE'),
+    ('seed_landlord_central', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.landlord.central@ams.local', 'LANDLORD', 'ACTIVE'),
+    ('seed_landlord_south', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.landlord.south@ams.local', 'LANDLORD', 'ACTIVE'),
+    ('seed_manager_ha', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.manager.ha@ams.local', 'MANAGER', 'ACTIVE'),
+    ('seed_manager_nam', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.manager.nam@ams.local', 'MANAGER', 'ACTIVE'),
+    ('seed_manager_huyen', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.manager.huyen@ams.local', 'MANAGER', 'ACTIVE'),
+    ('seed_manager_thuan', '$2a$10$0M56XPBDRAg79algJRbrDuY4YCi77XQlJTVxfvR2a.ulGj4IyO62i', 'seed.manager.thuan@ams.local', 'MANAGER', 'ACTIVE')
 ) AS source(account_name, password, email, role, status)
 WHERE NOT EXISTS (
     SELECT 1
@@ -335,14 +334,14 @@ SELECT
     source.description,
     landlord.account_id
 FROM (VALUES
-    (N'SEED-N01 - Hola Residence',       3,  N'12 Thạch Hòa, Thạch Thất, Hà Nội',       N'Cơ sở nhỏ gần khu công nghệ cao',              'seed.landlord.north@ams.local'),
-    (N'SEED-N02 - Green House',          5,  N'85 Hồ Tùng Mậu, Nam Từ Liêm, Hà Nội',    N'Tòa nhà có thang máy và khu để xe',            'seed.landlord.north@ams.local'),
-    (N'SEED-N03 - West Lake Studio',     8,  N'20 Trích Sài, Tây Hồ, Hà Nội',            N'Căn hộ studio gần Hồ Tây',                      'seed.landlord.north@ams.local'),
-    (N'SEED-N04 - Cầu Giấy Home',        6,  N'44 Trần Thái Tông, Cầu Giấy, Hà Nội',     N'Cơ sở dành cho sinh viên và người đi làm',      'seed.landlord.north@ams.local'),
-    (N'SEED-N05 - Sunrise Apartment',   12,  N'101 Nguyễn Trãi, Thanh Xuân, Hà Nội',     N'Tòa nhà quy mô lớn có nhiều loại phòng',        'seed.landlord.north@ams.local'),
-    (N'SEED-N06 - Mini House',           2,  N'16 Phùng Khoang, Nam Từ Liêm, Hà Nội',    N'Cơ sở hai tầng chưa có ảnh',                    'seed.landlord.north@ams.local'),
-    (N'SEED-N07 - Riverside Rooms',      4,  N'72 Ngọc Thụy, Long Biên, Hà Nội',         N'Phòng trọ gần sông Hồng',                       'seed.landlord.north@ams.local'),
-    (N'SEED-N08 - Đông Anh Stay',        7,  N'35 Cao Lỗ, Đông Anh, Hà Nội',             N'Cơ sở phía bắc thành phố',                      'seed.landlord.north@ams.local'),
+    (N'SEED-N01 - Hola Residence',       3,  N'12 Thạch Hòa, Thạch Thất, Hà Nội',       N'Cơ sở nhỏ gần khu công nghệ cao',              'landlord01@hosteye.com'),
+    (N'SEED-N02 - Green House',          5,  N'85 Hồ Tùng Mậu, Nam Từ Liêm, Hà Nội',    N'Tòa nhà có thang máy và khu để xe',            'landlord01@hosteye.com'),
+    (N'SEED-N03 - West Lake Studio',     8,  N'20 Trích Sài, Tây Hồ, Hà Nội',            N'Căn hộ studio gần Hồ Tây',                      'landlord01@hosteye.com'),
+    (N'SEED-N04 - Cầu Giấy Home',        6,  N'44 Trần Thái Tông, Cầu Giấy, Hà Nội',     N'Cơ sở dành cho sinh viên và người đi làm',      'landlord01@hosteye.com'),
+    (N'SEED-N05 - Sunrise Apartment',   12,  N'101 Nguyễn Trãi, Thanh Xuân, Hà Nội',     N'Tòa nhà quy mô lớn có nhiều loại phòng',        'landlord01@hosteye.com'),
+    (N'SEED-N06 - Mini House',           2,  N'16 Phùng Khoang, Nam Từ Liêm, Hà Nội',    N'Cơ sở hai tầng chưa có ảnh',                    'landlord01@hosteye.com'),
+    (N'SEED-N07 - Riverside Rooms',      4,  N'72 Ngọc Thụy, Long Biên, Hà Nội',         N'Phòng trọ gần sông Hồng',                       'landlord01@hosteye.com'),
+    (N'SEED-N08 - Đông Anh Stay',        7,  N'35 Cao Lỗ, Đông Anh, Hà Nội',             N'Cơ sở phía bắc thành phố',                      'landlord01@hosteye.com'),
 
     (N'SEED-C01 - Central Living',       4,  N'18 Nguyễn Văn Linh, Hải Châu, Đà Nẵng',   N'Cơ sở trung tâm thành phố',                     'seed.landlord.central@ams.local'),
     (N'SEED-C02 - Beach Side Home',      9,  N'62 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng',     N'Căn hộ gần biển Mỹ Khê',                        'seed.landlord.central@ams.local'),
