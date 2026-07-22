@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 
 @Repository
-public interface ContractRepository extends JpaRepository<Contract, Long> {
+public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSpecificationExecutor<Contract> {
 
     @Query("SELECT DISTINCT c FROM Contract c")
     @EntityGraph(attributePaths = {
@@ -50,6 +51,5 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     })
     Optional<Contract> findByRoomCodeAndStatus(String roomCode, ContractStatus status);
 
-    @Query("SELECT c FROM Contract c WHERE c.status = com.apartment.management.shared.enums.ContractStatus.ACTIVE AND c.endDate <= :currentDate")
-    List<Contract> findExpiredContracts(@Param("currentDate") LocalDate currentDate);
+    boolean existsByRoom_Building_BuildingIdAndStatus(Long buildingId, ContractStatus status);
 }

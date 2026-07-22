@@ -1,0 +1,1062 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.apartment:management >----------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.1.0:run (default-cli) > test-compile @ management >>>
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ management ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ management ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ management ---
+[INFO] skip non existing resourceDirectory D:\Ky_7\SBA301\Apartment_management\am_be\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ management ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.1.0:run (default-cli) < test-compile @ management <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.1.0:run (default-cli) @ management ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.0)
+
+2026-07-11T21:09:35.571+07:00  INFO 26200 --- [ams] [  restartedMain] c.a.management.ManagementApplication     : Starting ManagementApplication using Java 25.0.1 with PID 26200 (D:\Ky_7\SBA301\Apartment_management\am_be\target\classes started by Admin in D:\Ky_7\SBA301\Apartment_management\am_be)
+2026-07-11T21:09:35.574+07:00  INFO 26200 --- [ams] [  restartedMain] c.a.management.ManagementApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-07-11T21:09:35.604+07:00  INFO 26200 --- [ams] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-11T21:09:35.604+07:00  INFO 26200 --- [ams] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-11T21:09:36.178+07:00  INFO 26200 --- [ams] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-11T21:09:36.234+07:00  INFO 26200 --- [ams] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 7 JPA repository interfaces.
+2026-07-11T21:09:36.693+07:00  INFO 26200 --- [ams] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-07-11T21:09:36.703+07:00  INFO 26200 --- [ams] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-11T21:09:36.705+07:00  INFO 26200 --- [ams] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-11T21:09:36.736+07:00  INFO 26200 --- [ams] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1131 ms
+2026-07-11T21:09:36.881+07:00  INFO 26200 --- [ams] [  restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-07-11T21:09:36.911+07:00  INFO 26200 --- [ams] [  restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-07-11T21:09:37.158+07:00  INFO 26200 --- [ams] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-11T21:09:37.178+07:00  INFO 26200 --- [ams] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-11T21:09:37.420+07:00  INFO 26200 --- [ams] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: 9a2e8372-fd98-4869-b458-26ba75e23e6e
+2026-07-11T21:09:37.422+07:00  INFO 26200 --- [ams] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-11T21:09:37.542+07:00  INFO 26200 --- [ams] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlserver://localhost:1433;concatNullYieldsNull=ON;quotedIdentifier=ON;connectRetryInterval=10;connectRetryCount=1;maxResultBuffer=-1;sendTemporalDataTypesAsStringForBulkCopy=true;delayLoadingLobs=true;useFmtOnly=false;vectorTypeSupport=v1;cacheBulkCopyMetadata=false;bulkCopyForBatchInsertAllowEncryptedValueModifications=false;bulkCopyForBatchInsertTableLock=false;bulkCopyForBatchInsertKeepNulls=false;bulkCopyForBatchInsertKeepIdentity=false;bulkCopyForBatchInsertFireTriggers=false;bulkCopyForBatchInsertCheckConstraints=false;bulkCopyForBatchInsertBatchSize=0;useBulkCopyForBatchInsert=false;cancelQueryTimeout=-1;sslProtocol=TLS;calcBigDecimalPrecision=false;useDefaultJaasConfig=false;jaasConfigurationName=SQLJDBCDriver;statementPoolingCacheSize=0;serverPreparedStatementDiscardThreshold=10;enablePrepareOnFirstPreparedStatementCall=false;fips=false;socketTimeout=0;authentication=NotSpecified;authenticationScheme=nativeAuthentication;xopenStates=false;datetimeParameterType=datetime2;sendTimeAsDatetime=true;replication=false;trustStoreType=JKS;trustServerCertificate=false;TransparentNetworkIPResolution=true;iPAddressPreference=IPv4First;serverNameAsACE=false;sendStringParametersAsUnicode=true;selectMethod=direct;responseBuffering=adaptive;queryTimeout=-1;packetSize=8000;multiSubnetFailover=false;loginTimeout=30;lockTimeout=-1;lastUpdateCount=true;useDefaultGSSCredential=false;prepareMethod=prepexec;encrypt=false;disableStatementPooling=true;databaseName=ams_project;columnEncryptionSetting=Disabled;applicationName=Microsoft JDBC Driver for SQL Server;applicationIntent=readwrite;]
+	Database driver: Microsoft JDBC Driver 13.4 for SQL Server
+	Database dialect: SQLServerDialect
+	Database version: 16.0
+	Default catalog/schema: ams_project/dbo
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 128
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-11T21:09:38.397+07:00  INFO 26200 --- [ams] [  restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    create table account (
+        account_id bigint identity not null,
+        account_name varchar(255) not null,
+        email varchar(255) not null,
+        password varchar(255) not null,
+        role varchar(255) not null check ((role in ('LANDLORD','MANAGER','ADMIN'))),
+        status varchar(255) not null check ((status in ('ACTIVE','INACTIVE'))),
+        primary key (account_id)
+    )
+Hibernate: 
+    create table account_buildings (
+        account_id bigint not null,
+        building_id bigint not null,
+        primary key (account_id, building_id)
+    )
+Hibernate: 
+    create table bank_account (
+        bank_account_id bigint identity not null,
+        account_number varchar(255) not null,
+        bank_name varchar(255) not null,
+        user_name varchar(255) not null,
+        primary key (bank_account_id)
+    )
+Hibernate: 
+    create table building (
+        building_id bigint identity not null,
+        address varchar(255) not null,
+        description TEXT,
+        name varchar(255) not null,
+        number_of_floor int not null,
+        bank_account_id bigint,
+        landlord_id bigint,
+        primary key (building_id)
+    )
+2026-07-11T21:09:39.192+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    create table building (
+        building_id bigint identity not null,
+        address varchar(255) not null,
+        description TEXT,
+        name varchar(255) not null,
+        number_of_floor int not null,
+        bank_account_id bigint,
+        landlord_id bigint,
+        primary key (building_id)
+    )" via JDBC [Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    create table building (
+        building_id bigint identity not null,
+        address varchar(255) not null,
+        description TEXT,
+        name varchar(255) not null,
+        number_of_floor int not null,
+        bank_account_id bigint,
+        landlord_id bigint,
+        primary key (building_id)
+    )" via JDBC [Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:305) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:80) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:220) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 41 common frames omitted
+
+Hibernate: 
+    create table building_image (
+        image_id bigint identity not null,
+        url varchar(255) not null,
+        building_id bigint not null,
+        primary key (image_id)
+    )
+Hibernate: 
+    create table contract (
+        contract_id bigint identity not null,
+        deposit_amount numeric(38,2) not null,
+        end_date date not null,
+        rent numeric(38,2) not null,
+        start_date date not null,
+        status varchar(255) not null check ((status in ('ACTIVE','EXPIRED','TERMINATED'))),
+        parent_contract_id bigint,
+        room_code varchar(255) not null,
+        primary key (contract_id)
+    )
+Hibernate: 
+    create table contract_image (
+        image_id bigint identity not null,
+        image_type varchar(255) not null check ((image_type in ('ORIGINAL','APPENDIX','CHECKIN_CONDITION','CHECKOUT_CONDITION'))),
+        image_url varchar(255) not null,
+        contract_id bigint not null,
+        primary key (image_id)
+    )
+Hibernate: 
+    create table contract_tenants (
+        contract_tenant_id bigint identity not null,
+        is_contract_holder bit not null,
+        join_date date not null,
+        leave_date date,
+        contract_id bigint not null,
+        tenant_id bigint not null,
+        primary key (contract_tenant_id)
+    )
+Hibernate: 
+    create table email_configuration (
+        email_config_id bigint identity not null,
+        contract_expiry_reminder_days int not null,
+        invoice_send_day int not null,
+        is_expiry_reminder_auto_send bit not null,
+        is_invoice_auto_send bit not null,
+        building_id bigint not null,
+        primary key (email_config_id)
+    )
+Hibernate: 
+    create table emergency_contact (
+        contact_id bigint identity not null,
+        name varchar(255) not null,
+        phone_number varchar(255) not null,
+        tenant_id bigint not null,
+        primary key (contact_id)
+    )
+Hibernate: 
+    create table invoice (
+        invoice_id bigint identity not null,
+        invoice_month varchar(255) not null,
+        payment_method varchar(255) check ((payment_method in ('CASH','BANK_TRANSFER'))),
+        payment_status varchar(255) not null check ((payment_status in ('PENDING','PAID','OVERDUE'))),
+        payment_url_qr_code varchar(255),
+        total_amount numeric(38,2) not null,
+        contract_id bigint not null,
+        primary key (invoice_id)
+    )
+Hibernate: 
+    create table invoice_detail (
+        invoice_detail_id bigint identity not null,
+        charge_type varchar(255) not null check ((charge_type in ('PER_ROOM','PER_INDEX'))),
+        item_name varchar(255) not null,
+        new_index int,
+        old_index int,
+        quantity numeric(38,2) not null,
+        sub_total numeric(38,2) not null,
+        unit_price numeric(38,2) not null,
+        invoice_id bigint not null,
+        primary key (invoice_detail_id)
+    )
+Hibernate: 
+    create table room (
+        room_code varchar(255) not null,
+        floor_number int not null,
+        status varchar(255) not null check ((status in ('AVAILABLE','RENTED','MAINTENANCE'))),
+        building_id bigint not null,
+        room_type_id bigint not null,
+        primary key (room_code)
+    )
+Hibernate: 
+    create table room_type (
+        room_type_id bigint identity not null,
+        area float(53) not null,
+        capacity int not null,
+        description TEXT,
+        name varchar(255) not null,
+        primary key (room_type_id)
+    )
+2026-07-11T21:09:39.244+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    create table room_type (
+        room_type_id bigint identity not null,
+        area float(53) not null,
+        capacity int not null,
+        description TEXT,
+        name varchar(255) not null,
+        primary key (room_type_id)
+    )" via JDBC [Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    create table room_type (
+        room_type_id bigint identity not null,
+        area float(53) not null,
+        capacity int not null,
+        description TEXT,
+        name varchar(255) not null,
+        primary key (room_type_id)
+    )" via JDBC [Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.createTable(AbstractSchemaMigrator.java:305) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:80) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:220) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Column or parameter 'description' has type 'text' and collation 'Latin1_General_100_CI_AS_SC_UTF8'. The legacy LOB types do not support UTF-8 or UTF-16 encodings. Use types varchar(max), nvarchar(max) or a collation which does not have the _SC or _UTF8 flags.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 41 common frames omitted
+
+Hibernate: 
+    create table room_type_image (
+        image_id bigint identity not null,
+        image_url varchar(255) not null,
+        room_type_id bigint not null,
+        primary key (image_id)
+    )
+Hibernate: 
+    create table service_fee (
+        service_fee_id bigint identity not null,
+        charge_type varchar(255) not null check ((charge_type in ('PER_ROOM','PER_INDEX'))),
+        fee numeric(38,2) not null,
+        name varchar(255) not null,
+        contract_id bigint not null,
+        primary key (service_fee_id)
+    )
+Hibernate: 
+    create table tenant (
+        tenant_id bigint identity not null,
+        citizen_id varchar(255) not null,
+        date_of_birth date not null,
+        email varchar(255) not null,
+        name varchar(255) not null,
+        permanent_address varchar(255) not null,
+        phone_number varchar(255) not null,
+        primary key (tenant_id)
+    )
+Hibernate: 
+    create table vehicle (
+        vehicle_id bigint identity not null,
+        number_plate varchar(255) not null,
+        vehicle_type varchar(255) not null,
+        tenant_id bigint not null,
+        primary key (vehicle_id)
+    )
+Hibernate: 
+    alter table account 
+       drop constraint if exists UKjfarbv64d68y4tm9c9ms5fh7b
+Hibernate: 
+    alter table account 
+       add constraint UKjfarbv64d68y4tm9c9ms5fh7b unique (account_name)
+Hibernate: 
+    alter table account 
+       drop constraint if exists UKq0uja26qgu1atulenwup9rxyr
+Hibernate: 
+    alter table account 
+       add constraint UKq0uja26qgu1atulenwup9rxyr unique (email)
+Hibernate: 
+    drop index if exists building.UKam24x6pwt4uudr072pqjflfd6
+Hibernate: 
+    create unique nonclustered index UKam24x6pwt4uudr072pqjflfd6 
+       on building (bank_account_id) where bank_account_id is not null
+Hibernate: 
+    alter table email_configuration 
+       drop constraint if exists UKpxxfcwa50roa3qwvwy8u7117f
+Hibernate: 
+    alter table email_configuration 
+       add constraint UKpxxfcwa50roa3qwvwy8u7117f unique (building_id)
+Hibernate: 
+    alter table account_buildings 
+       add constraint FK6o93lgrul5xs1sh3t1gcyxo7h 
+       foreign key (building_id) 
+       references building
+2026-07-11T21:09:39.294+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table account_buildings 
+       add constraint FK6o93lgrul5xs1sh3t1gcyxo7h 
+       foreign key (building_id) 
+       references building" via JDBC [Foreign key 'FK6o93lgrul5xs1sh3t1gcyxo7h' references invalid table 'building'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table account_buildings 
+       add constraint FK6o93lgrul5xs1sh3t1gcyxo7h 
+       foreign key (building_id) 
+       references building" via JDBC [Foreign key 'FK6o93lgrul5xs1sh3t1gcyxo7h' references invalid table 'building'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FK6o93lgrul5xs1sh3t1gcyxo7h' references invalid table 'building'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table account_buildings 
+       add constraint FKk44cdc0diqg0hpnq6kxr8rik2 
+       foreign key (account_id) 
+       references account
+Hibernate: 
+    alter table building 
+       add constraint FKqq4bd54j1dpmd8afxgtl3x96m 
+       foreign key (bank_account_id) 
+       references bank_account
+2026-07-11T21:09:39.301+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table building 
+       add constraint FKqq4bd54j1dpmd8afxgtl3x96m 
+       foreign key (bank_account_id) 
+       references bank_account" via JDBC [Cannot find the object "building" because it does not exist or you do not have permissions.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table building 
+       add constraint FKqq4bd54j1dpmd8afxgtl3x96m 
+       foreign key (bank_account_id) 
+       references bank_account" via JDBC [Cannot find the object "building" because it does not exist or you do not have permissions.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot find the object "building" because it does not exist or you do not have permissions.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table building 
+       add constraint FK9jwknfu4ij3rwhw6dbp6if5sw 
+       foreign key (landlord_id) 
+       references account
+2026-07-11T21:09:39.304+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table building 
+       add constraint FK9jwknfu4ij3rwhw6dbp6if5sw 
+       foreign key (landlord_id) 
+       references account" via JDBC [Cannot find the object "building" because it does not exist or you do not have permissions.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table building 
+       add constraint FK9jwknfu4ij3rwhw6dbp6if5sw 
+       foreign key (landlord_id) 
+       references account" via JDBC [Cannot find the object "building" because it does not exist or you do not have permissions.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot find the object "building" because it does not exist or you do not have permissions.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table building_image 
+       add constraint FKs6i67jwf642uaao9d8nt70cp1 
+       foreign key (building_id) 
+       references building 
+       on delete cascade
+2026-07-11T21:09:39.308+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table building_image 
+       add constraint FKs6i67jwf642uaao9d8nt70cp1 
+       foreign key (building_id) 
+       references building 
+       on delete cascade" via JDBC [Foreign key 'FKs6i67jwf642uaao9d8nt70cp1' references invalid table 'building'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table building_image 
+       add constraint FKs6i67jwf642uaao9d8nt70cp1 
+       foreign key (building_id) 
+       references building 
+       on delete cascade" via JDBC [Foreign key 'FKs6i67jwf642uaao9d8nt70cp1' references invalid table 'building'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FKs6i67jwf642uaao9d8nt70cp1' references invalid table 'building'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table contract 
+       add constraint FK24c7jjdj3o7eils20160yy8ng 
+       foreign key (parent_contract_id) 
+       references contract
+Hibernate: 
+    alter table contract 
+       add constraint FK55dvo1qpmrrngrwe8i00477a3 
+       foreign key (room_code) 
+       references room
+Hibernate: 
+    alter table contract_image 
+       add constraint FK5o1kod3jpqru0nf300djsym2c 
+       foreign key (contract_id) 
+       references contract 
+       on delete cascade
+Hibernate: 
+    alter table contract_tenants 
+       add constraint FKayacyf23ictrjb2gict31nfqc 
+       foreign key (contract_id) 
+       references contract
+Hibernate: 
+    alter table contract_tenants 
+       add constraint FKffruujapmok36weam0adcv3tx 
+       foreign key (tenant_id) 
+       references tenant
+Hibernate: 
+    alter table email_configuration 
+       add constraint FKoxlykjxxs9b29i39ojmew8bdv 
+       foreign key (building_id) 
+       references building 
+       on delete cascade
+2026-07-11T21:09:39.331+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table email_configuration 
+       add constraint FKoxlykjxxs9b29i39ojmew8bdv 
+       foreign key (building_id) 
+       references building 
+       on delete cascade" via JDBC [Foreign key 'FKoxlykjxxs9b29i39ojmew8bdv' references invalid table 'building'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table email_configuration 
+       add constraint FKoxlykjxxs9b29i39ojmew8bdv 
+       foreign key (building_id) 
+       references building 
+       on delete cascade" via JDBC [Foreign key 'FKoxlykjxxs9b29i39ojmew8bdv' references invalid table 'building'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FKoxlykjxxs9b29i39ojmew8bdv' references invalid table 'building'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table emergency_contact 
+       add constraint FKs8mjj6r8g93lkyvsikxesxumb 
+       foreign key (tenant_id) 
+       references tenant
+Hibernate: 
+    alter table invoice 
+       add constraint FKqh9ibaacfusht7an2afwkrq5 
+       foreign key (contract_id) 
+       references contract
+Hibernate: 
+    alter table invoice_detail 
+       add constraint FKit1rbx4thcr6gx6bm3gxub3y4 
+       foreign key (invoice_id) 
+       references invoice 
+       on delete cascade
+Hibernate: 
+    alter table room 
+       add constraint FK4kmfw73x2vpfymk0ml875rh2q 
+       foreign key (building_id) 
+       references building
+2026-07-11T21:09:39.348+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table room 
+       add constraint FK4kmfw73x2vpfymk0ml875rh2q 
+       foreign key (building_id) 
+       references building" via JDBC [Foreign key 'FK4kmfw73x2vpfymk0ml875rh2q' references invalid table 'building'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table room 
+       add constraint FK4kmfw73x2vpfymk0ml875rh2q 
+       foreign key (building_id) 
+       references building" via JDBC [Foreign key 'FK4kmfw73x2vpfymk0ml875rh2q' references invalid table 'building'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FK4kmfw73x2vpfymk0ml875rh2q' references invalid table 'building'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table room 
+       add constraint FKd468eq7j1cbue8mk20qfrj5et 
+       foreign key (room_type_id) 
+       references room_type
+2026-07-11T21:09:39.360+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table room 
+       add constraint FKd468eq7j1cbue8mk20qfrj5et 
+       foreign key (room_type_id) 
+       references room_type" via JDBC [Foreign key 'FKd468eq7j1cbue8mk20qfrj5et' references invalid table 'room_type'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table room 
+       add constraint FKd468eq7j1cbue8mk20qfrj5et 
+       foreign key (room_type_id) 
+       references room_type" via JDBC [Foreign key 'FKd468eq7j1cbue8mk20qfrj5et' references invalid table 'room_type'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FKd468eq7j1cbue8mk20qfrj5et' references invalid table 'room_type'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table room_type_image 
+       add constraint FK37kpqsf8ecq3o6w0ndc3pqxf8 
+       foreign key (room_type_id) 
+       references room_type 
+       on delete cascade
+2026-07-11T21:09:39.379+07:00  WARN 26200 --- [ams] [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table room_type_image 
+       add constraint FK37kpqsf8ecq3o6w0ndc3pqxf8 
+       foreign key (room_type_id) 
+       references room_type 
+       on delete cascade" via JDBC [Foreign key 'FK37kpqsf8ecq3o6w0ndc3pqxf8' references invalid table 'room_type'.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table room_type_image 
+       add constraint FK37kpqsf8ecq3o6w0ndc3pqxf8 
+       foreign key (room_type_id) 
+       references room_type 
+       on delete cascade" via JDBC [Foreign key 'FK37kpqsf8ecq3o6w0ndc3pqxf8' references invalid table 'room_type'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:91) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:327) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:458) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1452) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1862) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1811) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.8.jar:7.0.8]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.1.0.jar:4.1.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.1.0.jar:4.1.0]
+	at com.apartment.management.ManagementApplication.main(ManagementApplication.java:9) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.1.0.jar:4.1.0]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Foreign key 'FK37kpqsf8ecq3o6w0ndc3pqxf8' references invalid table 'room_type'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:356) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1927) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:1086) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:964) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7832) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:5024) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:364) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:282) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:937) ~[mssql-jdbc-13.4.0.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:86) ~[hibernate-core-7.4.1.Final.jar:7.4.1.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table service_fee 
+       add constraint FKog2yqedcstsxdutiqko09f54t 
+       foreign key (contract_id) 
+       references contract 
+       on delete cascade
+Hibernate: 
+    alter table vehicle 
+       add constraint FK5pjeck2tfwx8ueqy1ynuqom60 
+       foreign key (tenant_id) 
+       references tenant
+2026-07-11T21:09:39.406+07:00  INFO 26200 --- [ams] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-11T21:09:39.470+07:00  INFO 26200 --- [ams] [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-07-11T21:09:40.127+07:00  WARN 26200 --- [ams] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-11T21:09:40.474+07:00  INFO 26200 --- [ams] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/api'
+2026-07-11T21:09:40.480+07:00  INFO 26200 --- [ams] [  restartedMain] c.a.management.ManagementApplication     : Started ManagementApplication in 5.173 seconds (process running for 5.459)
+2026-07-11T21:09:40.480+07:00  WARN 26200 --- [ams] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-07-11T21:09:40.481+07:00  WARN 26200 --- [ams] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'

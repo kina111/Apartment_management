@@ -29,20 +29,28 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
     @EntityGraph(attributePaths = {"emergencyContacts", "vehicles", "contractTenants"})
     List<Tenant> findTenantsDoNotLeaveByContractId(Long contractId);
 
-    // Trả Object[]{Tenant, Boolean isContractHolder} trong 1 query — không N+1
-    // JOIN FETCH thay cho @EntityGraph vì @EntityGraph không hỗ trợ return Object[]
     @Query("""
-            SELECT DISTINCT t, ct.isContractHolder
+            SELECT t FROM Tenant t
+            WHERE t.tenantId NOT IN (
+                SELECT ct.tenant.tenantId
+                FROM ContractTenant ct
+                WHERE ct.contract.status = 'ACTIVE'
+                  AND ct.leaveDate IS NULL
+            )
+            """)
+    List<Tenant> findAvailableTenants();
+
+    @Query("""
+            SELECT DISTINCT t
             FROM Tenant t
-            LEFT JOIN FETCH t.emergencyContacts
-            LEFT JOIN FETCH t.vehicles
-            LEFT JOIN FETCH t.contractTenants
             JOIN t.contractTenants ct
             JOIN ct.contract c
             JOIN c.room r
             WHERE r.building.buildingId = :buildingId
               AND ct.leaveDate IS NULL
+              AND c.status = 'ACTIVE'
             """)
-    List<Object[]> findTenantsWithHolderStatusByBuildingId(Long buildingId);
+    @EntityGraph(attributePaths = {"emergencyContacts", "vehicles", "contractTenants"})
+    List<Tenant> findTenantsByBuildingId(Long buildingId);
 }
 

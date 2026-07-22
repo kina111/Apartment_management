@@ -1,0 +1,134 @@
+.contractsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', 'Outfit', sans-serif;
+  color: #2b3674;
+}
+
+.contractsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.contractsTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1b2559;
+}
+
+.premiumCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premiumCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+.filterInput {
+  border: 1px solid #e0e5f2;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #2b3674;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filterInput:focus {
+  border-color: #4318ff;
+}
+
+.filterSelect {
+  border: 1px solid #e0e5f2;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #2b3674;
+  outline: none;
+  background-color: white;
+}
+
+.btnPremiumPrimary {
+  background: linear-gradient(135deg, #868cff 0%, #4318ff 100%);
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnPremiumPrimary:hover {
+  background: linear-gradient(135deg, #7479f2 0%, #3510e0 100%);
+  transform: translateY(-1px);
+}
+
+.btnPremiumSecondary {
+  background-color: #f4f7fe;
+  border: 1px solid #e0e5f2;
+  color: #4318ff;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btnPremiumSecondary:hover {
+  background-color: #e9edf7;
+}
+
+.premiumTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.premiumTable th {
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a3aed0;
+  border-bottom: 1px solid #e9edf7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.premiumTable td {
+  padding: 16px;
+  font-size: 14px;
+  color: #2b3674;
+  border-bottom: 1px solid #e9edf7;
+  vertical-align: middle;
+}
+
+.premiumTable tr:hover {
+  background-color: #fafbfe;
+}
+
+.clickableRow {
+  cursor: pointer;
+}
+
+.formSectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1b2559;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f4f7fe;
+}

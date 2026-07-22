@@ -18,6 +18,16 @@ public record ContractResponse(
                 Set<InvoiceResponse> invoices,
                 Set<Long> contractTenantIds,
                 Long parentContractId,
-                Set<Long> renewalContractIds) {
+                Set<Long> renewalContractIds,
+                
+                // Flat attributes
+                String roomCode,
+                Integer floorNumber,
+                String buildingName,
+                Long tenantId,
+                String tenantName,
+                String tenantPhoneNumber,
+                String tenantEmail
+) {
 
 }

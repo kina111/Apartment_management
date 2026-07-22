@@ -1,0 +1,23 @@
+.filterInput {
+  border: 1px solid #e0e5f2;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #2b3674;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filterInput:focus {
+  border-color: #4318ff;
+}
+
+.filterSelect {
+  border: 1px solid #e0e5f2;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #2b3674;
+  outline: none;
+  background-color: white;
+}

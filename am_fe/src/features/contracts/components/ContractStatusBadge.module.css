@@ -1,0 +1,24 @@
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.statusBadgeActive {
+  background-color: #e2f9ec;
+  color: #05cd99;
+}
+
+.statusBadgeExpired {
+  background-color: #feebe8;
+  color: #ff5b5b;
+}
+
+.statusBadgeTerminated {
+  background-color: #f4f6f9;
+  color: #a3aed0;
+}

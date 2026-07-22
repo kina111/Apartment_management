@@ -13,6 +13,12 @@ public class BuildingResponse {
     private String address;
     private Integer numberOfFloor;
     private String description;
+    private Double area;
+    private Integer numberOfBasement;
+    private Integer totalRooms;
+    private Integer yearBuilt;
+    private String phoneNumber;
+    private String email;
     private Long landlordId;
     private String landlordName;
     private List<String> imageUrls;

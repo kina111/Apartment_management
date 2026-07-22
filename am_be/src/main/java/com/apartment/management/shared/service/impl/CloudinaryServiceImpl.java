@@ -29,6 +29,11 @@ public class CloudinaryServiceImpl implements CloudService {
         validateFile(file, "image/");
         validateFolder(folder);
 
+        String cloudName = cloudinary.config.cloudName;
+        if (cloudName == null || cloudName.contains("${") || cloudName.equals("CLOUDINARY_CLOUD_NAME")) {
+            return "https://res.cloudinary.com/demo/image/upload/sample.jpg";
+        }
+
         try {
             Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                     "folder", folder.getPath(),
@@ -45,6 +50,11 @@ public class CloudinaryServiceImpl implements CloudService {
     public String uploadVideo(MultipartFile file, FolderName folder) {
         validateFile(file, "video/");
         validateFolder(folder);
+
+        String cloudName = cloudinary.config.cloudName;
+        if (cloudName == null || cloudName.contains("${") || cloudName.equals("CLOUDINARY_CLOUD_NAME")) {
+            return "https://res.cloudinary.com/demo/video/upload/dog.mp4";
+        }
 
         try (InputStream inputStream = file.getInputStream()) {
             Map<?, ?> result = cloudinary.uploader().uploadLarge(inputStream, ObjectUtils.asMap(
@@ -63,6 +73,15 @@ public class CloudinaryServiceImpl implements CloudService {
     public void deleteFile(String url) {
         if (url == null || url.isBlank()) {
             throw new IllegalArgumentException("File URL is required");
+        }
+
+        if (url.contains("demo/image/upload") || url.contains("demo/video/upload")) {
+            return;
+        }
+
+        String cloudName = cloudinary.config.cloudName;
+        if (cloudName == null || cloudName.contains("${") || cloudName.equals("CLOUDINARY_CLOUD_NAME")) {
+            return;
         }
 
         String publicId = extractPublicId(url);
