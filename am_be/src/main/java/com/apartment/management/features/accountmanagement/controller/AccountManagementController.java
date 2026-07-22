@@ -55,4 +55,13 @@ public class AccountManagementController {
             @RequestBody UpdateManagerRequest request) {
         return ResponseEntity.ok(service.updateManager(userDetails.getAccountId(), id, request));
     }
+
+    @DeleteMapping("/managers/{id}")
+    @Operation(summary = "Delete a manager account")
+    public ResponseEntity<Void> deleteManager(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable Long id) {
+        service.deleteManager(userDetails.getAccountId(), id);
+        return ResponseEntity.noContent().build();
+    }
 }

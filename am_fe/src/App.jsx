@@ -16,6 +16,7 @@ import React, { lazy } from "react";
 
 const ManagerListPage = lazy(() => import("./features/account-management/pages/ManagerListPage.jsx"));
 const ManagerCreatePage = lazy(() => import("./features/account-management/pages/ManagerCreatePage.jsx"));
+const ManagerEditPage = lazy(() => import("./features/account-management/pages/ManagerEditPage.jsx"));
 import NotificationPage from "./features/notifications/pages/NotificationPage.jsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,6 +115,11 @@ function App() {
             <Route path="/managers/new" element={
               <React.Suspense fallback={<div>Loading...</div>}>
                 <ManagerCreatePage />
+              </React.Suspense>
+            } />
+            <Route path="/managers/:id/edit" element={
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <ManagerEditPage />
               </React.Suspense>
             } />
             <Route path="/notifications" element={<NotificationPage />} />

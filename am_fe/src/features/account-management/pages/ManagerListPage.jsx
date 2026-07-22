@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import managerApi from "../services/managerApi";
-import { PlusCircle, PencilSquare } from "react-bootstrap-icons";
+import { PlusCircle, PencilSquare, Trash } from "react-bootstrap-icons";
+import { toast } from 'react-toastify';
 
 export default function ManagerListPage() {
   const [managers, setManagers] = useState([]);
@@ -21,6 +22,18 @@ export default function ManagerListPage() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id, name) => {
+    if (window.confirm(`Bạn có chắc chắn muốn xóa tài khoản quản lý [${name}] không?\nLưu ý: Hành động này sẽ thu hồi toàn bộ quyền quản lý cơ sở của tài khoản này về cho Landlord.`)) {
+      try {
+        await managerApi.delete(id);
+        toast.success(`Đã xóa tài khoản [${name}] thành công!`);
+        fetchManagers();
+      } catch (err) {
+        toast.error(err.response?.data?.message || "Lỗi khi xóa nhân sự");
+      }
     }
   };
 
@@ -80,9 +93,17 @@ export default function ManagerListPage() {
                       </span>
                     </td>
                     <td className="text-end">
-                      <Link to={`/managers/${m.accountId}/edit`} className="btn btn-sm btn-outline-secondary">
-                        <PencilSquare /> Sửa
-                      </Link>
+                      <div className="d-flex justify-content-end gap-2">
+                        <Link to={`/managers/${m.accountId}/edit`} className="btn btn-sm btn-outline-secondary">
+                          <PencilSquare /> Sửa
+                        </Link>
+                        <button 
+                          className="btn btn-sm btn-outline-danger" 
+                          onClick={() => handleDelete(m.accountId, m.accountName)}
+                        >
+                          <Trash /> Xóa
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

@@ -13,9 +13,13 @@ const managerApi = {
     return axiosClient.put(`/account-management/managers/${id}`, data);
   },
 
+  delete: (id) => {
+    return axiosClient.delete(`/account-management/managers/${id}`);
+  },
+
   // Needed for selecting buildings in the creation form
   getBuildings: () => {
-    return axiosClient.get("/buildings/my-buildings");
+    return axiosClient.get("/buildings/my?size=100");
   }
 };
 
