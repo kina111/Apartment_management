@@ -61,7 +61,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         try {
             Building building = buildingId == null
-                    ? newBuilding(request)
+                    ? newBuilding()
                     : findOwnedBuilding(buildingId);
 
             applyBuildingFields(building, request);
@@ -77,16 +77,16 @@ public class BuildingServiceImpl implements BuildingService {
         }
     }
 
-    private Account findLandlord(Long landlordId) {
-        Long targetLandlordId = landlordId != null ? landlordId : currentUserService.getCurrentUserId();
+    private Account findCurrentLandlord() {
+        Long landlordId = currentUserService.getCurrentUserId();
 
-        return accountRepository.findById(targetLandlordId)
+        return accountRepository.findById(landlordId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Landlord account not found"));
     }
 
-    private Building newBuilding(CreateBuildingRequest request) {
+    private Building newBuilding() {
         return Building.builder()
-                .landlord(findLandlord(request.getLandlordId()))
+                .landlord(findCurrentLandlord())
                 .build();
     }
 
@@ -119,14 +119,6 @@ public class BuildingServiceImpl implements BuildingService {
         building.setName(request.getName().trim());
         building.setAddress(request.getAddress().trim());
         building.setNumberOfFloor(request.getNumberOfFloor());
-        building.setDescription(normalizeDescription(request.getDescription()));
-    }
-
-    private String normalizeDescription(String description) {
-        if (description == null || description.isBlank()) {
-            return null;
-        }
-        return description.trim();
     }
 
     private String normalizeText(String value) {

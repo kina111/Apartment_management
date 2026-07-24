@@ -100,7 +100,7 @@ function BuildingEditPage() {
             name: building.name,
             address: building.address,
             numberOfFloor: Number(building.numberOfFloor),
-            description: building.description,
+            images,
         }
 
         setIsSubmitting(true);
@@ -108,7 +108,7 @@ function BuildingEditPage() {
         setUpdatedBuilding(null);
 
         try {
-            const result = await buildingApi.updateBuilding(buildingId, payload, images);
+            const result = await buildingApi.updateBuilding(buildingId, payload);
             setUpdatedBuilding(result);
             setImages([]);
             setBuildingDetail((current) => ({...current, ...result}));
@@ -244,17 +244,6 @@ function BuildingEditPage() {
                                 {errors.numberOfFloor && (
                                     <p className="building-error">{errors.numberOfFloor}</p>
                                 )}
-                            </div>
-
-                            <div className="building-field building-field--full">
-                                <label className="building-label">Mô tả</label>
-                                <textarea
-                                    className="building-control building-textarea"
-                                    name="description"
-                                    value={building.description}
-                                    onChange={handleChange}
-                                    placeholder="Nhập mô tả"
-                                    rows={4}/>
                             </div>
 
                             <div className="building-field building-field--full">

@@ -7,7 +7,6 @@ public record BuildingDetailResponse(
         String name,
         String address,
         Integer numberOfFloor,
-        String description,
         List<String> imageUrls,
         BuildingBankAccountResponse bankAccount
 ) {

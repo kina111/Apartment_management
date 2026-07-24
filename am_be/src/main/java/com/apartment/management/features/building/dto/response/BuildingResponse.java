@@ -12,7 +12,6 @@ public class BuildingResponse {
     private String name;
     private String address;
     private Integer numberOfFloor;
-    private String description;
     private Long landlordId;
     private String landlordName;
     private List<String> imageUrls;

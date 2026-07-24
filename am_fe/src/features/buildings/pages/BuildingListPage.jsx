@@ -17,6 +17,8 @@ const initialFilters = {
 
 function BuildingListPage() {
     const {user, role} = useAuth();
+    const isManager = role === "MANAGER";
+
     const [filters, setFilters] = useState(initialFilters);
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
     const [page, setPage] = useState(0);
@@ -24,14 +26,17 @@ function BuildingListPage() {
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
+
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [building, setBuilding] = useState(initialBuildingForm);
     const [buildingErrors, setBuildingErrors] = useState({});
     const [createError, setCreateError] = useState("");
     const [isCreating, setIsCreating] = useState(false);
-    const [images, setImages] = useState([]);
     const [deletingBuildingId, setDeletingBuildingId] = useState(null);
-    const isManager = role === "MANAGER";
+
+    const buildings = result?.items || [];
+    const hasBuildings = buildings.length > 0;
+    const hasPagination = result?.totalPages > 1;
 
     useEffect(() => {
         let isCurrent = true;
@@ -49,15 +54,15 @@ function BuildingListPage() {
                         size,
                     });
 
-                if (isCurrent) {
-                    setResult(isManager ? {
-                        items: data,
-                        totalElements: data.length,
-                        totalPages: 1,
-                        page: 0,
-                        size: data.length,
-                    } : data);
-                }
+                if (!isCurrent) return;
+
+                setResult(isManager ? {
+                    items: data,
+                    totalElements: data.length,
+                    totalPages: 1,
+                    page: 0,
+                    size: data.length,
+                } : data);
             } catch (requestError) {
                 if (isCurrent) {
                     setError(getErrorMessage(requestError, "Không thể tải danh sách tòa nhà"));
@@ -73,24 +78,24 @@ function BuildingListPage() {
         };
     }, [appliedFilters, isManager, page, size, user?.accountId]);
 
-    const handleChange = (event) => {
+    const handleFilterChange = (event) => {
         const {name, value} = event.target;
         setFilters((current) => ({...current, [name]: value}));
     };
 
-    const handleSubmit = (event) => {
+    const handleFilterSubmit = (event) => {
         event.preventDefault();
         setPage(0);
         setAppliedFilters(filters);
     };
 
-    const handleReset = () => {
+    const handleFilterReset = () => {
         setFilters(initialFilters);
         setAppliedFilters(initialFilters);
         setPage(0);
     };
 
-    const handleSizeChange = (event) => {
+    const handlePageSizeChange = (event) => {
         setSize(Number(event.target.value));
         setPage(0);
     };
@@ -99,7 +104,6 @@ function BuildingListPage() {
         setBuilding(initialBuildingForm);
         setBuildingErrors({});
         setCreateError("");
-        setImages([]);
         setShowCreateModal(true);
     };
 
@@ -108,10 +112,9 @@ function BuildingListPage() {
         setBuilding(initialBuildingForm);
         setBuildingErrors({});
         setCreateError("");
-        setImages([]);
     };
 
-    const handleBuildingChange = (event) => {
+    const handleCreateFormChange = (event) => {
         const {name, value} = event.target;
 
         setBuilding((current) => ({...current, [name]: value}));
@@ -119,11 +122,14 @@ function BuildingListPage() {
         setCreateError("");
     };
 
-    const handleImagesChange = (event) => {
-        setImages(Array.from(event.target.files || []));
+    const handleCreateImagesChange = (event) => {
+        setBuilding((current) => ({
+            ...current,
+            images: Array.from(event.target.files || []),
+        }));
     };
 
-    const handleCreateBuilding = async (event) => {
+    const handleCreateSubmit = async (event) => {
         event.preventDefault();
 
         const validationErrors = validateBuilding(building);
@@ -131,17 +137,17 @@ function BuildingListPage() {
 
         if (Object.keys(validationErrors).length > 0) return;
 
-        const payload = {
-            name: building.name,
-            address: building.address,
-            numberOfFloor: Number(building.numberOfFloor),
-        };
-
         setIsCreating(true);
         setCreateError("");
 
         try {
-            const createdBuilding = await buildingApi.createBuilding(payload, images);
+            const createdBuilding = await buildingApi.createBuilding({
+                name: building.name,
+                address: building.address,
+                numberOfFloor: Number(building.numberOfFloor),
+                images: building.images,
+            });
+
             setResult((current) => current ? {
                 ...current,
                 items: [createdBuilding, ...(current.items || [])],
@@ -190,12 +196,12 @@ function BuildingListPage() {
                 )}
             </header>
 
-            <form className="building-filter-panel" onSubmit={handleSubmit}>
+            <form className="building-filter-panel" onSubmit={handleFilterSubmit}>
                 <input
                     className="building-control building-filter-search"
                     name="keyword"
                     value={filters.keyword}
-                    onChange={handleChange}
+                    onChange={handleFilterChange}
                     placeholder="Tìm theo tên hoặc địa chỉ"
                 />
                 <input
@@ -204,7 +210,7 @@ function BuildingListPage() {
                     type="number"
                     min="1"
                     value={filters.minFloor}
-                    onChange={handleChange}
+                    onChange={handleFilterChange}
                     placeholder="Tầng tối thiểu"
                 />
                 <input
@@ -213,14 +219,14 @@ function BuildingListPage() {
                     type="number"
                     min="1"
                     value={filters.maxFloor}
-                    onChange={handleChange}
+                    onChange={handleFilterChange}
                     placeholder="Tầng tối đa"
                 />
                 <Form.Select
                     className="building-control"
                     name="sort"
                     value={filters.sort}
-                    onChange={handleChange}
+                    onChange={handleFilterChange}
                     aria-label="Sắp xếp tòa nhà"
                 >
                     <option value="buildingId,desc">Mới nhất</option>
@@ -228,65 +234,69 @@ function BuildingListPage() {
                     <option value="numberOfFloor,asc">Số tầng thấp đến cao</option>
                 </Form.Select>
                 <Button type="submit">Lọc</Button>
-                <Button variant="outline-secondary" type="button" onClick={handleReset}>Đặt lại</Button>
+                <Button variant="outline-secondary" type="button" onClick={handleFilterReset}>
+                    Đặt lại
+                </Button>
             </form>
 
             {error && <p className="building-alert building-alert--danger">{error}</p>}
 
             {isLoading ? (
                 <div className="building-empty-state">Đang tải danh sách...</div>
-            ) : result?.items?.length ? (
+            ) : hasBuildings ? (
                 <div className="building-table-wrapper">
                     <Table className="building-table" responsive hover align="middle">
                         <thead>
                             <tr>
                                 <th>Tên tòa nhà</th>
-                                 <th>Địa chỉ</th>
-                                 <th className="text-center">Số tầng</th>
-                                  <th className="text-end">Thao tác</th>
-                             </tr>
+                                <th>Địa chỉ</th>
+                                <th className="text-center">Số tầng</th>
+                                <th className="text-end">Thao tác</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            {result.items.map((building) => (
-                                <tr key={building.buildingId}>
+                            {buildings.map((buildingItem) => (
+                                <tr key={buildingItem.buildingId}>
                                     <td className="building-name-cell">
-                                        <Link to={`/buildings/${building.buildingId}`}>{building.name}</Link>
+                                        <Link to={`/buildings/${buildingItem.buildingId}`}>
+                                            {buildingItem.name}
+                                        </Link>
                                     </td>
-                                    <td>{building.address}</td>
-                                     <td className="text-center">
-                                         <Badge bg="primary">{building.numberOfFloor} tầng</Badge>
-                                     </td>
-                                      <td className="text-end">
-                                        <ButtonGroup size="sm" aria-label={`Thao tác với ${building.name}`}>
+                                    <td>{buildingItem.address}</td>
+                                    <td className="text-center">
+                                        <Badge bg="primary">{buildingItem.numberOfFloor} tầng</Badge>
+                                    </td>
+                                    <td className="text-end">
+                                        <ButtonGroup size="sm" aria-label={`Thao tác với ${buildingItem.name}`}>
                                             <Button
                                                 as={Link}
-                                                to={`/buildings/${building.buildingId}`}
+                                                to={`/buildings/${buildingItem.buildingId}`}
                                                 variant="outline-secondary"
                                             >
                                                 <Eye className="me-1"/>
                                                 Chi tiết
                                             </Button>
-                                             {!isManager && (
-                                                 <>
-                                                          <Button
-                                                              as={Link}
-                                                          to={`/buildings/${building.buildingId}/edit`}
-                                                          variant="outline-primary"
-                                                      >
-                                                         <PencilSquare className="me-1"/>
-                                                         Sửa
-                                                     </Button>
-                                                     <Button
-                                                         variant="outline-danger"
-                                                         type="button"
-                                                         disabled={deletingBuildingId === building.buildingId}
-                                                         onClick={() => handleDeleteBuilding(building)}
-                                                     >
-                                                         <Trash className="me-1"/>
-                                                         {deletingBuildingId === building.buildingId ? "Đang xóa..." : "Xóa"}
-                                                     </Button>
-                                                 </>
-                                             )}
+                                            {!isManager && (
+                                                <>
+                                                    <Button
+                                                        as={Link}
+                                                        to={`/buildings/${buildingItem.buildingId}/edit`}
+                                                        variant="outline-primary"
+                                                    >
+                                                        <PencilSquare className="me-1"/>
+                                                        Sửa
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline-danger"
+                                                        type="button"
+                                                        disabled={deletingBuildingId === buildingItem.buildingId}
+                                                        onClick={() => handleDeleteBuilding(buildingItem)}
+                                                    >
+                                                        <Trash className="me-1"/>
+                                                        {deletingBuildingId === buildingItem.buildingId ? "Đang xóa..." : "Xóa"}
+                                                    </Button>
+                                                </>
+                                            )}
                                         </ButtonGroup>
                                     </td>
                                 </tr>
@@ -302,7 +312,7 @@ function BuildingListPage() {
                 <div className="building-pagination-bar">
                     <div className="building-page-size">
                         <span>Hiển thị</span>
-                        <Form.Select value={size} onChange={handleSizeChange} aria-label="Số tòa nhà mỗi trang">
+                        <Form.Select value={size} onChange={handlePageSizeChange} aria-label="Số tòa nhà mỗi trang">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
@@ -310,13 +320,23 @@ function BuildingListPage() {
                         <span>/ trang</span>
                     </div>
 
-                    {result.totalPages > 1 && (
+                    {hasPagination && (
                         <nav className="building-pagination" aria-label="Phân trang tòa nhà">
-                            <Button variant="outline-primary" type="button" disabled={!result.hasPrevious} onClick={() => setPage((current) => current - 1)}>
+                            <Button
+                                variant="outline-primary"
+                                type="button"
+                                disabled={!result.hasPrevious}
+                                onClick={() => setPage((current) => current - 1)}
+                            >
                                 Trang trước
                             </Button>
                             <span>Trang {result.page + 1} / {result.totalPages}</span>
-                            <Button variant="outline-primary" type="button" disabled={!result.hasNext} onClick={() => setPage((current) => current + 1)}>
+                            <Button
+                                variant="outline-primary"
+                                type="button"
+                                disabled={!result.hasNext}
+                                onClick={() => setPage((current) => current + 1)}
+                            >
                                 Trang sau
                             </Button>
                         </nav>
@@ -328,46 +348,85 @@ function BuildingListPage() {
                 <Modal.Header closeButton>
                     <Modal.Title>Thêm mới tòa nhà</Modal.Title>
                 </Modal.Header>
-                <form className="building-form" onSubmit={handleCreateBuilding}>
+                <form className="building-form" onSubmit={handleCreateSubmit}>
                     <Modal.Body>
                         {createError && <p className="building-alert building-alert--danger">{createError}</p>}
 
                         <div className="building-form-grid building-modal-form-grid">
                             <div className="building-field">
-                                <label className="building-label">Tên tòa nhà <span className="required-mark">*</span></label>
-                                <input className={`building-control ${buildingErrors.name ? "building-control--invalid" : ""}`} name="name" value={building.name} onChange={handleBuildingChange} placeholder="Nhập tên tòa nhà"/>
+                                <label className="building-label">
+                                    Tên tòa nhà <span className="required-mark">*</span>
+                                </label>
+                                <input
+                                    className={`building-control ${buildingErrors.name ? "building-control--invalid" : ""}`}
+                                    name="name"
+                                    value={building.name}
+                                    onChange={handleCreateFormChange}
+                                    placeholder="Nhập tên tòa nhà"
+                                />
                                 {buildingErrors.name && <p className="building-error">{buildingErrors.name}</p>}
                             </div>
                             <div className="building-field">
-                                <label className="building-label">Địa chỉ <span className="required-mark">*</span></label>
-                                <input className={`building-control ${buildingErrors.address ? "building-control--invalid" : ""}`} name="address" value={building.address} onChange={handleBuildingChange} placeholder="Nhập địa chỉ"/>
+                                <label className="building-label">
+                                    Địa chỉ <span className="required-mark">*</span>
+                                </label>
+                                <input
+                                    className={`building-control ${buildingErrors.address ? "building-control--invalid" : ""}`}
+                                    name="address"
+                                    value={building.address}
+                                    onChange={handleCreateFormChange}
+                                    placeholder="Nhập địa chỉ"
+                                />
                                 {buildingErrors.address && <p className="building-error">{buildingErrors.address}</p>}
                             </div>
                             <div className="building-field">
-                                <label className="building-label">Số tầng <span className="required-mark">*</span></label>
-                                <input className={`building-control ${buildingErrors.numberOfFloor ? "building-control--invalid" : ""}`} name="numberOfFloor" value={building.numberOfFloor} onChange={handleBuildingChange} type="number" min="1" max="50" placeholder="Nhập số tầng"/>
+                                <label className="building-label">
+                                    Số tầng <span className="required-mark">*</span>
+                                </label>
+                                <input
+                                    className={`building-control ${buildingErrors.numberOfFloor ? "building-control--invalid" : ""}`}
+                                    name="numberOfFloor"
+                                    value={building.numberOfFloor}
+                                    onChange={handleCreateFormChange}
+                                    type="number"
+                                    min="1"
+                                    max="50"
+                                    placeholder="Nhập số tầng"
+                                />
                                 {buildingErrors.numberOfFloor && <p className="building-error">{buildingErrors.numberOfFloor}</p>}
                             </div>
                             <div className="building-field building-field--full">
                                 <label className="building-label">Ảnh tòa nhà</label>
                                 <label className="upload-zone building-upload-zone">
                                     <span className="building-upload-title">Chọn ảnh tòa nhà</span>
-                                    <input className="building-file-input" type="file" accept="image/*" multiple onChange={handleImagesChange}/>
+                                    <input
+                                        className="building-file-input"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleCreateImagesChange}
+                                    />
                                 </label>
                             </div>
-                            {images.length > 0 && (
+                            {building.images.length > 0 && (
                                 <div className="building-selected-images building-field--full">
                                     <p className="building-selected-title">Ảnh đã chọn</p>
-                                    {images.map((image) => (
-                                        <p className="building-image-chip" key={`${image.name}-${image.lastModified}`}>{image.name}</p>
+                                    {building.images.map((image) => (
+                                        <p className="building-image-chip" key={`${image.name}-${image.lastModified}`}>
+                                            {image.name}
+                                        </p>
                                     ))}
                                 </div>
                             )}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="button" variant="outline-secondary" onClick={closeCreateModal}>Hủy</Button>
-                        <Button type="submit" disabled={isCreating}>{isCreating ? "Đang lưu..." : "Thêm mới"}</Button>
+                        <Button type="button" variant="outline-secondary" onClick={closeCreateModal}>
+                            Hủy
+                        </Button>
+                        <Button type="submit" disabled={isCreating}>
+                            {isCreating ? "Đang lưu..." : "Thêm mới"}
+                        </Button>
                     </Modal.Footer>
                 </form>
             </Modal>

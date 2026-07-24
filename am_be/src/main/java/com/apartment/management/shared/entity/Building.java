@@ -37,10 +37,6 @@ public class Building {
     @Column(name = "address", nullable = false, length = 500)
     private String address;
 
-    @Nationalized
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
     @Builder.Default
     @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
     private Boolean deleted = false;

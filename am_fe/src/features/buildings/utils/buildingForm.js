@@ -2,11 +2,11 @@ export const initialBuildingForm = {
     name: "",
     address: "",
     numberOfFloor: "",
+    images: [],
 };
 
 export const initialBuildingEditForm = {
     ...initialBuildingForm,
-    description: "",
 };
 
 export const initialBankAccountForm = {
@@ -24,7 +24,6 @@ export function mapBuildingToEditForm(building) {
         name: toFormValue(building.name),
         address: toFormValue(building.address),
         numberOfFloor: toFormValue(building.numberOfFloor),
-        description: toFormValue(building.description),
     };
 }
 
