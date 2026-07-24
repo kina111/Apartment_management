@@ -21,7 +21,6 @@ function BuildingListPage() {
     const [filters, setFilters] = useState(initialFilters);
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
     const [buildings, setBuildings] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
 
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -37,13 +36,10 @@ function BuildingListPage() {
         let isCurrent = true;
 
         async function loadBuildings() {
-            setIsLoading(true);
             setError("");
 
             try {
-                const data = await buildingApi.getMyBuildings({
-                    ...appliedFilters,
-                });
+                const data = await buildingApi.getMyBuildings(appliedFilters);
 
                 if (!isCurrent) return;
 
@@ -52,8 +48,6 @@ function BuildingListPage() {
                 if (isCurrent) {
                     setError(getErrorMessage(requestError, "Không thể tải danh sách tòa nhà"));
                 }
-            } finally {
-                if (isCurrent) setIsLoading(false);
             }
         }
 
@@ -200,66 +194,65 @@ function BuildingListPage() {
 
             {error && <p className="building-alert building-alert--danger">{error}</p>}
 
-            {isLoading ? (
-                <div className="building-empty-state">Đang tải danh sách...</div>
-            ) : hasBuildings ? (
+            {hasBuildings ? (
                 <div className="building-table-wrapper">
                     <Table className="building-table" responsive hover align="middle">
                         <thead>
-                            <tr>
-                                <th>Tên tòa nhà</th>
-                                <th>Địa chỉ</th>
-                                <th className="text-center">Số tầng</th>
-                                <th className="text-end">Thao tác</th>
-                            </tr>
+                        <tr>
+                            <th>Tên tòa nhà</th>
+                            <th>Địa chỉ</th>
+                            <th className="text-center">Số tầng</th>
+                            <th className="text-end">Thao tác</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {buildings.map((buildingItem) => (
-                                <tr key={buildingItem.buildingId}>
-                                    <td className="building-name-cell">
-                                        <Link to={`/buildings/${buildingItem.buildingId}`}>
-                                            {buildingItem.name}
-                                        </Link>
-                                    </td>
-                                    <td>{buildingItem.address}</td>
-                                    <td className="text-center">
-                                        <Badge bg="primary">{buildingItem.numberOfFloor} tầng</Badge>
-                                    </td>
-                                    <td className="text-end">
-                                        <ButtonGroup size="sm" aria-label={`Thao tác với ${buildingItem.name}`}>
-                                            <Button
-                                                as={Link}
-                                                to={`/buildings/${buildingItem.buildingId}`}
-                                                variant="outline-secondary"
-                                            >
-                                                <Eye className="me-1"/>
-                                                Chi tiết
-                                            </Button>
-                                            {!isManager && (
-                                                <>
-                                                    <Button
-                                                        as={Link}
-                                                        to={`/buildings/${buildingItem.buildingId}/edit`}
-                                                        variant="outline-primary"
-                                                    >
-                                                        <PencilSquare className="me-1"/>
-                                                        Sửa
-                                                    </Button>
-                                                    <Button
-                                                        variant="outline-danger"
-                                                        type="button"
-                                                        disabled={deletingBuildingId === buildingItem.buildingId}
-                                                        onClick={() => handleDeleteBuilding(buildingItem)}
-                                                    >
-                                                        <Trash className="me-1"/>
-                                                        {deletingBuildingId === buildingItem.buildingId ? "Đang xóa..." : "Xóa"}
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </ButtonGroup>
-                                    </td>
-                                </tr>
-                            ))}
+                        {buildings.map((buildingItem) => (
+                            <tr key={buildingItem.buildingId}>
+                                <td className="building-name-cell">
+                                    <Link to={`/buildings/${buildingItem.buildingId}`}>
+                                        {buildingItem.name}
+                                    </Link>
+                                </td>
+                                <td>{buildingItem.address}</td>
+                                <td className="text-center">
+                                    <Badge bg="primary">{buildingItem.numberOfFloor} tầng</Badge>
+                                </td>
+                                <td className="text-end">
+                                    <ButtonGroup size="sm" aria-label={`Thao tác với ${buildingItem.name}`}>
+                                        <Button
+                                            as={Link}
+                                            to={`/buildings/${buildingItem.buildingId}`}
+                                            variant="outline-secondary"
+                                        >
+                                            <Eye className="me-1"/>
+                                            Chi tiết
+                                        </Button>
+                                        {!isManager && (
+                                            <>
+                                                <Button
+                                                    as={Link}
+                                                    to={`/buildings/${buildingItem.buildingId}`}
+                                                    state={{ openEdit: true }}
+                                                    variant="outline-primary"
+                                                >
+                                                    <PencilSquare className="me-1"/>
+                                                    Sửa
+                                                </Button>
+                                                <Button
+                                                    variant="outline-danger"
+                                                    type="button"
+                                                    disabled={deletingBuildingId === buildingItem.buildingId}
+                                                    onClick={() => handleDeleteBuilding(buildingItem)}
+                                                >
+                                                    <Trash className="me-1"/>
+                                                    {deletingBuildingId === buildingItem.buildingId ? "Đang xóa..." : "Xóa"}
+                                                </Button>
+                                            </>
+                                        )}
+                                    </ButtonGroup>
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </Table>
                 </div>
@@ -316,7 +309,8 @@ function BuildingListPage() {
                                     max="50"
                                     placeholder="Nhập số tầng"
                                 />
-                                {buildingErrors.numberOfFloor && <p className="building-error">{buildingErrors.numberOfFloor}</p>}
+                                {buildingErrors.numberOfFloor &&
+                                    <p className="building-error">{buildingErrors.numberOfFloor}</p>}
                             </div>
                             <div className="building-field building-field--full">
                                 <label className="building-label">Ảnh tòa nhà</label>

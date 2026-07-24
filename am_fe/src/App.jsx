@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import BuildingDetailPage from "./features/buildings/pages/BuildingDetailPage.jsx";
-import BuildingEditPage from "./features/buildings/pages/BuildingEditPage.jsx";
 import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 import RoomListPage from "./features/rooms/pages/RoomListPage.jsx";
 import MainLayout from "./shared/components/MainLayout.jsx";
@@ -89,7 +88,6 @@ function App() {
         >
           <Route path="/buildings" element={<BuildingListPage />} />
           <Route path="/buildings/:buildingId" element={<BuildingDetailPage />} />
-          <Route path="/buildings/:buildingId/edit" element={<BuildingEditPage />} />
           <Route
             path="/rooms"
             element={<RoomListPage buildings={buildings} />}

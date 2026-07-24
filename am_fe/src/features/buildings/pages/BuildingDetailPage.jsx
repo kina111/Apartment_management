@@ -1,13 +1,16 @@
 import {useEffect, useState} from "react";
 import {Badge, Button} from "react-bootstrap";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import buildingApi from "../services/buildingApi.js";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import {useAuth} from "../../../shared/context/AuthContext.jsx";
 import {
     initialBankAccountForm,
+    initialBuildingEditForm,
     mapBankAccountToForm,
+    mapBuildingToEditForm,
     validateBankAccount,
+    validateBuilding,
 } from "../utils/buildingForm.js";
 import "../buildings.css";
 
@@ -22,9 +25,18 @@ function DetailField({label, value}) {
 
 function BuildingDetailPage() {
     const {buildingId} = useParams();
+    const location = useLocation();
     const {role} = useAuth();
     const canManageBuilding = role !== "MANAGER";
+    const openEditRequested = Boolean(location.state?.openEdit);
     const [building, setBuilding] = useState(null);
+    const [buildingForm, setBuildingForm] = useState(initialBuildingEditForm);
+    const [buildingErrors, setBuildingErrors] = useState({});
+    const [isEditingBuilding, setIsEditingBuilding] = useState(false);
+    const [isSavingBuilding, setIsSavingBuilding] = useState(false);
+    const [buildingSubmitError, setBuildingSubmitError] = useState("");
+    const [buildingSubmitSuccess, setBuildingSubmitSuccess] = useState("");
+    const [images, setImages] = useState([]);
     const [bankAccount, setBankAccount] = useState(initialBankAccountForm);
     const [bankErrors, setBankErrors] = useState({});
     const [isEditingBank, setIsEditingBank] = useState(false);
@@ -47,6 +59,12 @@ function BuildingDetailPage() {
 
                 if (isCurrent) {
                     setBuilding(data);
+                    setBuildingForm(mapBuildingToEditForm(data));
+                    setImages([]);
+                    setBuildingErrors({});
+                    setBuildingSubmitError("");
+                    setBuildingSubmitSuccess("");
+                    setIsEditingBuilding(openEditRequested && canManageBuilding);
                     setBankAccount(mapBankAccountToForm(data.bankAccount));
                 }
             } catch (error) {
@@ -61,7 +79,73 @@ function BuildingDetailPage() {
         return () => {
             isCurrent = false;
         };
-    }, [buildingId]);
+    }, [buildingId, canManageBuilding, openEditRequested]);
+
+    useEffect(() => {
+        if (openEditRequested && canManageBuilding) {
+            setActiveTab("building");
+            setIsEditingBuilding(true);
+        }
+    }, [canManageBuilding, openEditRequested]);
+
+    const handleBuildingChange = (event) => {
+        const {name, value} = event.target;
+
+        setBuildingForm((current) => ({...current, [name]: value}));
+        setBuildingErrors((current) => ({...current, [name]: ""}));
+        setBuildingSubmitError("");
+        setBuildingSubmitSuccess("");
+    };
+
+    const handleImagesChange = (event) => {
+        setImages(Array.from(event.target.files || []));
+    };
+
+    const handleBuildingCancel = () => {
+        if (!building) return;
+
+        setBuildingForm(mapBuildingToEditForm(building));
+        setBuildingErrors({});
+        setImages([]);
+        setBuildingSubmitError("");
+        setBuildingSubmitSuccess("");
+        setIsEditingBuilding(false);
+    };
+
+    const handleBuildingSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!canManageBuilding) return;
+
+        const validationErrors = validateBuilding(buildingForm);
+        setBuildingErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) return;
+
+        setIsSavingBuilding(true);
+        setBuildingSubmitError("");
+        setBuildingSubmitSuccess("");
+
+        try {
+            const updatedBuilding = await buildingApi.updateBuilding(buildingId, {
+                name: buildingForm.name,
+                address: buildingForm.address,
+                numberOfFloor: Number(buildingForm.numberOfFloor),
+                images,
+            });
+            const nextBuilding = {...building, ...updatedBuilding};
+
+            setBuilding(nextBuilding);
+            setBuildingForm(mapBuildingToEditForm(nextBuilding));
+            setImages([]);
+            setIsEditingBuilding(false);
+            setBuildingSubmitSuccess("Đã lưu thông tin tòa nhà");
+        } catch (error) {
+            setBuildingSubmitError(getErrorMessage(error, "Không thể cập nhật tòa nhà"));
+        } finally {
+            setIsSavingBuilding(false);
+        }
+    };
 
     const handleBankChange = (event) => {
         if (!canManageBuilding) return;
@@ -121,8 +205,18 @@ function BuildingDetailPage() {
                 </div>
                 <div className="building-detail-actions">
                     <Button as={Link} variant="outline-secondary" to="/buildings">Trở về</Button>
-                    {canManageBuilding && (
-                        <Button as={Link} to={`/buildings/${buildingId}/edit`}>Chỉnh sửa</Button>
+                    {canManageBuilding && !isEditingBuilding && (
+                        <Button type="button" onClick={() => {
+                            setActiveTab("building");
+                            setIsEditingBuilding(true);
+                            setBuildingForm(mapBuildingToEditForm(building));
+                            setBuildingErrors({});
+                            setBuildingSubmitError("");
+                            setBuildingSubmitSuccess("");
+                            setImages([]);
+                        }}>
+                            Chỉnh sửa
+                        </Button>
                     )}
                 </div>
             </header>
@@ -152,37 +246,132 @@ function BuildingDetailPage() {
             </div>
 
             {activeTab === "building" && (
-                <>
-                    <section className="section-card building-form-card">
-                        <div className="section-card-header building-form-header">
-                            <h2 className="building-section-title">Thông tin tòa nhà</h2>
-                        </div>
-                        <div className="section-card-body">
-                            <div className="building-form-grid building-detail-readonly-grid">
-                                <DetailField label="Tên tòa nhà" value={building.name}/>
-                                <DetailField label="Địa chỉ" value={building.address}/>
-                                <DetailField label="Số tầng" value={building.numberOfFloor ? `${building.numberOfFloor} tầng` : "-"}/>
-                            </div>
-                        </div>
-                    </section>
+                <section className="section-card building-form-card">
+                    <div className="section-card-header building-form-header building-bank-header">
+                        <h2 className="building-section-title">
+                            {isEditingBuilding ? "Chỉnh sửa tòa nhà" : "Thông tin tòa nhà"}
+                        </h2>
+                    </div>
 
-                    <section className="section-card building-form-card building-detail-section-gap">
-                        <div className="section-card-header building-form-header">
-                            <h2 className="building-section-title">Ảnh tòa nhà</h2>
-                        </div>
-                        <div className="section-card-body">
-                            {building.imageUrls?.length > 0 ? (
-                                <div className="building-current-images">
-                                    {building.imageUrls.map((imageUrl) => (
-                                        <img src={imageUrl} alt="Ảnh tòa nhà" key={imageUrl}/>
-                                    ))}
+                    <div className="section-card-body">
+                        {buildingSubmitError && <p className="building-alert building-alert--danger">{buildingSubmitError}</p>}
+                        {buildingSubmitSuccess && <p className="building-alert building-alert--success">{buildingSubmitSuccess}</p>}
+
+                        {!isEditingBuilding ? (
+                            <>
+                                <div className="building-form-grid building-detail-readonly-grid">
+                                    <DetailField label="Tên tòa nhà" value={building.name}/>
+                                    <DetailField label="Địa chỉ" value={building.address}/>
+                                    <DetailField label="Số tầng" value={building.numberOfFloor ? `${building.numberOfFloor} tầng` : "-"}/>
                                 </div>
-                            ) : (
-                                <div className="building-empty-state">Tòa nhà chưa có ảnh.</div>
-                            )}
-                        </div>
-                    </section>
-                </>
+
+                                <div className="building-detail-section-gap">
+                                    <div className="section-card-header building-form-header">
+                                        <h2 className="building-section-title">Ảnh tòa nhà</h2>
+                                    </div>
+                                    <div className="section-card-body">
+                                        {building.imageUrls?.length > 0 ? (
+                                            <div className="building-current-images">
+                                                {building.imageUrls.map((imageUrl) => (
+                                                    <img src={imageUrl} alt="Ảnh tòa nhà" key={imageUrl}/>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="building-empty-state">Tòa nhà chưa có ảnh.</div>
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        ) : canManageBuilding ? (
+                            <form className="building-form" onSubmit={handleBuildingSubmit}>
+                                <div className="building-form-grid">
+                                    <div className="building-field">
+                                        <label className="building-label">Tên tòa nhà <span className="required-mark">*</span></label>
+                                        <input
+                                            className={`building-control ${buildingErrors.name ? "building-control--invalid" : ""}`}
+                                            name="name"
+                                            value={buildingForm.name}
+                                            onChange={handleBuildingChange}
+                                            placeholder="Nhập tên tòa nhà"
+                                        />
+                                        {buildingErrors.name && <p className="building-error">{buildingErrors.name}</p>}
+                                    </div>
+
+                                    <div className="building-field">
+                                        <label className="building-label">Địa chỉ <span className="required-mark">*</span></label>
+                                        <input
+                                            className={`building-control ${buildingErrors.address ? "building-control--invalid" : ""}`}
+                                            name="address"
+                                            value={buildingForm.address}
+                                            onChange={handleBuildingChange}
+                                            placeholder="Nhập địa chỉ"
+                                        />
+                                        {buildingErrors.address && <p className="building-error">{buildingErrors.address}</p>}
+                                    </div>
+
+                                    <div className="building-field">
+                                        <label className="building-label">Số tầng <span className="required-mark">*</span></label>
+                                        <input
+                                            className={`building-control ${buildingErrors.numberOfFloor ? "building-control--invalid" : ""}`}
+                                            name="numberOfFloor"
+                                            value={buildingForm.numberOfFloor}
+                                            onChange={handleBuildingChange}
+                                            type="number"
+                                            min="1"
+                                            max="50"
+                                            placeholder="Nhập số tầng"
+                                        />
+                                        {buildingErrors.numberOfFloor && <p className="building-error">{buildingErrors.numberOfFloor}</p>}
+                                    </div>
+
+                                    <div className="building-field building-field--full">
+                                        <label className="building-label">Ảnh tòa nhà</label>
+                                        {building.imageUrls?.length > 0 && (
+                                            <div className="building-current-images">
+                                                {building.imageUrls.map((imageUrl) => (
+                                                    <img src={imageUrl} alt="Ảnh tòa nhà hiện có" key={imageUrl}/>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <label className="upload-zone building-upload-zone">
+                                            <span className="building-upload-title">Chọn ảnh tòa nhà</span>
+                                            <span className="building-upload-hint">Chọn ảnh mới nếu muốn bổ sung ảnh cho tòa nhà.</span>
+                                            <input
+                                                className="building-file-input"
+                                                type="file"
+                                                accept="image/*"
+                                                multiple
+                                                onChange={handleImagesChange}
+                                            />
+                                        </label>
+                                    </div>
+
+                                    {images.length > 0 && (
+                                        <div className="building-selected-images building-field--full">
+                                            <p className="building-selected-title">Ảnh đã chọn</p>
+                                            {images.map((image) => (
+                                                <p className="building-image-chip" key={`${image.name}-${image.lastModified}`}>
+                                                    {image.name}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="building-form-actions">
+                                    <Button type="button" variant="outline-secondary" onClick={handleBuildingCancel}>
+                                        Hủy
+                                    </Button>
+                                    <Button type="submit" disabled={isSavingBuilding}>
+                                        {isSavingBuilding ? "Đang lưu..." : "Lưu thay đổi"}
+                                    </Button>
+                                </div>
+                            </form>
+                        ) : (
+                            <div className="building-empty-state">Bạn không có quyền chỉnh sửa tòa nhà này.</div>
+                        )}
+                    </div>
+                </section>
             )}
 
             {activeTab === "bank" && (
