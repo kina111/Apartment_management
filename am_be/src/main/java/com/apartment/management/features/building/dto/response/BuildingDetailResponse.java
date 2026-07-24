@@ -8,12 +8,6 @@ public record BuildingDetailResponse(
         String address,
         Integer numberOfFloor,
         String description,
-        Double area,
-        Integer numberOfBasement,
-        Integer totalRooms,
-        Integer yearBuilt,
-        String phoneNumber,
-        String email,
         List<String> imageUrls,
         BuildingBankAccountResponse bankAccount
 ) {

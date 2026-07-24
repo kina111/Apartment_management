@@ -41,24 +41,6 @@ public class Building {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "area")
-    private Double area;
-
-    @Column(name = "number_of_basement")
-    private Integer numberOfBasement;
-
-    @Column(name = "total_rooms")
-    private Integer totalRooms;
-
-    @Column(name = "year_built")
-    private Integer yearBuilt;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "email")
-    private String email;
-
     @Builder.Default
     @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
     private Boolean deleted = false;

@@ -11,30 +11,6 @@ function buildBuildingFormData(building, images = []) {
         formData.append("description", building.description.trim());
     }
 
-    if (building.area !== undefined) {
-        formData.append("area", String(building.area));
-    }
-
-    if (building.numberOfBasement !== undefined) {
-        formData.append("numberOfBasement", String(building.numberOfBasement));
-    }
-
-    if (building.totalRooms !== undefined) {
-        formData.append("totalRooms", String(building.totalRooms));
-    }
-
-    if (building.yearBuilt !== undefined) {
-        formData.append("yearBuilt", String(building.yearBuilt));
-    }
-
-    if (building.phoneNumber?.trim()) {
-        formData.append("phoneNumber", building.phoneNumber.trim());
-    }
-
-    if (building.email?.trim()) {
-        formData.append("email", building.email.trim());
-    }
-
     if (building.landlordId) {
         formData.append("landlordId", String(building.landlordId));
     }
@@ -46,32 +22,29 @@ function buildBuildingFormData(building, images = []) {
     return formData;
 }
 
-export async function createOrUpdateBuilding(building, images = []) {
-    const formData = buildBuildingFormData(building, images);
-    const buildingId = building.buildingId;
-    const url = buildingId ? `/buildings/${buildingId}` : "/buildings";
-    const method = buildingId ? "put" : "post";
-
-    const response = await axiosClient[method](url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
+async function createBuilding(building, images = []) {
+    const response = await axiosClient.post("/buildings", buildBuildingFormData(building, images));
 
     return response.data;
 }
 
-export async function getBuildingDetail(buildingId) {
+async function updateBuilding(buildingId, building, images = []) {
+    const response = await axiosClient.put(`/buildings/${buildingId}`, buildBuildingFormData(building, images));
+
+    return response.data;
+}
+
+async function getBuildingDetail(buildingId) {
     const response = await axiosClient.get(`/buildings/${buildingId}`);
 
     return response.data;
 }
 
-export async function deleteBuilding(buildingId) {
+async function deleteBuilding(buildingId) {
     await axiosClient.delete(`/buildings/${buildingId}`);
 }
 
-export async function updateBuildingBankAccount(buildingId, bankAccount) {
+async function updateBuildingBankAccount(buildingId, bankAccount) {
     const response = await axiosClient.put(`/buildings/${buildingId}/bank-account`, {
         bankName: bankAccount.bankName.trim(),
         accountNumber: bankAccount.accountNumber.trim(),
@@ -81,7 +54,7 @@ export async function updateBuildingBankAccount(buildingId, bankAccount) {
     return response.data;
 }
 
-export async function getMyBuildings(filters = {}) {
+async function getMyBuildings(filters = {}) {
     const response = await axiosClient.get("/buildings/my", {
         params: {
             keyword: filters.keyword || undefined,
@@ -98,16 +71,29 @@ export async function getMyBuildings(filters = {}) {
     return response.data;
 }
 
-export async function getMyBuildingOptions() {
+async function getMyBuildingOptions() {
     const response = await axiosClient.get("/buildings/my-options");
 
     return response.data;
 }
 
-export async function getAllBuildingsByManagerId(managerId) {
+async function getAllBuildingsByManagerId(managerId) {
     const response = await axiosClient.get("/buildings", {
         params: { managerId },
     });
 
     return response.data;
 }
+
+const buildingApi = {
+    createBuilding,
+    updateBuilding,
+    getBuildingDetail,
+    deleteBuilding,
+    updateBuildingBankAccount,
+    getMyBuildings,
+    getMyBuildingOptions,
+    getAllBuildingsByManagerId,
+};
+
+export default buildingApi;

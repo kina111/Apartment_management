@@ -2,9 +2,10 @@ import {useEffect, useState} from "react";
 import {Badge, Button, ButtonGroup, Form, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
-import {createOrUpdateBuilding, deleteBuilding, getAllBuildingsByManagerId, getMyBuildings} from "../services/buildingApi.js";
+import buildingApi from "../services/buildingApi.js";
 import {useAuth} from "../../../shared/context/AuthContext.jsx";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
+import {initialBuildingForm, validateBuilding} from "../utils/buildingForm.js";
 import "../buildings.css";
 
 const initialFilters = {
@@ -13,67 +14,6 @@ const initialFilters = {
     maxFloor: "",
     sort: "buildingId,desc",
 };
-
-const initialBuilding = {
-    name: "",
-    address: "",
-    numberOfFloor: "",
-    area: "",
-    numberOfBasement: "",
-    totalRooms: "",
-    yearBuilt: "",
-    phoneNumber: "",
-    email: "",
-    description: "",
-};
-
-const currentYear = new Date().getFullYear();
-
-function optionalNumber(value) {
-    return value === "" ? undefined : Number(value);
-}
-
-function validateBuilding(building) {
-    const errors = {};
-
-    if (!building.name.trim()) errors.name = "Tên toà nhà là bắt buộc";
-    if (!building.address.trim()) errors.address = "Địa chỉ là bắt buộc";
-
-    const floor = Number(building.numberOfFloor);
-    if (!building.numberOfFloor) {
-        errors.numberOfFloor = "Số tầng là bắt buộc";
-    } else if (!Number.isInteger(floor) || floor <= 0 || floor > 50) {
-        errors.numberOfFloor = "Số tầng phải là số nguyên từ 1 đến 50";
-    }
-
-    if (building.area) {
-        const area = Number(building.area);
-        if (!Number.isFinite(area) || area <= 0) errors.area = "Diện tích phải lớn hơn 0";
-    }
-
-    if (building.numberOfBasement) {
-        const basement = Number(building.numberOfBasement);
-        if (!Number.isInteger(basement) || basement < 0) errors.numberOfBasement = "Số tầng hầm phải là số nguyên không âm";
-    }
-
-    if (building.totalRooms) {
-        const totalRooms = Number(building.totalRooms);
-        if (!Number.isInteger(totalRooms) || totalRooms < 0) errors.totalRooms = "Tổng số phòng phải là số nguyên không âm";
-    }
-
-    if (building.yearBuilt) {
-        const yearBuilt = Number(building.yearBuilt);
-        if (!Number.isInteger(yearBuilt) || yearBuilt < 1800 || yearBuilt > currentYear) {
-            errors.yearBuilt = `Năm xây dựng phải từ 1800 đến ${currentYear}`;
-        }
-    }
-
-    if (building.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(building.email.trim())) {
-        errors.email = "Email không hợp lệ";
-    }
-
-    return errors;
-}
 
 function BuildingListPage() {
     const {user, role} = useAuth();
@@ -85,7 +25,7 @@ function BuildingListPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [building, setBuilding] = useState(initialBuilding);
+    const [building, setBuilding] = useState(initialBuildingForm);
     const [buildingErrors, setBuildingErrors] = useState({});
     const [createError, setCreateError] = useState("");
     const [isCreating, setIsCreating] = useState(false);
@@ -102,8 +42,8 @@ function BuildingListPage() {
 
             try {
                 const data = isManager
-                    ? await getAllBuildingsByManagerId(user?.accountId)
-                    : await getMyBuildings({
+                    ? await buildingApi.getAllBuildingsByManagerId(user?.accountId)
+                    : await buildingApi.getMyBuildings({
                         ...appliedFilters,
                         page,
                         size,
@@ -156,7 +96,7 @@ function BuildingListPage() {
     };
 
     const openCreateModal = () => {
-        setBuilding(initialBuilding);
+        setBuilding(initialBuildingForm);
         setBuildingErrors({});
         setCreateError("");
         setImages([]);
@@ -165,7 +105,7 @@ function BuildingListPage() {
 
     const closeCreateModal = () => {
         setShowCreateModal(false);
-        setBuilding(initialBuilding);
+        setBuilding(initialBuildingForm);
         setBuildingErrors({});
         setCreateError("");
         setImages([]);
@@ -195,20 +135,13 @@ function BuildingListPage() {
             name: building.name,
             address: building.address,
             numberOfFloor: Number(building.numberOfFloor),
-            area: optionalNumber(building.area),
-            numberOfBasement: optionalNumber(building.numberOfBasement),
-            totalRooms: optionalNumber(building.totalRooms),
-            yearBuilt: optionalNumber(building.yearBuilt),
-            phoneNumber: building.phoneNumber,
-            email: building.email,
-            description: building.description,
         };
 
         setIsCreating(true);
         setCreateError("");
 
         try {
-            const createdBuilding = await createOrUpdateBuilding(payload, images);
+            const createdBuilding = await buildingApi.createBuilding(payload, images);
             setResult((current) => current ? {
                 ...current,
                 items: [createdBuilding, ...(current.items || [])],
@@ -231,7 +164,7 @@ function BuildingListPage() {
         setError("");
 
         try {
-            await deleteBuilding(buildingToDelete.buildingId);
+            await buildingApi.deleteBuilding(buildingToDelete.buildingId);
             setResult((current) => current ? {
                 ...current,
                 items: (current.items || []).filter((item) => item.buildingId !== buildingToDelete.buildingId),
@@ -293,8 +226,6 @@ function BuildingListPage() {
                     <option value="buildingId,desc">Mới nhất</option>
                     <option value="numberOfFloor,desc">Số tầng cao đến thấp</option>
                     <option value="numberOfFloor,asc">Số tầng thấp đến cao</option>
-                    <option value="totalRooms,desc">Tổng phòng nhiều đến ít</option>
-                    <option value="totalRooms,asc">Tổng phòng ít đến nhiều</option>
                 </Form.Select>
                 <Button type="submit">Lọc</Button>
                 <Button variant="outline-secondary" type="button" onClick={handleReset}>Đặt lại</Button>
@@ -312,9 +243,7 @@ function BuildingListPage() {
                                 <th>Tên tòa nhà</th>
                                  <th>Địa chỉ</th>
                                  <th className="text-center">Số tầng</th>
-                                <th className="text-center">Tổng phòng</th>
-                                <th>Liên hệ</th>
-                                 <th className="text-end">Thao tác</th>
+                                  <th className="text-end">Thao tác</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -327,16 +256,7 @@ function BuildingListPage() {
                                      <td className="text-center">
                                          <Badge bg="primary">{building.numberOfFloor} tầng</Badge>
                                      </td>
-                                    <td className="text-center">
-                                        {building.totalRooms ?? "-"}
-                                    </td>
-                                    <td>
-                                        <div className="building-contact-cell">
-                                            <span>{building.phoneNumber || "-"}</span>
-                                            {building.email && <span>{building.email}</span>}
-                                        </div>
-                                    </td>
-                                     <td className="text-end">
+                                      <td className="text-end">
                                         <ButtonGroup size="sm" aria-label={`Thao tác với ${building.name}`}>
                                             <Button
                                                 as={Link}
@@ -348,11 +268,11 @@ function BuildingListPage() {
                                             </Button>
                                              {!isManager && (
                                                  <>
-                                                     <Button
-                                                         as={Link}
-                                                         to={`/buildings/${building.buildingId}?edit=1`}
-                                                         variant="outline-primary"
-                                                     >
+                                                          <Button
+                                                              as={Link}
+                                                          to={`/buildings/${building.buildingId}/edit`}
+                                                          variant="outline-primary"
+                                                      >
                                                          <PencilSquare className="me-1"/>
                                                          Sửa
                                                      </Button>
@@ -427,39 +347,6 @@ function BuildingListPage() {
                                 <label className="building-label">Số tầng <span className="required-mark">*</span></label>
                                 <input className={`building-control ${buildingErrors.numberOfFloor ? "building-control--invalid" : ""}`} name="numberOfFloor" value={building.numberOfFloor} onChange={handleBuildingChange} type="number" min="1" max="50" placeholder="Nhập số tầng"/>
                                 {buildingErrors.numberOfFloor && <p className="building-error">{buildingErrors.numberOfFloor}</p>}
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Diện tích (m²)</label>
-                                <input className={`building-control ${buildingErrors.area ? "building-control--invalid" : ""}`} name="area" value={building.area} onChange={handleBuildingChange} type="number" min="0" step="0.01" placeholder="Nhập diện tích"/>
-                                {buildingErrors.area && <p className="building-error">{buildingErrors.area}</p>}
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Số tầng hầm</label>
-                                <input className={`building-control ${buildingErrors.numberOfBasement ? "building-control--invalid" : ""}`} name="numberOfBasement" value={building.numberOfBasement} onChange={handleBuildingChange} type="number" min="0" placeholder="Nhập số tầng hầm"/>
-                                {buildingErrors.numberOfBasement && <p className="building-error">{buildingErrors.numberOfBasement}</p>}
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Tổng số phòng</label>
-                                <input className={`building-control ${buildingErrors.totalRooms ? "building-control--invalid" : ""}`} name="totalRooms" value={building.totalRooms} onChange={handleBuildingChange} type="number" min="0" placeholder="Nhập tổng số phòng"/>
-                                {buildingErrors.totalRooms && <p className="building-error">{buildingErrors.totalRooms}</p>}
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Năm xây dựng</label>
-                                <input className={`building-control ${buildingErrors.yearBuilt ? "building-control--invalid" : ""}`} name="yearBuilt" value={building.yearBuilt} onChange={handleBuildingChange} type="number" min="1800" max={currentYear} placeholder="Nhập năm xây dựng"/>
-                                {buildingErrors.yearBuilt && <p className="building-error">{buildingErrors.yearBuilt}</p>}
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Số điện thoại liên hệ</label>
-                                <input className="building-control" name="phoneNumber" value={building.phoneNumber} onChange={handleBuildingChange} placeholder="Nhập số điện thoại"/>
-                            </div>
-                            <div className="building-field">
-                                <label className="building-label">Email liên hệ</label>
-                                <input className={`building-control ${buildingErrors.email ? "building-control--invalid" : ""}`} name="email" value={building.email} onChange={handleBuildingChange} type="email" placeholder="Nhập email liên hệ"/>
-                                {buildingErrors.email && <p className="building-error">{buildingErrors.email}</p>}
-                            </div>
-                            <div className="building-field building-field--full">
-                                <label className="building-label">Mô tả</label>
-                                <textarea className="building-control building-textarea" name="description" value={building.description} onChange={handleBuildingChange} placeholder="Nhập mô tả" rows={3}/>
                             </div>
                             <div className="building-field building-field--full">
                                 <label className="building-label">Ảnh tòa nhà</label>

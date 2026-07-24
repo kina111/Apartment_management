@@ -120,12 +120,6 @@ public class BuildingServiceImpl implements BuildingService {
         building.setAddress(request.getAddress().trim());
         building.setNumberOfFloor(request.getNumberOfFloor());
         building.setDescription(normalizeDescription(request.getDescription()));
-        building.setArea(request.getArea());
-        building.setNumberOfBasement(request.getNumberOfBasement());
-        building.setTotalRooms(request.getTotalRooms());
-        building.setYearBuilt(request.getYearBuilt());
-        building.setPhoneNumber(normalizeText(request.getPhoneNumber()));
-        building.setEmail(normalizeText(request.getEmail()));
     }
 
     private String normalizeDescription(String description) {

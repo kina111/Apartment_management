@@ -5,7 +5,7 @@ import BuildingListPage from "./features/buildings/pages/BuildingListPage.jsx";
 import RoomListPage from "./features/rooms/pages/RoomListPage.jsx";
 import MainLayout from "./shared/components/MainLayout.jsx";
 import { useEffect, useState } from "react";
-import { getAllBuildingsByManagerId, getMyBuildingOptions } from "./features/buildings/services/buildingApi.js";
+import buildingApi from "./features/buildings/services/buildingApi.js";
 import RoomDetails from "./features/rooms/pages/RoomDetails.jsx";
 import TenantsManagePage from "./features/tenants_vehicles/pages/TenantsManagePage.jsx";
 import VehiclesDashboardPage from "./features/tenants_vehicles/pages/VehiclesDashboardPage.jsx";
@@ -44,8 +44,8 @@ function App() {
     const loadBuildingByAccountId = async () => {
       try {
         const buildings = user.role === "LANDLORD"
-          ? await getMyBuildingOptions()
-          : await getAllBuildingsByManagerId(user.accountId);
+          ? await buildingApi.getMyBuildingOptions()
+          : await buildingApi.getAllBuildingsByManagerId(user.accountId);
 
         setBuildings(buildings);
       } catch (error) {

@@ -18,6 +18,30 @@
   text-decoration: underline;
 }
 
+.rooms-building-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rooms-building-select {
+  min-height: 40px;
+  min-width: 240px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-md);
+  background: var(--app-surface);
+  color: var(--app-text);
+  padding: 8px 12px;
+}
+
+.rooms-building-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 /* ── Filter Bar ── */
 .rooms-filter-bar {
   display: flex;
@@ -237,6 +261,24 @@
 
 /* ── Responsive ── */
 @media (max-width: 576px) {
+  .rooms-building-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rooms-building-select {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .rooms-building-actions {
+    justify-content: stretch;
+  }
+
+  .rooms-building-actions .btn {
+    flex: 1;
+  }
+
   .rooms-filter-bar {
     flex-direction: column;
     align-items: stretch;

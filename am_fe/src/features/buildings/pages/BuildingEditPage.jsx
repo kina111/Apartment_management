@@ -1,144 +1,25 @@
 import {useEffect, useState} from "react";
 import {Badge, Button} from "react-bootstrap";
 import {Link, useParams} from "react-router-dom";
-import {createOrUpdateBuilding, getBuildingDetail, updateBuildingBankAccount} from "../services/buildingApi.js";
+import buildingApi from "../services/buildingApi.js";
 import {getErrorMessage} from "../../../shared/services/errorUtils.js";
 import {useAuth} from "../../../shared/context/AuthContext.jsx";
+import {
+    initialBankAccountForm,
+    initialBuildingEditForm,
+    mapBankAccountToForm,
+    mapBuildingToEditForm,
+    validateBankAccount,
+    validateBuilding,
+} from "../utils/buildingForm.js";
 import "../buildings.css";
-
-const initialBuilding = {
-    name: "",
-    address: "",
-    numberOfFloor: "",
-    area: "",
-    numberOfBasement: "",
-    totalRooms: "",
-    yearBuilt: "",
-    phoneNumber: "",
-    email: "",
-    description: "",
-};
-
-const initialBankAccount = {
-    bankName: "",
-    accountNumber: "",
-    userName: "",
-};
-
-const currentYear = new Date().getFullYear();
-
-function validateBuilding(building) {
-    const errors = {};
-
-    if (!building.name.trim()) {
-        errors.name = "Tên toà nhà là bắt buộc";
-    }
-
-    if (!building.address.trim()) {
-        errors.address = "Địa chỉ là bắt buộc";
-    }
-
-    const floor = Number(building.numberOfFloor);
-
-    if (!building.numberOfFloor) {
-        errors.numberOfFloor = "Số tầng là bắt buộc";
-    } else if (!Number.isInteger(floor) || floor <= 0 || floor > 50) {
-        errors.numberOfFloor = "Số tầng phải là số nguyên từ 1 đến 50";
-    }
-
-    if (building.area) {
-        const area = Number(building.area);
-        if (!Number.isFinite(area) || area <= 0) {
-            errors.area = "Diện tích phải lớn hơn 0";
-        }
-    }
-
-    if (building.numberOfBasement) {
-        const basement = Number(building.numberOfBasement);
-        if (!Number.isInteger(basement) || basement < 0) {
-            errors.numberOfBasement = "Số tầng hầm phải là số nguyên không âm";
-        }
-    }
-
-    if (building.totalRooms) {
-        const totalRooms = Number(building.totalRooms);
-        if (!Number.isInteger(totalRooms) || totalRooms < 0) {
-            errors.totalRooms = "Tổng số phòng phải là số nguyên không âm";
-        }
-    }
-
-    if (building.yearBuilt) {
-        const yearBuilt = Number(building.yearBuilt);
-        if (!Number.isInteger(yearBuilt) || yearBuilt < 1800 || yearBuilt > currentYear) {
-            errors.yearBuilt = `Năm xây dựng phải từ 1800 đến ${currentYear}`;
-        }
-    }
-
-    if (building.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(building.email.trim())) {
-        errors.email = "Email không hợp lệ";
-    }
-
-    return errors;
-}
-
-function optionalNumber(value) {
-    return value === "" ? undefined : Number(value);
-}
-
-
-function toFormValue(value) {
-    return value ?? "";
-}
-
-function mapBuildingToForm(building) {
-    return {
-        name: toFormValue(building.name),
-        address: toFormValue(building.address),
-        numberOfFloor: toFormValue(building.numberOfFloor),
-        area: toFormValue(building.area),
-        numberOfBasement: toFormValue(building.numberOfBasement),
-        totalRooms: toFormValue(building.totalRooms),
-        yearBuilt: toFormValue(building.yearBuilt),
-        phoneNumber: toFormValue(building.phoneNumber),
-        email: toFormValue(building.email),
-        description: toFormValue(building.description),
-    };
-}
-
-function mapBankAccountToForm(bankAccount) {
-    return {
-        bankName: toFormValue(bankAccount?.bankName),
-        accountNumber: toFormValue(bankAccount?.accountNumber),
-        userName: toFormValue(bankAccount?.userName),
-    };
-}
-
-function validateBankAccount(bankAccount) {
-    const errors = {};
-
-    if (!bankAccount.bankName.trim()) {
-        errors.bankName = "Tên ngân hàng là bắt buộc";
-    }
-
-    if (!bankAccount.accountNumber.trim()) {
-        errors.accountNumber = "Số tài khoản là bắt buộc";
-    } else if (!/^\d{6,30}$/.test(bankAccount.accountNumber.trim())) {
-        errors.accountNumber = "Số tài khoản phải gồm 6-30 chữ số";
-    }
-
-    if (!bankAccount.userName.trim()) {
-        errors.userName = "Tên chủ tài khoản là bắt buộc";
-    }
-
-    return errors;
-}
 
 function BuildingEditPage() {
     const {buildingId} = useParams();
     const {role} = useAuth();
-    const [building, setBuilding] = useState(initialBuilding);
+    const [building, setBuilding] = useState(initialBuildingEditForm);
     const [buildingDetail, setBuildingDetail] = useState(null);
-    const [bankAccount, setBankAccount] = useState(initialBankAccount);
+    const [bankAccount, setBankAccount] = useState(initialBankAccountForm);
     const [bankErrors, setBankErrors] = useState({});
     const [bankSubmitError, setBankSubmitError] = useState("");
     const [bankSubmitSuccess, setBankSubmitSuccess] = useState("");
@@ -159,10 +40,10 @@ function BuildingEditPage() {
             setLoadError("");
 
             try {
-                const data = await getBuildingDetail(buildingId);
+                const data = await buildingApi.getBuildingDetail(buildingId);
                 if (isCurrent) {
                     setBuildingDetail(data);
-                    setBuilding(mapBuildingToForm(data));
+                    setBuilding(mapBuildingToEditForm(data));
                     setBankAccount(mapBankAccountToForm(data.bankAccount));
                 }
             } catch (error) {
@@ -219,12 +100,6 @@ function BuildingEditPage() {
             name: building.name,
             address: building.address,
             numberOfFloor: Number(building.numberOfFloor),
-            area: optionalNumber(building.area),
-            numberOfBasement: optionalNumber(building.numberOfBasement),
-            totalRooms: optionalNumber(building.totalRooms),
-            yearBuilt: optionalNumber(building.yearBuilt),
-            phoneNumber: building.phoneNumber,
-            email: building.email,
             description: building.description,
         }
 
@@ -233,7 +108,7 @@ function BuildingEditPage() {
         setUpdatedBuilding(null);
 
         try {
-            const result = await createOrUpdateBuilding({...payload, buildingId}, images);
+            const result = await buildingApi.updateBuilding(buildingId, payload, images);
             setUpdatedBuilding(result);
             setImages([]);
             setBuildingDetail((current) => ({...current, ...result}));
@@ -261,7 +136,7 @@ function BuildingEditPage() {
         setBankSubmitSuccess("");
 
         try {
-            const updatedBankAccount = await updateBuildingBankAccount(buildingId, bankAccount);
+            const updatedBankAccount = await buildingApi.updateBuildingBankAccount(buildingId, bankAccount);
             setBuildingDetail((current) => ({...current, bankAccount: updatedBankAccount}));
             setBankAccount(mapBankAccountToForm(updatedBankAccount));
             setBankSubmitSuccess("Đã lưu tài khoản nhận tiền");
@@ -368,92 +243,6 @@ function BuildingEditPage() {
                                     type="number" min="1" max="50" placeholder="Nhập số tầng"/>
                                 {errors.numberOfFloor && (
                                     <p className="building-error">{errors.numberOfFloor}</p>
-                                )}
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Diện tích (m²)</label>
-                                <input
-                                    className={`building-control ${errors.area ? "building-control--invalid" : ""}`}
-                                    name="area"
-                                    value={building.area}
-                                    onChange={handleChange}
-                                    type="number"
-                                    min="0"
-                                    step="0.01"
-                                    placeholder="Nhập diện tích"/>
-                                {errors.area && (
-                                    <p className="building-error">{errors.area}</p>
-                                )}
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Số tầng hầm</label>
-                                <input
-                                    className={`building-control ${errors.numberOfBasement ? "building-control--invalid" : ""}`}
-                                    name="numberOfBasement"
-                                    value={building.numberOfBasement}
-                                    onChange={handleChange}
-                                    type="number"
-                                    min="0"
-                                    placeholder="Nhập số tầng hầm"/>
-                                {errors.numberOfBasement && (
-                                    <p className="building-error">{errors.numberOfBasement}</p>
-                                )}
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Tổng số phòng</label>
-                                <input
-                                    className={`building-control ${errors.totalRooms ? "building-control--invalid" : ""}`}
-                                    name="totalRooms"
-                                    value={building.totalRooms}
-                                    onChange={handleChange}
-                                    type="number"
-                                    min="0"
-                                    placeholder="Nhập tổng số phòng"/>
-                                {errors.totalRooms && (
-                                    <p className="building-error">{errors.totalRooms}</p>
-                                )}
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Năm xây dựng</label>
-                                <input
-                                    className={`building-control ${errors.yearBuilt ? "building-control--invalid" : ""}`}
-                                    name="yearBuilt"
-                                    value={building.yearBuilt}
-                                    onChange={handleChange}
-                                    type="number"
-                                    min="1800"
-                                    max={currentYear}
-                                    placeholder="Nhập năm xây dựng"/>
-                                {errors.yearBuilt && (
-                                    <p className="building-error">{errors.yearBuilt}</p>
-                                )}
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Số điện thoại liên hệ</label>
-                                <input
-                                    className="building-control"
-                                    name="phoneNumber"
-                                    value={building.phoneNumber}
-                                    onChange={handleChange}
-                                    placeholder="Nhập số điện thoại"/>
-                            </div>
-
-                            <div className="building-field">
-                                <label className="building-label">Email liên hệ</label>
-                                <input
-                                    className={`building-control ${errors.email ? "building-control--invalid" : ""}`}
-                                    name="email"
-                                    value={building.email}
-                                    onChange={handleChange}
-                                    type="email"
-                                    placeholder="Nhập email liên hệ"/>
-                                {errors.email && (
-                                    <p className="building-error">{errors.email}</p>
                                 )}
                             </div>
 

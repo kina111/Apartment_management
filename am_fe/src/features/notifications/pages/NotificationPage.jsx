@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { EnvelopePaper, Send, X, CloudUpload, Save } from 'react-bootstrap-icons';
 import { notificationApi } from '../services/notificationApi';
-import { getMyBuildingOptions } from '../../buildings/services/buildingApi';
+import buildingApi from '../../buildings/services/buildingApi';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import './NotificationPage.css';
@@ -32,7 +32,7 @@ const NotificationPage = () => {
 
     const loadBuildings = async () => {
         try {
-            const buildings = await getMyBuildingOptions();
+            const buildings = await buildingApi.getMyBuildingOptions();
             setBuildings(buildings);
         } catch (err) {
             toast.error("Không thể tải danh sách tòa nhà");
