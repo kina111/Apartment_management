@@ -8,7 +8,6 @@ import com.apartment.management.features.building.dto.response.BuildingDetailRes
 import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
 import com.apartment.management.features.building.service.BuildingService;
-import com.apartment.management.shared.dtos.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -18,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -115,13 +113,11 @@ public class BuildingController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<PageResponse<BuildingResponse>> getMyBuildings(
-            @Valid @ModelAttribute BuildingFilterRequest filter,
-            Pageable pageable) {
+    public ResponseEntity<List<BuildingResponse>> getMyBuildings(
+            @Valid @ModelAttribute BuildingFilterRequest filter) {
         return ResponseEntity.ok(
-                buildingService.getBuildingsByLandlordId(
-                        filter,
-                        pageable
+                buildingService.getMyBuildings(
+                        filter
                 )
         );
     }

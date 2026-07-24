@@ -43,9 +43,7 @@ function App() {
 
     const loadBuildingByAccountId = async () => {
       try {
-        const buildings = user.role === "LANDLORD"
-          ? await buildingApi.getMyBuildingOptions()
-          : await buildingApi.getAllBuildingsByManagerId(user.accountId);
+        const buildings = await buildingApi.getMyBuildingOptions();
 
         setBuildings(buildings);
       } catch (error) {

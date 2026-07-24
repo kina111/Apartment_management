@@ -7,8 +7,6 @@ import com.apartment.management.features.building.dto.response.BuildingBankAccou
 import com.apartment.management.features.building.dto.response.BuildingDetailResponse;
 import com.apartment.management.features.building.dto.response.BuildingOptionResponse;
 import com.apartment.management.features.building.dto.response.BuildingResponse;
-import com.apartment.management.shared.dtos.PageResponse;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,8 +26,7 @@ public interface BuildingService {
 
     List<BuildingOptionResponse> getMyBuildingOptions();
 
-    PageResponse<BuildingResponse> getBuildingsByLandlordId(
-            BuildingFilterRequest filter,
-            Pageable pageable
+    List<BuildingResponse> getMyBuildings(
+            BuildingFilterRequest filter
     );
 }

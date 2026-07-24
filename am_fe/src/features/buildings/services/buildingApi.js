@@ -52,9 +52,6 @@ async function getMyBuildings(filters = {}) {
             keyword: filters.keyword || undefined,
             minFloor: filters.minFloor || undefined,
             maxFloor: filters.maxFloor || undefined,
-            page: filters.page ?? 0,
-            size: filters.size ?? 10,
-            sort: filters.sort || "buildingId,desc",
         },
     });
 
@@ -67,14 +64,6 @@ async function getMyBuildingOptions() {
     return response.data;
 }
 
-async function getAllBuildingsByManagerId(managerId) {
-    const response = await axiosClient.get("/buildings", {
-        params: {managerId},
-    });
-
-    return response.data;
-}
-
 const buildingApi = {
     createBuilding,
     updateBuilding,
@@ -83,7 +72,6 @@ const buildingApi = {
     updateBuildingBankAccount,
     getMyBuildings,
     getMyBuildingOptions,
-    getAllBuildingsByManagerId,
 };
 
 export default buildingApi;

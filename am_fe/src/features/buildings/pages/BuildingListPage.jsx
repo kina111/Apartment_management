@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Badge, Button, ButtonGroup, Form, Modal, Table} from "react-bootstrap";
+import {Badge, Button, ButtonGroup, Modal, Table} from "react-bootstrap";
 import {Eye, PencilSquare, Trash} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
 import buildingApi from "../services/buildingApi.js";
@@ -12,18 +12,15 @@ const initialFilters = {
     keyword: "",
     minFloor: "",
     maxFloor: "",
-    sort: "buildingId,desc",
 };
 
 function BuildingListPage() {
-    const {user, role} = useAuth();
+    const {role} = useAuth();
     const isManager = role === "MANAGER";
 
     const [filters, setFilters] = useState(initialFilters);
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
-    const [result, setResult] = useState(null);
+    const [buildings, setBuildings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -34,9 +31,7 @@ function BuildingListPage() {
     const [isCreating, setIsCreating] = useState(false);
     const [deletingBuildingId, setDeletingBuildingId] = useState(null);
 
-    const buildings = result?.items || [];
     const hasBuildings = buildings.length > 0;
-    const hasPagination = result?.totalPages > 1;
 
     useEffect(() => {
         let isCurrent = true;
@@ -46,23 +41,13 @@ function BuildingListPage() {
             setError("");
 
             try {
-                const data = isManager
-                    ? await buildingApi.getAllBuildingsByManagerId(user?.accountId)
-                    : await buildingApi.getMyBuildings({
-                        ...appliedFilters,
-                        page,
-                        size,
-                    });
+                const data = await buildingApi.getMyBuildings({
+                    ...appliedFilters,
+                });
 
                 if (!isCurrent) return;
 
-                setResult(isManager ? {
-                    items: data,
-                    totalElements: data.length,
-                    totalPages: 1,
-                    page: 0,
-                    size: data.length,
-                } : data);
+                setBuildings(data || []);
             } catch (requestError) {
                 if (isCurrent) {
                     setError(getErrorMessage(requestError, "Không thể tải danh sách tòa nhà"));
@@ -76,7 +61,7 @@ function BuildingListPage() {
         return () => {
             isCurrent = false;
         };
-    }, [appliedFilters, isManager, page, size, user?.accountId]);
+    }, [appliedFilters]);
 
     const handleFilterChange = (event) => {
         const {name, value} = event.target;
@@ -85,19 +70,12 @@ function BuildingListPage() {
 
     const handleFilterSubmit = (event) => {
         event.preventDefault();
-        setPage(0);
         setAppliedFilters(filters);
     };
 
     const handleFilterReset = () => {
         setFilters(initialFilters);
         setAppliedFilters(initialFilters);
-        setPage(0);
-    };
-
-    const handlePageSizeChange = (event) => {
-        setSize(Number(event.target.value));
-        setPage(0);
     };
 
     const openCreateModal = () => {
@@ -148,11 +126,7 @@ function BuildingListPage() {
                 images: building.images,
             });
 
-            setResult((current) => current ? {
-                ...current,
-                items: [createdBuilding, ...(current.items || [])],
-                totalElements: (current.totalElements || 0) + 1,
-            } : current);
+            setBuildings((current) => [createdBuilding, ...current]);
             closeCreateModal();
         } catch (requestError) {
             setCreateError(getErrorMessage(requestError, "Không thể tạo tòa nhà"));
@@ -171,11 +145,7 @@ function BuildingListPage() {
 
         try {
             await buildingApi.deleteBuilding(buildingToDelete.buildingId);
-            setResult((current) => current ? {
-                ...current,
-                items: (current.items || []).filter((item) => item.buildingId !== buildingToDelete.buildingId),
-                totalElements: Math.max((current.totalElements || 1) - 1, 0),
-            } : current);
+            setBuildings((current) => current.filter((item) => item.buildingId !== buildingToDelete.buildingId));
         } catch (requestError) {
             setError(getErrorMessage(requestError, "Không thể xóa tòa nhà"));
         } finally {
@@ -222,17 +192,6 @@ function BuildingListPage() {
                     onChange={handleFilterChange}
                     placeholder="Tầng tối đa"
                 />
-                <Form.Select
-                    className="building-control"
-                    name="sort"
-                    value={filters.sort}
-                    onChange={handleFilterChange}
-                    aria-label="Sắp xếp tòa nhà"
-                >
-                    <option value="buildingId,desc">Mới nhất</option>
-                    <option value="numberOfFloor,desc">Số tầng cao đến thấp</option>
-                    <option value="numberOfFloor,asc">Số tầng thấp đến cao</option>
-                </Form.Select>
                 <Button type="submit">Lọc</Button>
                 <Button variant="outline-secondary" type="button" onClick={handleFilterReset}>
                     Đặt lại
@@ -306,42 +265,6 @@ function BuildingListPage() {
                 </div>
             ) : (
                 <div className="building-empty-state">Không có tòa nhà phù hợp với bộ lọc.</div>
-            )}
-
-            {result && (
-                <div className="building-pagination-bar">
-                    <div className="building-page-size">
-                        <span>Hiển thị</span>
-                        <Form.Select value={size} onChange={handlePageSizeChange} aria-label="Số tòa nhà mỗi trang">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                        </Form.Select>
-                        <span>/ trang</span>
-                    </div>
-
-                    {hasPagination && (
-                        <nav className="building-pagination" aria-label="Phân trang tòa nhà">
-                            <Button
-                                variant="outline-primary"
-                                type="button"
-                                disabled={!result.hasPrevious}
-                                onClick={() => setPage((current) => current - 1)}
-                            >
-                                Trang trước
-                            </Button>
-                            <span>Trang {result.page + 1} / {result.totalPages}</span>
-                            <Button
-                                variant="outline-primary"
-                                type="button"
-                                disabled={!result.hasNext}
-                                onClick={() => setPage((current) => current + 1)}
-                            >
-                                Trang sau
-                            </Button>
-                        </nav>
-                    )}
-                </div>
             )}
 
             <Modal show={showCreateModal} onHide={closeCreateModal} size="lg" centered>

@@ -15,10 +15,6 @@ public class BuildingFilterRequest {
     )
     private String keyword;
 
-    private Long landlordId;
-
-    private Long managerId;
-
     @Min(
             value = 1,
             message = "minFloor must be greater than 0"

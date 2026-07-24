@@ -14,21 +14,19 @@ import com.apartment.management.features.building.repository.BuildingRepository;
 import com.apartment.management.features.building.service.BuildingService;
 import com.apartment.management.features.building.specification.BuildingSpecification;
 import com.apartment.management.features.contract.repository.ContractRepository;
-import com.apartment.management.shared.dtos.PageResponse;
 import com.apartment.management.shared.entity.Account;
 import com.apartment.management.shared.entity.BankAccount;
 import com.apartment.management.shared.entity.Building;
 import com.apartment.management.shared.entity.BuildingImage;
 import com.apartment.management.shared.enums.ContractStatus;
 import com.apartment.management.shared.enums.FolderName;
+import com.apartment.management.shared.enums.Role;
 import com.apartment.management.shared.exception.BusinessException;
 import com.apartment.management.shared.service.CloudService;
 import com.apartment.management.shared.service.CurrentUserService;
 import com.apartment.management.shared.utils.FileHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -238,9 +236,19 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     @Transactional(readOnly = true)
     public List<BuildingOptionResponse> getMyBuildingOptions() {
-        Long landlordId = currentUserService.getCurrentUserId();
+        Long accountId = currentUserService.getCurrentUserId();
+        Role role = Role.valueOf(currentUserService.getCurrentUserRole());
 
-        return buildingRepository.findAllByLandlord_AccountId(landlordId)
+        List<Building> buildings;
+        if (role == Role.LANDLORD) {
+            buildings = buildingRepository.findAllByLandlord_AccountId(accountId);
+        } else if (role == Role.MANAGER) {
+            buildings = buildingRepository.findByManagerId(accountId);
+        } else {
+            buildings = buildingRepository.findAll();
+        }
+
+        return buildings
                 .stream()
                 .map(building -> new BuildingOptionResponse(
                         building.getBuildingId(),
@@ -252,18 +260,22 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse<BuildingResponse> getBuildingsByLandlordId(
-            BuildingFilterRequest filter,
-            Pageable pageable
+    public List<BuildingResponse> getMyBuildings(
+            BuildingFilterRequest filter
     ) {
         BuildingFilterRequest effectiveFilter = filter != null ? filter : new BuildingFilterRequest();
+        Long accountId = currentUserService.getCurrentUserId();
+        Role role = Role.valueOf(currentUserService.getCurrentUserRole());
 
-        if (effectiveFilter.getLandlordId() == null && effectiveFilter.getManagerId() == null) {
-            Long landlordId = currentUserService.getCurrentUserId();
+        Long landlordId = null;
+        Long managerId = null;
 
-            Account landlord = accountRepository.findById(landlordId).orElseThrow(()
-                    -> new IllegalArgumentException("Landlord account not found"));
-            effectiveFilter.setLandlordId(landlord.getAccountId());
+        if (role == Role.LANDLORD) {
+            landlordId = accountId;
+        } else if (role == Role.MANAGER) {
+            managerId = accountId;
+        } else if (role != Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only landlord, manager or admin can view my buildings");
         }
 
         //valid filter
@@ -275,12 +287,12 @@ public class BuildingServiceImpl implements BuildingService {
             );
         }
 
-        Page<BuildingResponse> buildingResponsePage = buildingRepository.findAll(
+        return buildingRepository.findAll(
                 BuildingSpecification.getBuildingWithFilter(
-                        effectiveFilter
-                ), pageable
-        ).map(buildingMapper::toResponse);
-
-        return PageResponse.from(buildingResponsePage);
+                        effectiveFilter,
+                        landlordId,
+                        managerId
+                )
+        ).stream().map(buildingMapper::toResponse).toList();
     }
 }

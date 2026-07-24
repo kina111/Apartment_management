@@ -14,29 +14,31 @@ import java.util.List;
 public class BuildingSpecification {
 
     public static Specification<Building> getBuildingWithFilter(
-            BuildingFilterRequest filter
+            BuildingFilterRequest filter,
+            Long landlordId,
+            Long managerId
     ) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            if (landlordId != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("landlord").get("accountId"),
+                        landlordId
+                ));
+            }
+
+            if (managerId != null) {
+                Join<Building, Account> managerJoin = root.join("managers");
+                predicates.add(criteriaBuilder.equal(
+                        managerJoin.get("accountId"),
+                        managerId
+                ));
+                query.distinct(true);
+            }
+
             //filter
             if (filter != null) {
-                if (filter.getLandlordId() != null) {
-                    predicates.add(criteriaBuilder.equal(
-                            root.get("landlord").get("accountId"),
-                            filter.getLandlordId()
-                    ));
-                }
-
-                if (filter.getManagerId() != null) {
-                    Join<Building, Account> managerJoin = root.join("managers");
-                    predicates.add(criteriaBuilder.equal(
-                            managerJoin.get("accountId"),
-                            filter.getManagerId()
-                    ));
-                    query.distinct(true);
-                }
-
                 //filter by keywork
                 if (StringUtils.hasText(filter.getKeyword())) {
                     String keywordPattern = "%" + filter.getKeyword().trim().toLowerCase() + "%";

@@ -12,6 +12,17 @@ import org.springframework.stereotype.Service;
 public class CurrentUserService {
 
     public Long getCurrentUserId() {
+        UserDetailsImpl userDetails = getCurrentUserDetails();
+
+        Long userId = userDetails.getAccountId();
+        return userId;
+    }
+
+    public String getCurrentUserRole() {
+        return getCurrentUserDetails().getRole();
+    }
+
+    private UserDetailsImpl getCurrentUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null
@@ -20,7 +31,6 @@ public class CurrentUserService {
             throw new AuthenticationCredentialsNotFoundException("Authenticated user not found");
         }
 
-        Long userId = userDetails.getAccountId();
-        return userId;
+        return userDetails;
     }
 }
